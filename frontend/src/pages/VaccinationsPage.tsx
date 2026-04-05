@@ -49,7 +49,7 @@ export default function VaccinationsPage() {
             </thead>
             <tbody>
               {vaccinations.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No vaccinations found</td></tr>
+                <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No vaccinations found</td></tr>
               ) : vaccinations.map((v) => (
                 <tr key={v.id}>
                   <td className="whitespace-nowrap">{v.vaccination_date}</td>

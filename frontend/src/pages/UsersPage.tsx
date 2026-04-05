@@ -53,7 +53,7 @@ export default function UsersPage() {
               {users.map((u) => (
                 <tr key={u.id}>
                   <td className="font-medium text-white/85">{u.full_name}</td>
-                  <td style={{ color: 'rgba(167, 139, 250, 0.5)' }}>{u.email}</td>
+                  <td style={{ color: 'rgba(52, 211, 153, 0.5)' }}>{u.email}</td>
                   <td>
                     <span className={`badge ${u.role_name === 'admin' ? 'badge-warning' : 'badge-active'}`}>
                       {u.role_name === 'admin' && <Shield size={12} />}
@@ -65,7 +65,7 @@ export default function UsersPage() {
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="text-sm" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>{new Date(u.created_at).toLocaleDateString()}</td>
+                  <td className="text-sm" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>{new Date(u.created_at).toLocaleDateString()}</td>
                   <td>
                     <button
                       onClick={() => toggleUser(u.id, u.is_active)}

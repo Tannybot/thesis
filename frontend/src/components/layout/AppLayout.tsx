@@ -28,14 +28,14 @@ export default function AppLayout() {
         <header className="app-header" style={{ display: 'flex', alignItems: 'center', gap: '10px', minHeight: '64px' }}>
           {/* Search bar — fills available space */}
           <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
-            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(167, 139, 250, 0.4)', pointerEvents: 'none' }} />
+            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(52, 211, 153, 0.4)', pointerEvents: 'none' }} />
             <input
               type="text"
               placeholder="Search animals, records..."
               className="input-field"
               style={{
-                background: 'rgba(19, 17, 43, 0.5)',
-                borderColor: 'rgba(139, 92, 246, 0.12)',
+                background: 'rgba(11, 26, 22, 0.5)',
+                borderColor: 'rgba(16, 185, 129, 0.12)',
                 borderRadius: '24px',
                 height: '44px',
                 paddingLeft: '40px',
@@ -56,9 +56,9 @@ export default function AppLayout() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(139, 92, 246, 0.08)',
-              border: '1px solid rgba(139, 92, 246, 0.12)',
-              color: '#a78bfa',
+              background: 'rgba(16, 185, 129, 0.08)',
+              border: '1px solid rgba(16, 185, 129, 0.12)',
+              color: '#34d399',
               cursor: 'pointer',
             }}
             id="notifications-btn"
@@ -87,8 +87,8 @@ export default function AppLayout() {
               gap: '10px',
               padding: '8px 14px',
               borderRadius: '12px',
-              background: 'rgba(139, 92, 246, 0.06)',
-              border: '1px solid rgba(139, 92, 246, 0.1)',
+              background: 'rgba(16, 185, 129, 0.06)',
+              border: '1px solid rgba(16, 185, 129, 0.1)',
               flexShrink: 0,
             }}
           >

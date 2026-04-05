@@ -49,7 +49,7 @@ export default function HealthRecordsPage() {
             </thead>
             <tbody>
               {records.length === 0 ? (
-                <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No health records found</td></tr>
+                <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No health records found</td></tr>
               ) : records.map((r) => (
                 <tr key={r.id}>
                   <td className="whitespace-nowrap">{r.record_date}</td>

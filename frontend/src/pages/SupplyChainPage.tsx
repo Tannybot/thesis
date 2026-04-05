@@ -50,8 +50,8 @@ export default function SupplyChainPage() {
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : movements.length === 0 ? (
         <div className="empty-state glass-card" style={{ padding: '60px 20px' }}>
-          <Truck size={48} className="mb-4" style={{ color: 'rgba(139, 92, 246, 0.3)' }} />
-          <p className="text-lg font-medium" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>No movements recorded</p>
+          <Truck size={48} className="mb-4" style={{ color: 'rgba(16, 185, 129, 0.3)' }} />
+          <p className="text-lg font-medium" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>No movements recorded</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -65,10 +65,10 @@ export default function SupplyChainPage() {
                   </div>
                   <div className="flex flex-wrap items-center gap-3 text-white/75">
                     <span className="break-words">{m.from_location}</span>
-                    <ArrowRight size={14} style={{ color: 'rgba(139, 92, 246, 0.4)' }} />
+                    <ArrowRight size={14} style={{ color: 'rgba(16, 185, 129, 0.4)' }} />
                     <span className="break-words">{m.to_location}</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-4 mt-3 text-sm" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>
+                  <div className="flex flex-wrap items-center gap-4 mt-3 text-sm" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>
                     <span>{new Date(m.departure_date).toLocaleDateString()}</span>
                     {m.handler && <span>Handler: {m.handler}</span>}
                     {m.transport_method && <span className="capitalize">Via: {m.transport_method}</span>}
@@ -78,11 +78,11 @@ export default function SupplyChainPage() {
                   <div
                     className="text-sm p-4 rounded-xl w-full sm:w-auto sm:max-w-[280px]"
                     style={{
-                      background: 'rgba(19, 17, 43, 0.5)',
-                      border: '1px solid rgba(139, 92, 246, 0.08)',
+                      background: 'rgba(11, 26, 22, 0.5)',
+                      border: '1px solid rgba(16, 185, 129, 0.08)',
                     }}
                   >
-                    <p className="text-xs mb-1" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>Buyer</p>
+                    <p className="text-xs mb-1" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>Buyer</p>
                     <p className="text-white/70">{m.buyer_info}</p>
                   </div>
                 )}

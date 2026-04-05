@@ -64,7 +64,7 @@ export default function AnimalsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
         <div className="page-header">
           <h1 className="page-title">Animals</h1>
@@ -81,11 +81,11 @@ export default function AnimalsPage() {
       </div>
 
       {/* Filters */}
-      <div className="glass-card overflow-x-auto min-w-0">
+      <div className="glass-card overflow-x-auto min-w-0" style={{ padding: '14px 20px' }}>
         <form onSubmit={handleSearch} className="filter-bar">
           {/* Search */}
           <div className="filter-bar-search" style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(167, 139, 250, 0.4)', pointerEvents: 'none' }} />
+            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(52, 211, 153, 0.4)', pointerEvents: 'none' }} />
             <input
               type="text"
               className="input-field"
@@ -134,9 +134,9 @@ export default function AnimalsPage() {
         <div className="flex justify-center py-12"><div className="spinner" /></div>
       ) : animals.length === 0 ? (
         <div className="empty-state glass-card">
-          <QrCode size={48} className="mb-4" style={{ color: 'rgba(139, 92, 246, 0.3)' }} />
-          <p className="text-lg font-medium" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>No animals found</p>
-          <p className="text-sm mt-1" style={{ color: 'rgba(167, 139, 250, 0.35)' }}>Register your first animal to get started</p>
+          <QrCode size={48} className="mb-4" style={{ color: 'rgba(16, 185, 129, 0.3)' }} />
+          <p className="text-lg font-medium" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>No animals found</p>
+          <p className="text-sm mt-1" style={{ color: 'rgba(52, 211, 153, 0.35)' }}>Register your first animal to get started</p>
         </div>
       ) : (
         <>
@@ -146,7 +146,7 @@ export default function AnimalsPage() {
               <Link
                 key={animal.id}
                 to={`/animals/${animal.id}`}
-                className="bg-[#1A1625] rounded-[16px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-purple-500/30 overflow-hidden relative"
+                className="bg-[#0f1f1a] rounded-[16px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-emerald-500/30 overflow-hidden relative"
                 style={{ border: '0.5px solid rgba(255,255,255,0.08)' }}
                 id={`animal-card-${animal.id}`}
               >
@@ -159,7 +159,7 @@ export default function AnimalsPage() {
                 {/* Header Row */}
                 <div style={{ padding: '20px 20px 0 20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingRight: '50px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#3D2E3A', flexShrink: 0, overflow: 'hidden' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#1a3a2e', flexShrink: 0, overflow: 'hidden' }}>
                       <span style={{ fontSize: '28px', lineHeight: 1, paddingTop: '2px' }}>{getSpeciesEmoji(animal.species)}</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
@@ -177,7 +177,7 @@ export default function AnimalsPage() {
                     {/* Breed */}
                     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                        <PawPrint size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <PawPrint size={14} style={{ color: '#34d399', flexShrink: 0 }} />
                         <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Breed</span>
                       </div>
                       <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.breed || 'N/A'}</span>
@@ -186,7 +186,7 @@ export default function AnimalsPage() {
                     {/* Gender/Weight */}
                     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                        <Weight size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <Weight size={14} style={{ color: '#34d399', flexShrink: 0 }} />
                         <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Weight</span>
                       </div>
                       <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.gender} • {animal.weight ? `${animal.weight}kg` : 'N/A'}</span>
@@ -195,7 +195,7 @@ export default function AnimalsPage() {
                     {/* Stage */}
                     <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                        <TrendingUp size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <TrendingUp size={14} style={{ color: '#34d399', flexShrink: 0 }} />
                         <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Stage</span>
                       </div>
                       <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.growth_stage || 'N/A'}</span>
@@ -216,7 +216,7 @@ export default function AnimalsPage() {
               >
                 Previous
               </button>
-              <span className="text-sm font-medium" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>
+              <span className="text-sm font-medium" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>
                 Page {page} of {Math.ceil(total / 20)}
               </span>
               <button

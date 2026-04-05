@@ -33,18 +33,18 @@ export default function LoginPage() {
   return (
     <div
       className="min-h-screen flex"
-      style={{ background: 'linear-gradient(135deg, #0f0c29 0%, #1a1640 40%, #302b63 70%, #24243e 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #091a13 0%, #0d2818 40%, #132e1f 70%, #0f2318 100%)' }}
     >
       {/* Left Panel: Lively Landing & Branding (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden flex-col justify-between p-16">
         {/* Dynamic Background Effects */}
         <div
           className="absolute inset-0 z-0"
-          style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(19, 17, 43, 0.9) 50%, rgba(10, 9, 25, 0.95) 100%)' }}
+          style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(11, 26, 22, 0.9) 50%, rgba(6, 15, 12, 0.95) 100%)' }}
         />
         <div
           className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%)', filter: 'blur(80px)' }}
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%)', filter: 'blur(80px)' }}
         />
         <div
           className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none z-0"
@@ -60,8 +60,8 @@ export default function LoginPage() {
               <div
                 className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform hover:scale-105 duration-500"
                 style={{
-                  background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.5)',
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  boxShadow: '0 8px 32px rgba(16, 185, 129, 0.5)',
                   animation: 'pulse-glow 5s ease-in-out infinite',
                 }}
               >
@@ -69,7 +69,7 @@ export default function LoginPage() {
               </div>
               <div className="text-left flex flex-col justify-center">
                 <h1 className="text-2xl font-black text-white tracking-tight leading-none mb-1">LiveTrack</h1>
-                <p className="font-bold text-[10px] uppercase tracking-[0.2em]" style={{ color: '#a78bfa' }}>Enterprise Framework</p>
+                <p className="font-bold text-[10px] uppercase tracking-[0.2em]" style={{ color: '#34d399' }}>Enterprise Framework</p>
               </div>
             </div>
             
@@ -78,12 +78,12 @@ export default function LoginPage() {
                 Next-Generation <br />
                 <span
                   className="text-transparent bg-clip-text"
-                  style={{ backgroundImage: 'linear-gradient(135deg, #22d3ee, #a78bfa, #ec4899)' }}
+                  style={{ backgroundImage: 'linear-gradient(135deg, #22d3ee, #34d399, #10b981)' }}
                 >
                   Livestock Intelligence
                 </span>
               </h2>
-              <p className="text-base lg:text-lg leading-relaxed max-w-lg mx-auto text-balance" style={{ color: 'rgba(196, 181, 253, 0.8)' }}>
+              <p className="text-base lg:text-lg leading-relaxed max-w-lg mx-auto text-balance" style={{ color: 'rgba(110, 231, 183, 0.8)' }}>
                 Seamlessly monitor your herd across its entire lifecycle. Unify health diagnostics, growth analytics, and movement logs in one powerful platform.
               </p>
             </div>
@@ -93,24 +93,24 @@ export default function LoginPage() {
               <div
                 className="p-6 rounded-[1.5rem] backdrop-blur-md flex flex-col items-center transition-transform hover:-translate-y-1 duration-300"
                 style={{
-                  background: 'rgba(19, 17, 43, 0.6)',
-                  border: '1px solid rgba(139, 92, 246, 0.2)',
-                  boxShadow: '0 10px 40px -10px rgba(139, 92, 246, 0.1)',
+                  background: 'rgba(11, 26, 22, 0.6)',
+                  border: '1px solid rgba(16, 185, 129, 0.2)',
+                  boxShadow: '0 10px 40px -10px rgba(16, 185, 129, 0.1)',
                 }}
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: 'rgba(139, 92, 246, 0.15)' }}
+                  style={{ background: 'rgba(16, 185, 129, 0.15)' }}
                 >
-                  <ShieldCheck size={24} style={{ color: '#a78bfa' }} />
+                  <ShieldCheck size={24} style={{ color: '#34d399' }} />
                 </div>
                 <h3 className="text-white text-base font-bold mb-2 tracking-wide">Instant Traceability</h3>
-                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(167, 139, 250, 0.65)' }}>Verify immutable health, transit, and lifecycle logs with a single QR scan.</p>
+                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(52, 211, 153, 0.65)' }}>Verify immutable health, transit, and lifecycle logs with a single QR scan.</p>
               </div>
               <div
                 className="p-6 rounded-[1.5rem] backdrop-blur-md flex flex-col items-center transition-transform hover:-translate-y-1 duration-300"
                 style={{
-                  background: 'rgba(19, 17, 43, 0.6)',
+                  background: 'rgba(11, 26, 22, 0.6)',
                   border: '1px solid rgba(34, 211, 238, 0.2)',
                   boxShadow: '0 10px 40px -10px rgba(34, 211, 238, 0.1)',
                 }}
@@ -122,18 +122,18 @@ export default function LoginPage() {
                   <Activity size={24} style={{ color: '#22d3ee' }} />
                 </div>
                 <h3 className="text-white text-base font-bold mb-2 tracking-wide">Predictive Analytics</h3>
-                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(167, 139, 250, 0.65)' }}>Monitor key growth metrics, forecast health trends, and optimize yield.</p>
+                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(52, 211, 153, 0.65)' }}>Monitor key growth metrics, forecast health trends, and optimize yield.</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer info */}
-        <div className="relative z-10 text-sm mb-8 flex items-center justify-center gap-8" style={{ color: 'rgba(167, 139, 250, 0.35)' }}>
+        <div className="relative z-10 text-sm mb-8 flex items-center justify-center gap-8" style={{ color: 'rgba(52, 211, 153, 0.35)' }}>
           <p>© 2026 LiveTrack Global. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-[#a78bfa] transition-colors">Privacy</a>
-            <a href="#" className="hover:text-[#a78bfa] transition-colors">Terms</a>
+            <a href="#" className="hover:text-[#34d399] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[#34d399] transition-colors">Terms</a>
           </div>
         </div>
       </div>
@@ -143,11 +143,11 @@ export default function LoginPage() {
         {/* Mobile-only Background Effects */}
         <div
           className="absolute inset-0 lg:hidden"
-          style={{ background: 'linear-gradient(135deg, #0f0c29, #1a1640, #0f0c29)' }}
+          style={{ background: 'linear-gradient(135deg, #091a13, #0d2818, #091a13)' }}
         />
         <div
           className="absolute top-0 right-0 w-64 h-64 rounded-full lg:hidden"
-          style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent)', filter: 'blur(60px)' }}
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent)', filter: 'blur(60px)' }}
         />
 
         <div className="relative w-full max-w-[420px] animate-in" style={{ animationDelay: '0.1s' }}>
@@ -157,19 +157,19 @@ export default function LoginPage() {
             <div
               className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                boxShadow: '0 8px 24px rgba(139, 92, 246, 0.3)',
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.3)',
               }}
             >
               <QrCode size={32} className="text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white">LiveTrack</h1>
-            <p className="text-sm mt-1" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>Livestock Monitoring Config</p>
+            <p className="text-sm mt-1" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>Livestock Monitoring Config</p>
           </div>
 
           <div className="mb-10 text-center lg:text-left">
             <h2 className="text-3xl font-black text-white tracking-tight mb-2">Welcome Back</h2>
-            <p className="text-base tracking-wide" style={{ color: 'rgba(167, 139, 250, 0.7)' }}>Securely access your administrator dashboard.</p>
+            <p className="text-base tracking-wide" style={{ color: 'rgba(52, 211, 153, 0.7)' }}>Securely access your administrator dashboard.</p>
           </div>
 
           {error && (
@@ -217,7 +217,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
-                  style={{ color: 'rgba(167, 139, 250, 0.4)' }}
+                  style={{ color: 'rgba(52, 211, 153, 0.4)' }}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -230,12 +230,12 @@ export default function LoginPage() {
                   type="checkbox"
                   className="w-4 h-4 rounded"
                   style={{
-                    accentColor: '#8b5cf6',
+                    accentColor: '#10b981',
                   }}
                 />
-                <span className="text-sm font-medium transition-colors" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>Remember me</span>
+                <span className="text-sm font-medium transition-colors" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>Remember me</span>
               </label>
-              <a href="#" className="text-sm font-semibold transition-colors" style={{ color: '#a78bfa' }}>Forgot password?</a>
+              <a href="#" className="text-sm font-semibold transition-colors" style={{ color: '#34d399' }}>Forgot password?</a>
             </div>
 
             <button
@@ -255,24 +255,24 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(139, 92, 246, 0.1)' }}>
+          <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(16, 185, 129, 0.1)' }}>
             <div
               className="rounded-xl p-4 text-center"
               style={{
-                background: 'rgba(19, 17, 43, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.1)',
+                background: 'rgba(11, 26, 22, 0.5)',
+                border: '1px solid rgba(16, 185, 129, 0.1)',
               }}
             >
-              <p className="text-[13px] font-semibold uppercase tracking-wider mb-2" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>Demo Access</p>
+              <p className="text-[13px] font-semibold uppercase tracking-wider mb-2" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>Demo Access</p>
               <div className="flex items-center justify-center gap-4 text-sm">
                 <code
                   className="px-2.5 py-1 rounded-lg"
-                  style={{ background: 'rgba(10, 9, 25, 0.6)', color: '#22d3ee' }}
+                  style={{ background: 'rgba(6, 15, 12, 0.6)', color: '#22d3ee' }}
                 >admin@livestock.com</code>
-                <span style={{ color: 'rgba(139, 92, 246, 0.3)' }}>/</span>
+                <span style={{ color: 'rgba(16, 185, 129, 0.3)' }}>/</span>
                 <code
                   className="px-2.5 py-1 rounded-lg"
-                  style={{ background: 'rgba(10, 9, 25, 0.6)', color: '#22d3ee' }}
+                  style={{ background: 'rgba(6, 15, 12, 0.6)', color: '#22d3ee' }}
                 >admin123</code>
               </div>
             </div>

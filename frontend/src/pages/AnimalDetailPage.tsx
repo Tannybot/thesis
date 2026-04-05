@@ -111,9 +111,9 @@ export default function AnimalDetailPage() {
       <Link
         to="/animals"
         className="inline-flex items-center gap-2 text-sm transition-colors"
-        style={{ color: 'rgba(167, 139, 250, 0.5)' }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = '#a78bfa')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(167, 139, 250, 0.5)')}
+        style={{ color: 'rgba(52, 211, 153, 0.5)' }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = '#34d399')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(52, 211, 153, 0.5)')}
       >
         <ArrowLeft size={16} /> Back to Animals
       </Link>
@@ -121,10 +121,10 @@ export default function AnimalDetailPage() {
       {/* Header */}
       <div className="glass-card relative overflow-hidden min-w-0 p-5 sm:p-7 md:p-8">
         {/* Background Accent */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
         <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
-          <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#3D2E3A' }}>
+          <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#1a3a2e' }}>
             <span className="text-5xl drop-shadow-lg">{speciesEmojis[animal.species] || '🐾'}</span>
           </div>
           
@@ -145,8 +145,8 @@ export default function AnimalDetailPage() {
                 { label: 'Weight', val: animal.weight ? `${animal.weight} kg` : null },
                 { label: 'Stage', val: animal.growth_stage },
               ].filter(x => x.val).map((item, i) => (
-                <div key={i} className="px-[14px] py-[6px] bg-[#1a1625] border border-white/10 rounded-[20px] flex items-center gap-2.5">
-                  <span className="text-xs font-bold tracking-[0.1em] text-[#a78bfa] uppercase">{item.label}</span>
+                <div key={i} className="px-[14px] py-[6px] bg-[#0f1f1a] border border-white/10 rounded-[20px] flex items-center gap-2.5">
+                  <span className="text-xs font-bold tracking-[0.1em] text-[#34d399] uppercase">{item.label}</span>
                   <span className="text-[15px] font-semibold text-white capitalize">{item.val}</span>
                 </div>
               ))}
@@ -174,7 +174,7 @@ export default function AnimalDetailPage() {
             <button onClick={printQR} className="btn bg-white/10 hover:bg-white/20 text-white border border-white/10 text-[13px] w-full justify-center shadow-none" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
               <Printer size={16} /> Print
             </button>
-            <button onClick={handleSave} disabled={!qrBlobUrl} className="btn bg-[#a78bfa]/20 hover:bg-[#a78bfa]/30 text-[#c4b5fd] border border-[#a78bfa]/30 text-[13px] w-full justify-center shadow-none disabled:opacity-50" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
+            <button onClick={handleSave} disabled={!qrBlobUrl} className="btn bg-[#34d399]/20 hover:bg-[#34d399]/30 text-[#6ee7b7] border border-[#34d399]/30 text-[13px] w-full justify-center shadow-none disabled:opacity-50" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
               <Download size={16} /> Save
             </button>
           </div>
@@ -188,7 +188,7 @@ export default function AnimalDetailPage() {
             key={tab.key}
             className={`flex items-center text-[15px] font-bold transition-all duration-200 ${
               activeTab === tab.key 
-                ? 'bg-[#6d28d9] border border-[#8b5cf6] text-white shadow-[0_4px_15px_rgba(139,92,246,0.3)] transform -translate-y-0.5' 
+                ? 'bg-[#065f46] border border-[#10b981] text-white shadow-[0_4px_15px_rgba(16,185,129,0.3)] transform -translate-y-0.5' 
                 : 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
             }`}
             style={{ padding: '10px 18px', borderRadius: '10px', gap: '8px' }}
@@ -212,7 +212,7 @@ export default function AnimalDetailPage() {
             {/* Details Section */}
             <div className="glass-card flex-1">
               <h3 className="text-xl font-bold text-white tracking-wider mb-8 flex items-center gap-3">
-                <QrCode className="text-[#a78bfa]" size={24} /> 
+                <QrCode className="text-[#34d399]" size={24} /> 
                 Identity & Details
               </h3>
               
@@ -256,8 +256,8 @@ export default function AnimalDetailPage() {
               <div className="flex flex-col gap-2">
                 {[
                   { label: 'Health Records', count: animal.health_records_count, color: '#fbbf24', bg: 'rgba(251,191,36,0.15)', border: 'rgba(251,191,36,0.3)' },
-                  { label: 'Treatments', count: animal.treatments_count, color: '#818cf8', bg: 'rgba(129,140,248,0.15)', border: 'rgba(129,140,248,0.3)' },
-                  { label: 'Vaccinations', count: animal.vaccinations_count, color: '#a78bfa', bg: 'rgba(167,139,250,0.15)', border: 'rgba(167,139,250,0.3)' },
+                  { label: 'Treatments', count: animal.treatments_count, color: '#34d399', bg: 'rgba(52,211,153,0.15)', border: 'rgba(52,211,153,0.3)' },
+                  { label: 'Vaccinations', count: animal.vaccinations_count, color: '#10b981', bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.3)' },
                   { label: 'Movements', count: animal.movements_count, color: '#22d3ee', bg: 'rgba(34,211,238,0.15)', border: 'rgba(34,211,238,0.3)' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center justify-between bg-white/5 border border-white/5 transition-colors hover:bg-white/10 group cursor-default" style={{ padding: '14px 16px', borderRadius: '12px', minHeight: '52px' }}>
@@ -280,7 +280,7 @@ export default function AnimalDetailPage() {
               </thead>
               <tbody>
                 {healthRecords.length === 0 ? (
-                  <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No health records</td></tr>
+                  <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No health records</td></tr>
                 ) : healthRecords.map((r) => (
                   <tr key={r.id}>
                     <td className="whitespace-nowrap">{r.record_date}</td>
@@ -304,7 +304,7 @@ export default function AnimalDetailPage() {
               </thead>
               <tbody>
                 {treatments.length === 0 ? (
-                  <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No treatments</td></tr>
+                  <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No treatments</td></tr>
                 ) : treatments.map((t) => (
                   <tr key={t.id}>
                     <td className="whitespace-nowrap">{t.treatment_date}</td>
@@ -328,7 +328,7 @@ export default function AnimalDetailPage() {
               </thead>
               <tbody>
                 {vaccinations.length === 0 ? (
-                  <tr><td colSpan={5} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No vaccinations</td></tr>
+                  <tr><td colSpan={5} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No vaccinations</td></tr>
                 ) : vaccinations.map((v) => (
                   <tr key={v.id}>
                     <td className="whitespace-nowrap">{v.vaccination_date}</td>
@@ -351,7 +351,7 @@ export default function AnimalDetailPage() {
               </thead>
               <tbody>
                 {movements.length === 0 ? (
-                  <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No movements recorded</td></tr>
+                  <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No movements recorded</td></tr>
                 ) : movements.map((m) => (
                   <tr key={m.id}>
                     <td className="whitespace-nowrap">{new Date(m.departure_date).toLocaleDateString()}</td>
@@ -379,10 +379,10 @@ export default function AnimalDetailPage() {
               <div>
                 {timeline.map((event, i) => {
                   const typeColors: Record<string, string> = {
-                    registration: 'border-[#8b5cf6]',
+                    registration: 'border-[#10b981]',
                     health: 'border-[#fbbf24]',
-                    treatment: 'border-[#818cf8]',
-                    vaccination: 'border-[#a78bfa]',
+                    treatment: 'border-[#34d399]',
+                    vaccination: 'border-[#059669]',
                     movement: 'border-[#22d3ee]',
                   };
                   return (
@@ -391,11 +391,11 @@ export default function AnimalDetailPage() {
                       <div>
                         <div className="flex items-center gap-3 mb-1">
                           <span className="text-base font-bold text-white/90">{event.title}</span>
-                          <span className="text-xs px-2 py-0.5 rounded border border-white/10 bg-white/5" style={{ color: 'rgba(196, 181, 253, 0.7)' }}>
+                          <span className="text-xs px-2 py-0.5 rounded border border-white/10 bg-white/5" style={{ color: 'rgba(110, 231, 183, 0.7)' }}>
                             {new Date(event.date).toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="text-[15px] font-medium leading-relaxed" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>{event.description}</p>
+                        <p className="text-[15px] font-medium leading-relaxed" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>{event.description}</p>
                       </div>
                     </div>
                   );

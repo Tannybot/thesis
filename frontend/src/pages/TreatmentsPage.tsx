@@ -49,7 +49,7 @@ export default function TreatmentsPage() {
             </thead>
             <tbody>
               {treatments.length === 0 ? (
-                <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No treatments found</td></tr>
+                <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>No treatments found</td></tr>
               ) : treatments.map((t) => (
                 <tr key={t.id}>
                   <td className="whitespace-nowrap">{t.treatment_date}</td>

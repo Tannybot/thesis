@@ -34,10 +34,10 @@ export default function Sidebar() {
           style={{
             top: '17px',
             left: '12px',
-            background: 'rgba(10, 9, 25, 0.85)',
-            border: '1px solid rgba(139, 92, 246, 0.3)',
+            background: 'rgba(11, 26, 22, 0.85)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
             backdropFilter: 'blur(10px)',
-            color: '#c4b5fd'
+            color: '#6ee7b7'
           }}
           onClick={() => setMobileOpen(true)}
           id="sidebar-toggle"
@@ -56,13 +56,13 @@ export default function Sidebar() {
 
       <aside className={`app-sidebar ${mobileOpen ? 'open' : ''}`}>
         {/* Logo Section */}
-        <div className="flex items-center justify-between px-6 pb-6" style={{ paddingTop: '18px', borderBottom: '1px solid rgba(139, 92, 246, 0.12)' }}>
+        <div className="flex items-center justify-between px-6" style={{ paddingTop: '18px', paddingBottom: '18px', paddingLeft: '28px', borderBottom: '1px solid rgba(16, 185, 129, 0.12)' }}>
           <div className="flex items-center gap-4">
             <div
               className="w-11 h-11 rounded-xl flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                boxShadow: '0 4px 16px rgba(139, 92, 246, 0.4)',
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
                 animation: 'pulse-glow 4s ease-in-out infinite',
               }}
             >
@@ -70,7 +70,7 @@ export default function Sidebar() {
             </div>
             <div>
               <h1 className="text-lg font-black text-white tracking-tight leading-none mb-1">LiveTrack</h1>
-              <p className="text-[11px] font-semibold tracking-wide uppercase" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>QR System</p>
+              <p className="text-[11px] font-semibold tracking-wide uppercase" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>QR System</p>
             </div>
           </div>
           <button 
@@ -83,7 +83,7 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex-1 py-5 overflow-y-auto">
-          <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>
+          <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>
             Main Menu
           </p>
           {navItems.map((item) => (
@@ -103,8 +103,8 @@ export default function Sidebar() {
 
           {isAdmin && (
             <>
-              <div className="mx-6 my-3" style={{ borderTop: '1px solid rgba(139, 92, 246, 0.08)' }} />
-              <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>
+              <div className="mx-6 my-3" style={{ borderTop: '1px solid rgba(16, 185, 129, 0.08)' }} />
+              <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>
                 Administration
               </p>
               {adminItems.map((item) => (
@@ -125,21 +125,21 @@ export default function Sidebar() {
         </nav>
 
         {/* User section */}
-        <div className="p-4" style={{ borderTop: '1px solid rgba(139, 92, 246, 0.12)' }}>
+        <div className="p-4" style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)' }}>
           <div className="flex items-center gap-3 mb-3 px-2">
             <div
               className="w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm"
               style={{
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.15))',
-                color: '#c4b5fd',
-                border: '1px solid rgba(139, 92, 246, 0.2)',
+                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.15))',
+                color: '#6ee7b7',
+                border: '1px solid rgba(16, 185, 129, 0.2)',
               }}
             >
               {user?.full_name?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white/90 truncate">{user?.full_name}</p>
-              <p className="text-xs capitalize" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>{user?.role_name}</p>
+              <p className="text-xs capitalize" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>{user?.role_name}</p>
             </div>
           </div>
           <button
