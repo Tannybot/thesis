@@ -10,22 +10,22 @@ class Settings(BaseSettings):
     # App
     APP_NAME: str = "LivestockTracker"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # Database
-    DATABASE_URL: str = "sqlite:///./livestock.db"
+    DATABASE_URL: str = "postgresql://user:password@localhost:5432/livetrack"
 
     # JWT
-    SECRET_KEY: str = "change-me-in-production"
+    SECRET_KEY: str = "your-secure-secret-key-here"  # Generate a cryptographically secure 256-bit string
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # CORS
-    FRONTEND_URL: str = "http://localhost:5173"
+    FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
 
     # QR Codes
-    QR_CODE_BASE_URL: str = "http://192.168.1.2:5173/animals"
+    QR_CODE_BASE_URL: str = "https://livetrack.com/animals"  # Production domain
 
     class Config:
         env_file = ".env"

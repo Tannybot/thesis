@@ -1,32 +1,55 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15
+    container_name: livestock-db
+    environment:
+      - POSTGRES_DB=livetrack
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - livetrack-network
+    restart: unless-stopped
+
   # FastAPI Backend
   backend:
     build: ./backend
     container_name: livestock-api
-    ports:
-      - "8000:8000"
     environment:
-      - DATABASE_URL=sqlite:///./livestock.db
-      - SECRET_KEY=${SECRET_KEY:-your-super-secret-key-change-in-production}
+      - DATABASE_URL=postgresql://user:password@db:5432/livetrack
+      - SECRET_KEY=${SECRET_KEY:-your-secure-secret-key-here}
       - DEBUG=false
-      - FRONTEND_URL=http://localhost:5173
+      - FRONTEND_URL=https://livetrack.com
+      - QR_CODE_BASE_URL=https://livetrack.com/animals
     volumes:
-      - backend_data:/app/data
       - qr_codes:/app/qr_codes
+    depends_on:
+      - db
+    networks:
+      - livetrack-network
     restart: unless-stopped
 
-  # React Frontend
+  # React Frontend with Nginx
   frontend:
     build: ./frontend
     container_name: livestock-web
     ports:
-      - "5173:80"
+      - "80:80"
+      - "443:443"
     depends_on:
       - backend
+    networks:
+      - livetrack-network
     restart: unless-stopped
 
 volumes:
-  backend_data:
+  postgres_data:
   qr_codes:
+
+networks:
+  livetrack-network:
+    driver: bridge
