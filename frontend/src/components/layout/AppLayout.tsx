@@ -25,57 +25,79 @@ export default function AppLayout() {
       <Sidebar />
       <div className="app-main">
         {/* Header */}
-        <header className="app-header">
-          <div className="flex items-center gap-4 ml-16 md:ml-0">
-            <div className="relative">
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'rgba(167, 139, 250, 0.4)' }} />
-              <input
-                type="text"
-                placeholder="Search animals, records..."
-                className="input-field pl-10 w-72 text-sm"
-                style={{
-                  background: 'rgba(19, 17, 43, 0.5)',
-                  borderColor: 'rgba(139, 92, 246, 0.12)',
-                  borderRadius: '24px',
-                  height: '44px',
-                }}
-                id="global-search"
-              />
-            </div>
+        <header className="app-header" style={{ display: 'flex', alignItems: 'center', gap: '10px', minHeight: '64px' }}>
+          {/* Search bar — fills available space */}
+          <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
+            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(167, 139, 250, 0.4)', pointerEvents: 'none' }} />
+            <input
+              type="text"
+              placeholder="Search animals, records..."
+              className="input-field"
+              style={{
+                background: 'rgba(19, 17, 43, 0.5)',
+                borderColor: 'rgba(139, 92, 246, 0.12)',
+                borderRadius: '24px',
+                height: '44px',
+                paddingLeft: '40px',
+                width: '100%',
+              }}
+              id="global-search"
+            />
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              className="relative w-[44px] h-[44px] rounded-xl flex items-center justify-center transition-all"
+
+          {/* Notification bell — always visible */}
+          <button
+            style={{
+              flexShrink: 0,
+              position: 'relative',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(139, 92, 246, 0.08)',
+              border: '1px solid rgba(139, 92, 246, 0.12)',
+              color: '#a78bfa',
+              cursor: 'pointer',
+            }}
+            id="notifications-btn"
+          >
+            <Bell size={18} />
+            <span
               style={{
-                background: 'rgba(139, 92, 246, 0.08)',
-                border: '1px solid rgba(139, 92, 246, 0.12)',
-                color: '#a78bfa',
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#22d3ee',
+                boxShadow: '0 0 6px rgba(34, 211, 238, 0.5)',
               }}
-              id="notifications-btn"
-            >
-              <Bell size={18} />
-              <span
-                className="absolute top-2 right-2 w-2 h-2 rounded-full"
-                style={{
-                  background: '#22d3ee',
-                  boxShadow: '0 0 6px rgba(34, 211, 238, 0.5)',
-                }}
-              />
-            </button>
-            <div
-              className="flex items-center gap-3 px-3 py-2 rounded-xl"
-              style={{
-                background: 'rgba(139, 92, 246, 0.06)',
-                border: '1px solid rgba(139, 92, 246, 0.1)',
-              }}
-            >
-              <span className="text-sm font-medium text-white/80 hidden sm:block">
-                {user?.full_name}
-              </span>
-              <span className="badge badge-active text-xs">
-                {user?.role_name}
-              </span>
-            </div>
+            />
+          </button>
+
+          {/* User name + role — hidden on mobile, shown on desktop */}
+          <div
+            className="app-header-user"
+            style={{
+              display: 'none',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '8px 14px',
+              borderRadius: '12px',
+              background: 'rgba(139, 92, 246, 0.06)',
+              border: '1px solid rgba(139, 92, 246, 0.1)',
+              flexShrink: 0,
+            }}
+          >
+            <span style={{ fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.8)', whiteSpace: 'nowrap' }}>
+              {user?.full_name}
+            </span>
+            <span className="badge badge-active" style={{ fontSize: '12px' }}>
+              {user?.role_name}
+            </span>
           </div>
         </header>
 

@@ -69,7 +69,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-2">
         <div className="page-header">
@@ -91,7 +91,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-[16px]">
+      <div className="grid-stat-tiles">
         {statCards.map((card, i) => (
           <div key={i} className="glass-card stat-card animate-in" style={{ animationDelay: `${i * 0.08}s` }}>
             <div className="flex items-center justify-between mb-4">
@@ -113,7 +113,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
+      <div className="grid-charts">
         {/* Species Breakdown */}
         <div className="glass-card overflow-x-auto min-w-0">
           <h3 className="text-lg font-bold text-white/90 mb-6 pb-4" style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
@@ -178,15 +178,15 @@ export default function DashboardPage() {
       </div>
 
       {/* Admin stats + Activity feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-[16px]">
-        {/* Admin stats */}
+      <div className="grid-admin-row">
+        {/* Admin stats — takes 2/3 width on desktop */}
         {isAdmin && stats.total_users !== undefined && (
-          <div className="glass-card overflow-x-auto min-w-0 lg:col-span-2">
-            <div className="flex items-center gap-3 pb-6 mb-6" style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
+          <div className="glass-card" style={{ minWidth: 0, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingBottom: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
               <Users size={24} style={{ color: '#a78bfa' }} />
               <h3 className="text-lg font-bold text-white/90">Global System Overview</h3>
             </div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-[16px]">
+            <div className="grid-admin-tiles">
               {[
                 { label: 'Total Users', value: stats.total_users, color: '#c4b5fd' },
                 { label: 'Active Animals', value: stats.total_animals, color: '#22d3ee' },
@@ -195,27 +195,29 @@ export default function DashboardPage() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="text-center p-4 rounded-xl"
                   style={{
+                    textAlign: 'center',
+                    padding: '16px',
+                    borderRadius: '12px',
                     background: 'rgba(19, 17, 43, 0.6)',
                     border: '1px solid rgba(139, 92, 246, 0.1)',
                   }}
                 >
-                  <p className="text-4xl font-black mb-2 leading-none" style={{ color: item.color }}>{item.value}</p>
-                  <p className="text-[11px] font-bold tracking-widest uppercase mt-2" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>{item.label}</p>
+                  <p style={{ fontSize: '36px', fontWeight: 900, marginBottom: '6px', lineHeight: 1, color: item.color }}>{item.value}</p>
+                  <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(167, 139, 250, 0.5)' }}>{item.label}</p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Recent Activity */}
-        <div className="glass-card flex flex-col h-[340px]">
-          <div className="p-6 pb-4 shrink-0" style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
+        {/* Recent Activity — takes 1/3 width on desktop */}
+        <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: '340px', minWidth: 0 }}>
+          <div style={{ padding: '20px 20px 14px', flexShrink: 0, borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
             <h3 className="text-lg font-bold text-white/90">Recent Activity</h3>
           </div>
-          <div className="p-5 flex-1 overflow-y-auto">
-            <div className="flex flex-col gap-1">
+          <div style={{ padding: '16px 20px', flex: 1, overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {activities.length > 0 ? (
                 activities.slice(0, 8).map((a, i) => (
                   <div
@@ -253,7 +255,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Health monthly records (Moved to bottom) */}
-      <div className="glass-card overflow-x-auto min-w-0">
+      <div className="glass-card overflow-x-auto min-w-0" style={{ marginTop: '28px' }}>
         <h3 className="text-lg font-bold text-white/90 mb-6 pb-4" style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.1)' }}>
           Health Records Trend
         </h3>

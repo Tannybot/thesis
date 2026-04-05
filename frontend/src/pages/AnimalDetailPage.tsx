@@ -119,23 +119,23 @@ export default function AnimalDetailPage() {
       </Link>
 
       {/* Header */}
-      <div className="glass-card overflow-x-auto min-w-0" style={{ padding: '28px 32px' }}>
+      <div className="glass-card relative overflow-hidden min-w-0 p-5 sm:p-7 md:p-8">
         {/* Background Accent */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
-        <div className="flex flex-col md:flex-row gap-[20px] lg:items-center relative z-10 w-full">
+        <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
           <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#3D2E3A' }}>
             <span className="text-5xl drop-shadow-lg">{speciesEmojis[animal.species] || '🐾'}</span>
           </div>
           
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-2">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-white">{animal.name || animal.animal_uid.split('-')[1]}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-white break-words">{animal.name || animal.animal_uid.split('-')[1]}</h1>
               <span className={`self-start sm:self-auto px-4 py-1.5 rounded-full text-sm font-bold tracking-wide capitalize ${animal.status === 'active' ? 'bg-[#1EBfae] text-[#06332E]' : 'bg-gray-700 text-gray-200'}`}>
                 {animal.status}
               </span>
             </div>
-            <p className="font-mono text-lg text-gray-400 mb-4 opacity-80">#{animal.animal_uid}</p>
+            <p className="font-mono text-base sm:text-lg text-gray-400 mb-4 opacity-80 break-all">#{animal.animal_uid}</p>
             
             <div className="flex flex-wrap items-center gap-[12px] mt-2">
               {[
@@ -155,7 +155,7 @@ export default function AnimalDetailPage() {
         </div>
 
         {/* QR Code Block */}
-        <div className="flex flex-col lg:flex-row items-center lg:pl-8 lg:border-l border-white/10 shrink-0 relative z-10 mt-6 lg:mt-0 pt-6 lg:pt-0 border-t lg:border-t-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 shrink-0 relative z-10 mt-6 pt-6 border-t border-white/10">
           <div className="qr-print-area bg-white p-3 rounded-[14px] border border-white/20 shadow-lg min-w-[104px] min-h-[104px] flex items-center justify-center">
             {qrBroken || !qrBlobUrl ? (
               <div className="flex flex-col items-center justify-center text-gray-400">
@@ -170,7 +170,7 @@ export default function AnimalDetailPage() {
               />
             )}
           </div>
-          <div className="flex flex-col gap-[10px] w-full lg:w-28 mt-[20px] lg:mt-0 lg:ml-[20px]">
+          <div className="flex flex-col gap-[10px] w-full sm:w-40">
             <button onClick={printQR} className="btn bg-white/10 hover:bg-white/20 text-white border border-white/10 text-[13px] w-full justify-center shadow-none" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
               <Printer size={16} /> Print
             </button>
@@ -182,7 +182,7 @@ export default function AnimalDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap mb-6 mt-8" style={{ padding: '12px 0', gap: '4px' }}>
+      <div className="flex flex-wrap mb-6 mt-6 sm:mt-8 py-3 gap-2">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -208,7 +208,7 @@ export default function AnimalDetailPage() {
       {/* Tab content */}
       <div className="animate-in mt-4">
         {activeTab === 'overview' && (
-          <div className="flex flex-col min-[900px]:flex-row gap-6">
+          <div className="flex flex-col xl:flex-row gap-6">
             {/* Details Section */}
             <div className="glass-card flex-1">
               <h3 className="text-xl font-bold text-white tracking-wider mb-8 flex items-center gap-3">
@@ -216,7 +216,7 @@ export default function AnimalDetailPage() {
                 Identity & Details
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '24px 40px' }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 xl:gap-x-10">
                 {[
                   ['Unique ID', animal.animal_uid],
                   ['System Name', animal.name || 'N/A'],
@@ -248,19 +248,19 @@ export default function AnimalDetailPage() {
             </div>
 
             {/* Summary Section */}
-            <div className="glass-card w-full min-[900px]:w-[420px] shrink-0" style={{ padding: '24px' }}>
+            <div className="glass-card w-full xl:w-[360px] 2xl:w-[420px] shrink-0" style={{ padding: '24px' }}>
               <h3 className="text-xl font-bold text-white tracking-wider mb-8 flex items-center gap-3">
                 <Activity className="text-[#22d3ee]" size={24} />
                 Activity Summary
               </h3>
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-2">
                 {[
                   { label: 'Health Records', count: animal.health_records_count, color: '#fbbf24', bg: 'rgba(251,191,36,0.15)', border: 'rgba(251,191,36,0.3)' },
                   { label: 'Treatments', count: animal.treatments_count, color: '#818cf8', bg: 'rgba(129,140,248,0.15)', border: 'rgba(129,140,248,0.3)' },
                   { label: 'Vaccinations', count: animal.vaccinations_count, color: '#a78bfa', bg: 'rgba(167,139,250,0.15)', border: 'rgba(167,139,250,0.3)' },
                   { label: 'Movements', count: animal.movements_count, color: '#22d3ee', bg: 'rgba(34,211,238,0.15)', border: 'rgba(34,211,238,0.3)' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center justify-between bg-white/5 border border-white/5 transition-colors hover:bg-white/10 group cursor-default" style={{ padding: '14px 16px', borderRadius: '12px', marginBottom: '8px', minHeight: '52px' }}>
+                  <div key={item.label} className="flex items-center justify-between bg-white/5 border border-white/5 transition-colors hover:bg-white/10 group cursor-default" style={{ padding: '14px 16px', borderRadius: '12px', minHeight: '52px' }}>
                     <span className="text-[15px] font-semibold tracking-wide text-gray-300 group-hover:text-white transition-colors">{item.label}</span>
                     <div className="flex items-center justify-center" style={{ minWidth: '32px', height: '32px', borderRadius: '8px', background: item.bg, border: `1px solid ${item.border}` }}>
                        <span style={{ color: item.color, fontSize: '14px', fontWeight: 500 }}>{item.count}</span>

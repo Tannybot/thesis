@@ -30,8 +30,10 @@ export default function Sidebar() {
       {/* Mobile toggle */}
       {!mobileOpen && (
         <button
-          className="fixed top-4 left-4 z-50 p-2 md:hidden rounded-xl transition-all"
+          className="fixed z-50 p-2 md:hidden rounded-xl transition-all"
           style={{
+            top: '17px',
+            left: '12px',
             background: 'rgba(10, 9, 25, 0.85)',
             border: '1px solid rgba(139, 92, 246, 0.3)',
             backdropFilter: 'blur(10px)',
@@ -40,7 +42,7 @@ export default function Sidebar() {
           onClick={() => setMobileOpen(true)}
           id="sidebar-toggle"
         >
-          <Menu size={22} />
+          <Menu size={26} />
         </button>
       )}
 
@@ -54,7 +56,7 @@ export default function Sidebar() {
 
       <aside className={`app-sidebar ${mobileOpen ? 'open' : ''}`}>
         {/* Logo Section */}
-        <div className="flex items-center justify-between px-6 pt-7 pb-6" style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.12)' }}>
+        <div className="flex items-center justify-between px-6 pb-6" style={{ paddingTop: '18px', borderBottom: '1px solid rgba(139, 92, 246, 0.12)' }}>
           <div className="flex items-center gap-4">
             <div
               className="w-11 h-11 rounded-xl flex items-center justify-center"

@@ -65,7 +65,7 @@ export default function AnimalsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
         <div className="page-header">
           <h1 className="page-title">Animals</h1>
           <p className="page-subtitle">{total} total registered livestock</p>
@@ -82,24 +82,28 @@ export default function AnimalsPage() {
 
       {/* Filters */}
       <div className="glass-card overflow-x-auto min-w-0">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-center gap-[16px]">
-          <div className="relative flex-1 w-full sm:w-auto">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'rgba(167, 139, 250, 0.4)' }} />
+        <form onSubmit={handleSearch} className="filter-bar">
+          {/* Search */}
+          <div className="filter-bar-search" style={{ position: 'relative' }}>
+            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(167, 139, 250, 0.4)', pointerEvents: 'none' }} />
             <input
               type="text"
-              className="input-field pl-10 w-full"
+              className="input-field"
               placeholder="Search by name, UID, or breed..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              style={{ paddingLeft: '40px', width: '100%' }}
               id="animal-search"
             />
           </div>
-          <div className="flex w-full sm:w-auto items-center gap-[16px]">
+          {/* Filters on the right */}
+          <div className="filter-bar-controls" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <select
-              className="input-field w-full sm:w-40"
+              className="input-field"
               value={species}
               onChange={(e) => { setSpecies(e.target.value); setPage(1); }}
               id="species-filter"
+              style={{ minWidth: '140px' }}
             >
               <option value="">All Species</option>
               {speciesOptions.filter(Boolean).map((s) => (
@@ -107,17 +111,18 @@ export default function AnimalsPage() {
               ))}
             </select>
             <select
-              className="input-field w-full sm:w-36"
+              className="input-field"
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
               id="status-filter"
+              style={{ minWidth: '130px' }}
             >
               <option value="">All Status</option>
               {statusOptions.filter(Boolean).map((s) => (
                 <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
               ))}
             </select>
-            <button type="submit" className="btn btn-secondary whitespace-nowrap">
+            <button type="submit" className="btn btn-secondary" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
               <Filter size={16} /> Filter
             </button>
           </div>
@@ -136,7 +141,7 @@ export default function AnimalsPage() {
       ) : (
         <>
           {/* Card Grid */}
-          <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-[16px] pt-4">
+          <div className="grid-animals">
             {animals.map((animal) => (
               <Link
                 key={animal.id}
@@ -152,49 +157,48 @@ export default function AnimalsPage() {
                 </span>
 
                 {/* Header Row */}
-                <div className="px-[24px] pt-[20px] mb-[16px]">
-                  <div className="flex items-center gap-4 pr-[60px]">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-[14px] bg-[#3D2E3A] flex-shrink-0">
-                      <span className="text-4xl drop-shadow-md">{getSpeciesEmoji(animal.species)}</span>
+                <div style={{ padding: '20px 20px 0 20px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingRight: '50px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#3D2E3A', flexShrink: 0, overflow: 'hidden' }}>
+                      <span style={{ fontSize: '28px', lineHeight: 1, paddingTop: '2px' }}>{getSpeciesEmoji(animal.species)}</span>
                     </div>
-                    <div className="flex flex-col min-w-0">
-                      <h3 className="text-2xl font-bold text-white tracking-wide leading-tight truncate">
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'white', letterSpacing: '0.01em', lineHeight: 1.25, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {animal.name || animal.animal_uid.split('-')[1]}
                       </h3>
-                      <p className="text-sm font-mono mt-0.5 text-gray-400">#{animal.animal_uid}</p>
+                      <p style={{ fontSize: '12px', fontFamily: 'monospace', marginTop: '2px', color: '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>#{animal.animal_uid}</p>
                     </div>
                   </div>
                 </div>
                 
-                {/* Divider */}
-                <div className="h-[1px] w-full bg-white/5"></div>
-                
                 {/* Data Rows */}
-                <div className="px-[24px] pb-[20px] pt-[16px] flex flex-col gap-[8px]">
-                  {/* Row 1: Breed */}
-                  <div className="flex items-center gap-4">
-                    <PawPrint size={24} className="text-[#a78bfa] flex-shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Breed</span>
-                      <span className="text-[16px] font-medium text-white">{animal.breed || 'N/A'}</span>
+                <div style={{ padding: '16px 20px 20px 20px' }}>
+                  <div className="grid-card-data">
+                    {/* Breed */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                        <PawPrint size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Breed</span>
+                      </div>
+                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.breed || 'N/A'}</span>
                     </div>
-                  </div>
-                  
-                  {/* Row 2: Gender/Weight */}
-                  <div className="flex items-center gap-4">
-                    <Weight size={24} className="text-[#a78bfa] flex-shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Gender/Weight</span>
-                      <span className="text-[16px] font-medium text-white capitalize">{animal.gender} | {animal.weight ? `${animal.weight} kg` : 'N/A'}</span>
+                    
+                    {/* Gender/Weight */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                        <Weight size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Weight</span>
+                      </div>
+                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.gender} • {animal.weight ? `${animal.weight}kg` : 'N/A'}</span>
                     </div>
-                  </div>
-                  
-                  {/* Row 3: Stage */}
-                  <div className="flex items-center gap-4">
-                    <TrendingUp size={24} className="text-[#a78bfa] flex-shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Stage</span>
-                      <span className="text-[16px] font-medium text-white capitalize">{animal.growth_stage || 'N/A'}</span>
+                    
+                    {/* Stage */}
+                    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                        <TrendingUp size={14} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                        <span style={{ fontSize: '10px', color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Stage</span>
+                      </div>
+                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'white', textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{animal.growth_stage || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -280,7 +284,7 @@ function CreateAnimalModal({ onClose, onCreated }: { onClose: () => void; onCrea
                 style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.2)', color: '#fb7185' }}
               >{error}</div>
             )}
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-5 lg:gap-6">
               <div>
                 <label className="input-label">Name</label>
                 <input className="input-field" placeholder="e.g., Bessie" value={formData.name}

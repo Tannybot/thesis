@@ -29,12 +29,12 @@ export default function TreatmentsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
+      <div className="page-toolbar">
         <div className="page-header">
           <h1 className="page-title">Treatments</h1>
           <p className="page-subtitle">Track medical treatments and medications</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)} id="add-treatment-btn">
+        <button className="btn btn-primary page-toolbar-action" onClick={() => setShowModal(true)} id="add-treatment-btn">
           <Plus size={18} /> Log Treatment
         </button>
       </div>
@@ -107,7 +107,7 @@ function AddTreatmentModal({ animals, onClose, onCreated }: { animals: Animal[];
                 <option value="">Select animal...</option>
                 {animals.map((a) => <option key={a.id} value={a.id}>{a.animal_uid} — {a.name || a.species}</option>)}
               </select></div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 sm:gap-5">
               <div><label className="input-label">Treatment Type *</label>
                 <select className="input-field" value={form.treatment_type} onChange={(e) => setForm({ ...form, treatment_type: e.target.value })}>
                   <option value="medication">Medication</option><option value="surgery">Surgery</option>
@@ -116,13 +116,13 @@ function AddTreatmentModal({ animals, onClose, onCreated }: { animals: Animal[];
               <div><label className="input-label">Date *</label>
                 <input className="input-field" type="date" value={form.treatment_date} onChange={(e) => setForm({ ...form, treatment_date: e.target.value })} required /></div>
             </div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 sm:gap-5">
               <div><label className="input-label">Medication</label>
                 <input className="input-field" value={form.medication} onChange={(e) => setForm({ ...form, medication: e.target.value })} /></div>
               <div><label className="input-label">Dosage</label>
                 <input className="input-field" value={form.dosage} onChange={(e) => setForm({ ...form, dosage: e.target.value })} /></div>
             </div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 sm:gap-5">
               <div><label className="input-label">Administered By</label>
                 <input className="input-field" value={form.administered_by} onChange={(e) => setForm({ ...form, administered_by: e.target.value })} /></div>
               <div><label className="input-label">Next Treatment Date</label>

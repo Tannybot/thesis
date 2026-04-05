@@ -89,7 +89,7 @@ export default function LoginPage() {
             </div>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] pt-10 w-full max-w-xl mx-auto px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-10 w-full max-w-xl mx-auto px-2">
               <div
                 className="p-6 rounded-[1.5rem] backdrop-blur-md flex flex-col items-center transition-transform hover:-translate-y-1 duration-300"
                 style={{

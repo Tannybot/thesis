@@ -29,12 +29,12 @@ export default function VaccinationsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
+      <div className="page-toolbar">
         <div className="page-header">
           <h1 className="page-title">Vaccinations</h1>
           <p className="page-subtitle">Vaccination records and upcoming schedules</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)} id="add-vaccination-btn">
+        <button className="btn btn-primary page-toolbar-action" onClick={() => setShowModal(true)} id="add-vaccination-btn">
           <Plus size={18} /> Log Vaccination
         </button>
       </div>
@@ -106,13 +106,13 @@ function AddVaccinationModal({ animals, onClose, onCreated }: { animals: Animal[
                 <option value="">Select animal...</option>
                 {animals.map((a) => <option key={a.id} value={a.id}>{a.animal_uid} — {a.name || a.species}</option>)}
               </select></div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 sm:gap-5">
               <div><label className="input-label">Vaccine Name *</label>
                 <input className="input-field" value={form.vaccine_name} onChange={(e) => setForm({ ...form, vaccine_name: e.target.value })} required /></div>
               <div><label className="input-label">Batch Number</label>
                 <input className="input-field" value={form.batch_number} onChange={(e) => setForm({ ...form, batch_number: e.target.value })} /></div>
             </div>
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 sm:gap-5">
               <div><label className="input-label">Date *</label>
                 <input className="input-field" type="date" value={form.vaccination_date} onChange={(e) => setForm({ ...form, vaccination_date: e.target.value })} required /></div>
               <div><label className="input-label">Next Due Date</label>
