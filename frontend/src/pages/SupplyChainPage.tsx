@@ -1,4 +1,4 @@
-/* Supply Chain / Movements Page */
+/* Supply Chain / Movements Page — Futuristic neon theme */
 import { useEffect, useState } from 'react';
 import { Truck, Plus, ArrowRight } from 'lucide-react';
 import api from '@/lib/api';
@@ -36,7 +36,7 @@ export default function SupplyChainPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
         <div className="page-header">
           <h1 className="page-title">Supply Chain</h1>
           <p className="page-subtitle">Farm-to-market traceability and movement tracking</p>
@@ -50,34 +50,40 @@ export default function SupplyChainPage() {
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : movements.length === 0 ? (
         <div className="empty-state glass-card" style={{ padding: '60px 20px' }}>
-          <Truck size={48} className="mb-4 text-surface-600" />
-          <p className="text-lg font-medium text-surface-400">No movements recorded</p>
+          <Truck size={48} className="mb-4" style={{ color: 'rgba(139, 92, 246, 0.3)' }} />
+          <p className="text-lg font-medium" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>No movements recorded</p>
         </div>
       ) : (
         <div className="space-y-4">
           {movements.map((m) => (
-            <div key={m.id} className="glass-card p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div key={m.id} className="glass-card table-wrapper min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-[16px]">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-3">
                     <span className={getTypeBadge(m.movement_type)}>{m.movement_type}</span>
-                    <span className="font-mono text-primary-400 text-sm">{m.animal_uid}</span>
+                    <span className="font-mono text-sm" style={{ color: '#22d3ee' }}>{m.animal_uid}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-surface-300">
+                  <div className="flex items-center gap-3 text-white/75">
                     <span>{m.from_location}</span>
-                    <ArrowRight size={14} className="text-surface-500" />
+                    <ArrowRight size={14} style={{ color: 'rgba(139, 92, 246, 0.4)' }} />
                     <span>{m.to_location}</span>
                   </div>
-                  <div className="flex items-center gap-4 mt-3 text-sm text-surface-400">
+                  <div className="flex items-center gap-4 mt-3 text-sm" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>
                     <span>{new Date(m.departure_date).toLocaleDateString()}</span>
                     {m.handler && <span>Handler: {m.handler}</span>}
                     {m.transport_method && <span className="capitalize">Via: {m.transport_method}</span>}
                   </div>
                 </div>
                 {m.buyer_info && (
-                  <div className="text-sm text-surface-400 bg-surface-800/50 p-3 rounded-lg">
-                    <p className="text-xs text-surface-500">Buyer</p>
-                    <p className="text-surface-300">{m.buyer_info}</p>
+                  <div
+                    className="text-sm p-4 rounded-xl"
+                    style={{
+                      background: 'rgba(19, 17, 43, 0.5)',
+                      border: '1px solid rgba(139, 92, 246, 0.08)',
+                    }}
+                  >
+                    <p className="text-xs mb-1" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>Buyer</p>
+                    <p className="text-white/70">{m.buyer_info}</p>
                   </div>
                 )}
               </div>
@@ -118,7 +124,7 @@ function AddMovementModal({ animals, onClose, onCreated }: { animals: Animal[]; 
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="text-lg font-semibold text-surface-100">Log Movement</h2>
+          <h2 className="text-lg font-semibold text-white/90">Log Movement</h2>
           <button onClick={onClose} className="btn btn-ghost btn-sm">✕</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -128,7 +134,7 @@ function AddMovementModal({ animals, onClose, onCreated }: { animals: Animal[]; 
                 <option value="">Select animal...</option>
                 {animals.map((a) => <option key={a.id} value={a.id}>{a.animal_uid} — {a.name || a.species}</option>)}
               </select></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">Movement Type *</label>
                 <select className="input-field" value={form.movement_type} onChange={(e) => setForm({ ...form, movement_type: e.target.value })}>
                   <option value="transport">Transport</option><option value="transfer">Transfer</option>
@@ -137,13 +143,13 @@ function AddMovementModal({ animals, onClose, onCreated }: { animals: Animal[]; 
               <div><label className="input-label">Departure Date *</label>
                 <input className="input-field" type="datetime-local" value={form.departure_date} onChange={(e) => setForm({ ...form, departure_date: e.target.value })} required /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">From Location *</label>
                 <input className="input-field" value={form.from_location} onChange={(e) => setForm({ ...form, from_location: e.target.value })} required /></div>
               <div><label className="input-label">To Location *</label>
                 <input className="input-field" value={form.to_location} onChange={(e) => setForm({ ...form, to_location: e.target.value })} required /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">Handler</label>
                 <input className="input-field" value={form.handler} onChange={(e) => setForm({ ...form, handler: e.target.value })} /></div>
               <div><label className="input-label">Transport Method</label>

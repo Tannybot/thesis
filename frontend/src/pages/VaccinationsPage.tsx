@@ -1,4 +1,4 @@
-/* Vaccinations Page */
+/* Vaccinations Page — Futuristic neon theme */
 import { useEffect, useState } from 'react';
 import { Syringe, Plus } from 'lucide-react';
 import api from '@/lib/api';
@@ -29,7 +29,7 @@ export default function VaccinationsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
         <div className="page-header">
           <h1 className="page-title">Vaccinations</h1>
           <p className="page-subtitle">Vaccination records and upcoming schedules</p>
@@ -42,18 +42,18 @@ export default function VaccinationsPage() {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : (
-        <div className="glass-card p-6 overflow-x-auto">
+        <div className="glass-card table-wrapper min-w-0">
           <table className="data-table">
             <thead>
               <tr><th>Date</th><th>Animal</th><th>Vaccine</th><th>Batch #</th><th>By</th><th>Next Due</th></tr>
             </thead>
             <tbody>
               {vaccinations.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-8 text-surface-500">No vaccinations found</td></tr>
+                <tr><td colSpan={6} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No vaccinations found</td></tr>
               ) : vaccinations.map((v) => (
                 <tr key={v.id}>
                   <td className="whitespace-nowrap">{v.vaccination_date}</td>
-                  <td className="font-mono text-primary-400 text-sm">{v.animal_uid}</td>
+                  <td className="font-mono text-sm" style={{ color: '#22d3ee' }}>{v.animal_uid}</td>
                   <td>{v.vaccine_name}</td>
                   <td className="font-mono text-sm">{v.batch_number || '—'}</td>
                   <td>{v.administered_by || '—'}</td>
@@ -96,7 +96,7 @@ function AddVaccinationModal({ animals, onClose, onCreated }: { animals: Animal[
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="text-lg font-semibold text-surface-100">Log Vaccination</h2>
+          <h2 className="text-lg font-semibold text-white/90">Log Vaccination</h2>
           <button onClick={onClose} className="btn btn-ghost btn-sm">✕</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -106,13 +106,13 @@ function AddVaccinationModal({ animals, onClose, onCreated }: { animals: Animal[
                 <option value="">Select animal...</option>
                 {animals.map((a) => <option key={a.id} value={a.id}>{a.animal_uid} — {a.name || a.species}</option>)}
               </select></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">Vaccine Name *</label>
                 <input className="input-field" value={form.vaccine_name} onChange={(e) => setForm({ ...form, vaccine_name: e.target.value })} required /></div>
               <div><label className="input-label">Batch Number</label>
                 <input className="input-field" value={form.batch_number} onChange={(e) => setForm({ ...form, batch_number: e.target.value })} /></div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">Date *</label>
                 <input className="input-field" type="date" value={form.vaccination_date} onChange={(e) => setForm({ ...form, vaccination_date: e.target.value })} required /></div>
               <div><label className="input-label">Next Due Date</label>

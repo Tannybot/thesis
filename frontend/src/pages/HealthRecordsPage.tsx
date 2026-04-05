@@ -1,4 +1,4 @@
-/* Health Records Page */
+/* Health Records Page — Futuristic neon theme */
 import { useEffect, useState } from 'react';
 import { Heart, Plus } from 'lucide-react';
 import api from '@/lib/api';
@@ -29,7 +29,7 @@ export default function HealthRecordsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
         <div className="page-header">
           <h1 className="page-title">Health Records</h1>
           <p className="page-subtitle">Monitor livestock health status and disease records</p>
@@ -42,18 +42,18 @@ export default function HealthRecordsPage() {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : (
-        <div className="glass-card p-6 overflow-x-auto">
+        <div className="glass-card table-wrapper min-w-0">
           <table className="data-table">
             <thead>
               <tr><th>Date</th><th>Animal</th><th>Type</th><th>Description</th><th>Severity</th><th>Diagnosis</th><th>Recorded By</th></tr>
             </thead>
             <tbody>
               {records.length === 0 ? (
-                <tr><td colSpan={7} className="text-center py-8 text-surface-500">No health records found</td></tr>
+                <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>No health records found</td></tr>
               ) : records.map((r) => (
                 <tr key={r.id}>
                   <td className="whitespace-nowrap">{r.record_date}</td>
-                  <td className="font-mono text-primary-400 text-sm">{r.animal_uid}</td>
+                  <td className="font-mono text-sm" style={{ color: '#22d3ee' }}>{r.animal_uid}</td>
                   <td className="capitalize">{r.record_type}</td>
                   <td className="max-w-[250px] truncate">{r.description}</td>
                   <td>{r.severity && <span className={`badge badge-${r.severity}`}>{r.severity}</span>}</td>
@@ -95,7 +95,7 @@ function AddHealthRecordModal({ animals, onClose, onCreated }: { animals: Animal
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="text-lg font-semibold text-surface-100">Add Health Record</h2>
+          <h2 className="text-lg font-semibold text-white/90">Add Health Record</h2>
           <button onClick={onClose} className="btn btn-ghost btn-sm">✕</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -105,7 +105,7 @@ function AddHealthRecordModal({ animals, onClose, onCreated }: { animals: Animal
                 <option value="">Select animal...</option>
                 {animals.map((a) => <option key={a.id} value={a.id}>{a.animal_uid} — {a.name || a.species}</option>)}
               </select></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div><label className="input-label">Record Type *</label>
                 <select className="input-field" value={form.record_type} onChange={(e) => setForm({ ...form, record_type: e.target.value })}>
                   <option value="checkup">Checkup</option><option value="disease">Disease</option>

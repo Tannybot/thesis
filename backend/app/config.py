@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
 
     # QR Codes
-    QR_CODE_BASE_URL: str = "http://localhost:5173/animals/scan"
+    QR_CODE_BASE_URL: str = "http://192.168.1.2:5173/animals"
 
     class Config:
         env_file = ".env"

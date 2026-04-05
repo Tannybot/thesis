@@ -1,7 +1,7 @@
-/* Animals List Page — searchable, filterable livestock grid */
+/* Animals List Page — Futuristic neon grid view */
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Plus, Search, Filter, QrCode, Eye } from 'lucide-react';
+import { Plus, Search, Filter, QrCode, Eye, PawPrint, Weight, TrendingUp } from 'lucide-react';
 import api from '@/lib/api';
 import type { Animal } from '@/types';
 
@@ -65,7 +65,7 @@ export default function AnimalsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[16px]">
         <div className="page-header">
           <h1 className="page-title">Animals</h1>
           <p className="page-subtitle">{total} total registered livestock</p>
@@ -81,20 +81,20 @@ export default function AnimalsPage() {
       </div>
 
       {/* Filters */}
-      <div className="glass-card p-4">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-center gap-3">
+      <div className="glass-card overflow-x-auto min-w-0">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-center gap-[16px]">
           <div className="relative flex-1 w-full sm:w-auto">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-500" />
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'rgba(167, 139, 250, 0.4)' }} />
             <input
               type="text"
-              className="input-field pl-9 w-full"
+              className="input-field pl-10 w-full"
               placeholder="Search by name, UID, or breed..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               id="animal-search"
             />
           </div>
-          <div className="flex w-full sm:w-auto items-center gap-3">
+          <div className="flex w-full sm:w-auto items-center gap-[16px]">
             <select
               className="input-field w-full sm:w-40"
               value={species}
@@ -129,52 +129,74 @@ export default function AnimalsPage() {
         <div className="flex justify-center py-12"><div className="spinner" /></div>
       ) : animals.length === 0 ? (
         <div className="empty-state glass-card">
-          <QrCode size={48} className="mb-4 text-surface-600" />
-          <p className="text-lg font-medium text-surface-400">No animals found</p>
-          <p className="text-sm text-surface-500 mt-1">Register your first animal to get started</p>
+          <QrCode size={48} className="mb-4" style={{ color: 'rgba(139, 92, 246, 0.3)' }} />
+          <p className="text-lg font-medium" style={{ color: 'rgba(167, 139, 250, 0.6)' }}>No animals found</p>
+          <p className="text-sm mt-1" style={{ color: 'rgba(167, 139, 250, 0.35)' }}>Register your first animal to get started</p>
         </div>
       ) : (
         <>
           {/* Card Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-[16px] pt-4">
             {animals.map((animal) => (
               <Link
                 key={animal.id}
                 to={`/animals/${animal.id}`}
-                className="glass-card glass-card-interactive p-6 flex flex-col cursor-pointer"
+                className="bg-[#1A1625] rounded-[16px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-purple-500/30 overflow-hidden relative"
+                style={{ border: '0.5px solid rgba(255,255,255,0.08)' }}
                 id={`animal-card-${animal.id}`}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-3xl">{getSpeciesEmoji(animal.species)}</span>
-                  <span className={getStatusBadge(animal.status)}>{animal.status}</span>
-                </div>
-                <h3 className="text-xl font-bold text-surface-50 transition-colors">
-                  {animal.name || animal.animal_uid}
-                </h3>
-                <p className="text-sm text-primary-400 font-mono mt-1 mb-4">{animal.animal_uid}</p>
-                <div className="space-y-2 text-sm text-surface-300 flex-1">
-                  <div className="flex justify-between border-b border-surface-800 pb-2">
-                    <span className="text-surface-500">Breed</span>
-                    <span className="font-medium">{animal.breed || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-surface-800 pb-2">
-                    <span className="text-surface-500">Gender/Weight</span>
-                    <span className="font-medium capitalize">{animal.gender} • {animal.weight ? `${animal.weight}kg` : 'N/A'}</span>
-                  </div>
-                  {animal.growth_stage && (
-                    <div className="flex justify-between border-b border-surface-800 pb-2">
-                      <span className="text-surface-500">Stage</span>
-                      <span className="font-medium capitalize">{animal.growth_stage}</span>
+                {/* Status Badge */}
+                <span className={`absolute top-[12px] right-[12px] text-xs font-bold tracking-wide capitalize z-10 ${animal.status === 'active' ? 'bg-[#1EBfae] text-[#06332E]' : 'bg-gray-700 text-gray-200'}`}
+                      style={{ padding: '4px 12px', borderRadius: '20px' }}>
+                  {animal.status}
+                </span>
+
+                {/* Header Row */}
+                <div className="px-[24px] pt-[20px] mb-[16px]">
+                  <div className="flex items-center gap-4 pr-[60px]">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-[14px] bg-[#3D2E3A] flex-shrink-0">
+                      <span className="text-4xl drop-shadow-md">{getSpeciesEmoji(animal.species)}</span>
                     </div>
-                  )}
+                    <div className="flex flex-col min-w-0">
+                      <h3 className="text-2xl font-bold text-white tracking-wide leading-tight truncate">
+                        {animal.name || animal.animal_uid.split('-')[1]}
+                      </h3>
+                      <p className="text-sm font-mono mt-0.5 text-gray-400">#{animal.animal_uid}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-5 pt-3 flex items-center justify-between border-t border-surface-800">
-                  <span className="text-xs text-surface-500 truncate pr-2">
-                    Owner: {animal.owner_name}
-                  </span>
-                  <button className="btn btn-ghost btn-sm p-1">
-                    <Eye size={16} />
-                  </button>
+                
+                {/* Divider */}
+                <div className="h-[1px] w-full bg-white/5"></div>
+                
+                {/* Data Rows */}
+                <div className="px-[24px] pb-[20px] pt-[16px] flex flex-col gap-[8px]">
+                  {/* Row 1: Breed */}
+                  <div className="flex items-center gap-4">
+                    <PawPrint size={24} className="text-[#a78bfa] flex-shrink-0" />
+                    <div className="flex flex-col">
+                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Breed</span>
+                      <span className="text-[16px] font-medium text-white">{animal.breed || 'N/A'}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Row 2: Gender/Weight */}
+                  <div className="flex items-center gap-4">
+                    <Weight size={24} className="text-[#a78bfa] flex-shrink-0" />
+                    <div className="flex flex-col">
+                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Gender/Weight</span>
+                      <span className="text-[16px] font-medium text-white capitalize">{animal.gender} | {animal.weight ? `${animal.weight} kg` : 'N/A'}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Row 3: Stage */}
+                  <div className="flex items-center gap-4">
+                    <TrendingUp size={24} className="text-[#a78bfa] flex-shrink-0" />
+                    <div className="flex flex-col">
+                      <span className="text-[11px] text-gray-400 tracking-[0.06em] uppercase mb-[2px]">Stage</span>
+                      <span className="text-[16px] font-medium text-white capitalize">{animal.growth_stage || 'N/A'}</span>
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -182,7 +204,7 @@ export default function AnimalsPage() {
 
           {/* Pagination */}
           {total > 20 && (
-            <div className="flex items-center justify-center gap-2 mt-6">
+            <div className="flex items-center justify-center gap-3 mt-6">
               <button
                 className="btn btn-secondary btn-sm"
                 disabled={page === 1}
@@ -190,7 +212,7 @@ export default function AnimalsPage() {
               >
                 Previous
               </button>
-              <span className="text-sm text-surface-400">
+              <span className="text-sm font-medium" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>
                 Page {page} of {Math.ceil(total / 20)}
               </span>
               <button
@@ -247,15 +269,18 @@ function CreateAnimalModal({ onClose, onCreated }: { onClose: () => void; onCrea
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="text-lg font-semibold text-surface-100">Register New Animal</h2>
+          <h2 className="text-lg font-semibold text-white/90">Register New Animal</h2>
           <button onClick={onClose} className="btn btn-ghost btn-sm">✕</button>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="modal-body space-y-4">
             {error && (
-              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
+              <div
+                className="p-3 rounded-xl text-sm"
+                style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.2)', color: '#fb7185' }}
+              >{error}</div>
             )}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[16px]">
               <div>
                 <label className="input-label">Name</label>
                 <input className="input-field" placeholder="e.g., Bessie" value={formData.name}

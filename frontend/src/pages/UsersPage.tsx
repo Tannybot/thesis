@@ -1,4 +1,4 @@
-/* User Management Page (Admin Only) */
+/* User Management Page (Admin Only) — Futuristic neon theme */
 import { useEffect, useState } from 'react';
 import { Users, Shield, UserCheck, UserX } from 'lucide-react';
 import api from '@/lib/api';
@@ -44,7 +44,7 @@ export default function UsersPage() {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : (
-        <div className="glass-card p-6 overflow-x-auto">
+        <div className="glass-card table-wrapper min-w-0">
           <table className="data-table">
             <thead>
               <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
@@ -52,8 +52,8 @@ export default function UsersPage() {
             <tbody>
               {users.map((u) => (
                 <tr key={u.id}>
-                  <td className="font-medium text-surface-200">{u.full_name}</td>
-                  <td className="text-surface-400">{u.email}</td>
+                  <td className="font-medium text-white/85">{u.full_name}</td>
+                  <td style={{ color: 'rgba(167, 139, 250, 0.5)' }}>{u.email}</td>
                   <td>
                     <span className={`badge ${u.role_name === 'admin' ? 'badge-warning' : 'badge-active'}`}>
                       {u.role_name === 'admin' && <Shield size={12} />}
@@ -65,7 +65,7 @@ export default function UsersPage() {
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="text-surface-400 text-sm">{new Date(u.created_at).toLocaleDateString()}</td>
+                  <td className="text-sm" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>{new Date(u.created_at).toLocaleDateString()}</td>
                   <td>
                     <button
                       onClick={() => toggleUser(u.id, u.is_active)}

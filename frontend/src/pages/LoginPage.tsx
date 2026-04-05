@@ -1,6 +1,6 @@
-/* Login Page — Premium split-pane landing and login page */
+/* Login Page — Futuristic neon split-pane landing */
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { QrCode, Eye, EyeOff, LogIn, ShieldCheck, Activity, Target } from 'lucide-react';
 
@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,7 +21,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/');
+      const from = location.state?.from || '/';
+      navigate(from);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Login failed. Please try again.');
     } finally {
@@ -29,62 +31,109 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex bg-surface-950">
+    <div
+      className="min-h-screen flex"
+      style={{ background: 'linear-gradient(135deg, #0f0c29 0%, #1a1640 40%, #302b63 70%, #24243e 100%)' }}
+    >
       {/* Left Panel: Lively Landing & Branding (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden flex-col justify-between p-16">
         {/* Dynamic Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/40 via-surface-900 to-surface-950 z-0" />
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary-600/20 rounded-full blur-[120px] pointer-events-none z-0" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-800/30 rounded-full blur-[100px] pointer-events-none z-0" />
-        
-        {/* Header / Logo */}
-        <div className="relative z-10 flex items-center justify-center gap-4 mt-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30" style={{ animation: 'pulse-glow 4s ease-in-out infinite' }}>
-            <QrCode size={36} className="text-white" />
-          </div>
-          <div className="text-left">
-            <h1 className="text-3xl font-black text-white tracking-tight">LiveTrack</h1>
-            <p className="text-primary-300 font-medium text-sm">Enterprise Livestock System</p>
-          </div>
-        </div>
+        <div
+          className="absolute inset-0 z-0"
+          style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(19, 17, 43, 0.9) 50%, rgba(10, 9, 25, 0.95) 100%)' }}
+        />
+        <div
+          className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none z-0"
+          style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%)', filter: 'blur(80px)' }}
+        />
+        <div
+          className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none z-0"
+          style={{ background: 'radial-gradient(circle, rgba(34, 211, 238, 0.1), transparent 70%)', filter: 'blur(80px)' }}
+        />
 
-        {/* Center Marketing Copy */}
-        <div className="relative z-10 max-w-2xl animate-in space-y-8 mt-12 mx-auto flex flex-col items-center text-center">
-          <h2 className="text-5xl font-black text-white leading-[1.1] tracking-tight">
-            Next-generation <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-emerald-200">
-              traceability & health
-            </span>
-          </h2>
-          <p className="text-lg text-surface-300 leading-relaxed max-w-lg mx-auto">
-            Monitor livestock through their entire lifecycle. Seamlessly integrate QR scanning, health records, and supply chain movements in one unified platform.
-          </p>
-
-          {/* Feature Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 w-full max-w-2xl">
-            <div className="glass-card !bg-surface-900/40 !border-surface-700/50 p-6 rounded-2xl backdrop-blur-md flex flex-col items-center">
-              <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-4">
-                <ShieldCheck size={24} className="text-primary-400" />
+        {/* Center Marketing Copy containing the Header */}
+        <div className="flex-1 flex flex-col items-center justify-center relative z-10">
+          <div className="max-w-2xl animate-in space-y-8 mx-auto flex flex-col items-center text-center">
+            
+            {/* Header / Logo */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform hover:scale-105 duration-500"
+                style={{
+                  background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.5)',
+                  animation: 'pulse-glow 5s ease-in-out infinite',
+                }}
+              >
+                <QrCode size={24} className="text-white" />
               </div>
-              <h3 className="text-white font-bold mb-2">Verifiable Records</h3>
-              <p className="text-sm text-surface-400">Immutable health and movement logs accessible via instant QR scan.</p>
+              <div className="text-left flex flex-col justify-center">
+                <h1 className="text-2xl font-black text-white tracking-tight leading-none mb-1">LiveTrack</h1>
+                <p className="font-bold text-[10px] uppercase tracking-[0.2em]" style={{ color: '#a78bfa' }}>Enterprise Framework</p>
+              </div>
             </div>
-            <div className="glass-card !bg-surface-900/40 !border-surface-700/50 p-6 rounded-2xl backdrop-blur-md flex flex-col items-center">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
-                <Activity size={24} className="text-blue-400" />
+            
+            <div className="space-y-6">
+              <h2 className="text-4xl lg:text-5xl font-black text-white leading-[1.15] tracking-tight text-balance">
+                Next-Generation <br />
+                <span
+                  className="text-transparent bg-clip-text"
+                  style={{ backgroundImage: 'linear-gradient(135deg, #22d3ee, #a78bfa, #ec4899)' }}
+                >
+                  Livestock Intelligence
+                </span>
+              </h2>
+              <p className="text-base lg:text-lg leading-relaxed max-w-lg mx-auto text-balance" style={{ color: 'rgba(196, 181, 253, 0.8)' }}>
+                Seamlessly monitor your herd across its entire lifecycle. Unify health diagnostics, growth analytics, and movement logs in one powerful platform.
+              </p>
+            </div>
+
+            {/* Feature Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] pt-10 w-full max-w-xl mx-auto px-2">
+              <div
+                className="p-6 rounded-[1.5rem] backdrop-blur-md flex flex-col items-center transition-transform hover:-translate-y-1 duration-300"
+                style={{
+                  background: 'rgba(19, 17, 43, 0.6)',
+                  border: '1px solid rgba(139, 92, 246, 0.2)',
+                  boxShadow: '0 10px 40px -10px rgba(139, 92, 246, 0.1)',
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: 'rgba(139, 92, 246, 0.15)' }}
+                >
+                  <ShieldCheck size={24} style={{ color: '#a78bfa' }} />
+                </div>
+                <h3 className="text-white text-base font-bold mb-2 tracking-wide">Instant Traceability</h3>
+                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(167, 139, 250, 0.65)' }}>Verify immutable health, transit, and lifecycle logs with a single QR scan.</p>
               </div>
-              <h3 className="text-white font-bold mb-2">Live Analytics</h3>
-              <p className="text-sm text-surface-400">Track growth stages, predictive health trends, and mortality metrics.</p>
+              <div
+                className="p-6 rounded-[1.5rem] backdrop-blur-md flex flex-col items-center transition-transform hover:-translate-y-1 duration-300"
+                style={{
+                  background: 'rgba(19, 17, 43, 0.6)',
+                  border: '1px solid rgba(34, 211, 238, 0.2)',
+                  boxShadow: '0 10px 40px -10px rgba(34, 211, 238, 0.1)',
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: 'rgba(34, 211, 238, 0.12)' }}
+                >
+                  <Activity size={24} style={{ color: '#22d3ee' }} />
+                </div>
+                <h3 className="text-white text-base font-bold mb-2 tracking-wide">Predictive Analytics</h3>
+                <p className="text-sm text-balance leading-relaxed" style={{ color: 'rgba(167, 139, 250, 0.65)' }}>Monitor key growth metrics, forecast health trends, and optimize yield.</p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Footer info */}
-        <div className="relative z-10 text-sm text-surface-500 mb-8 flex items-center justify-center gap-8">
+        <div className="relative z-10 text-sm mb-8 flex items-center justify-center gap-8" style={{ color: 'rgba(167, 139, 250, 0.35)' }}>
           <p>© 2026 LiveTrack Global. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-primary-400 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-primary-400 transition-colors">Terms</a>
+            <a href="#" className="hover:text-[#a78bfa] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[#a78bfa] transition-colors">Terms</a>
           </div>
         </div>
       </div>
@@ -92,27 +141,46 @@ export default function LoginPage() {
       {/* Right Panel: Organized Login Form */}
       <div className="w-full lg:w-[45%] flex items-center justify-center p-8 lg:p-16 relative">
         {/* Mobile-only Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-surface-950 via-surface-900 to-surface-950 lg:hidden" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl lg:hidden" />
+        <div
+          className="absolute inset-0 lg:hidden"
+          style={{ background: 'linear-gradient(135deg, #0f0c29, #1a1640, #0f0c29)' }}
+        />
+        <div
+          className="absolute top-0 right-0 w-64 h-64 rounded-full lg:hidden"
+          style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent)', filter: 'blur(60px)' }}
+        />
 
         <div className="relative w-full max-w-[420px] animate-in" style={{ animationDelay: '0.1s' }}>
-          
+
           {/* Mobile-only Logo */}
           <div className="lg:hidden text-center mb-10">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/20">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                boxShadow: '0 8px 24px rgba(139, 92, 246, 0.3)',
+              }}
+            >
               <QrCode size={32} className="text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-surface-50">LiveTrack</h1>
-            <p className="text-surface-400 text-sm mt-1">Livestock Monitoring Config</p>
+            <h1 className="text-3xl font-bold text-white">LiveTrack</h1>
+            <p className="text-sm mt-1" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>Livestock Monitoring Config</p>
           </div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white tracking-tight mb-2">Welcome back</h2>
-            <p className="text-surface-400">Sign in to your administrator dashboard.</p>
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="text-3xl font-black text-white tracking-tight mb-2">Welcome Back</h2>
+            <p className="text-base tracking-wide" style={{ color: 'rgba(167, 139, 250, 0.7)' }}>Securely access your administrator dashboard.</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium flex items-center gap-3">
+            <div
+              className="mb-6 p-4 rounded-xl text-sm font-medium flex items-center gap-3"
+              style={{
+                background: 'rgba(244, 63, 94, 0.1)',
+                border: '1px solid rgba(244, 63, 94, 0.2)',
+                color: '#fb7185',
+              }}
+            >
               <Target size={18} className="shrink-0" />
               {error}
             </div>
@@ -120,7 +188,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="input-label font-semibold text-surface-300" htmlFor="email-input">Work Email</label>
+              <label className="input-label" htmlFor="email-input">Work Email</label>
               <input
                 id="email-input"
                 type="email"
@@ -133,7 +201,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="input-label font-semibold text-surface-300" htmlFor="password-input">Password</label>
+              <label className="input-label" htmlFor="password-input">Password</label>
               <div className="relative">
                 <input
                   id="password-input"
@@ -148,7 +216,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-surface-500 hover:text-surface-300 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                  style={{ color: 'rgba(167, 139, 250, 0.4)' }}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -157,15 +226,21 @@ export default function LoginPage() {
 
             <div className="flex items-center justify-between pt-2">
               <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-primary-500 focus:ring-primary-500 focus:ring-offset-surface-950" />
-                <span className="text-sm font-medium text-surface-400 group-hover:text-surface-300 transition-colors">Remember me</span>
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded"
+                  style={{
+                    accentColor: '#8b5cf6',
+                  }}
+                />
+                <span className="text-sm font-medium transition-colors" style={{ color: 'rgba(167, 139, 250, 0.5)' }}>Remember me</span>
               </label>
-              <a href="#" className="text-sm font-semibold text-primary-400 hover:text-primary-300 transition-colors">Forgot password?</a>
+              <a href="#" className="text-sm font-semibold transition-colors" style={{ color: '#a78bfa' }}>Forgot password?</a>
             </div>
 
             <button
               type="submit"
-              className="btn btn-primary w-full justify-center py-3.5 text-base font-semibold mt-4 shadow-primary-500/25"
+              className="btn btn-primary w-full justify-center py-3.5 text-base font-semibold mt-4"
               disabled={isSubmitting}
               id="login-submit"
             >
@@ -180,17 +255,29 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-surface-800">
-            <div className="bg-surface-900/50 border border-surface-800 rounded-xl p-4 text-center">
-              <p className="text-[13px] font-medium text-surface-400 uppercase tracking-wider mb-2">Demo Access</p>
+          <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(139, 92, 246, 0.1)' }}>
+            <div
+              className="rounded-xl p-4 text-center"
+              style={{
+                background: 'rgba(19, 17, 43, 0.5)',
+                border: '1px solid rgba(139, 92, 246, 0.1)',
+              }}
+            >
+              <p className="text-[13px] font-semibold uppercase tracking-wider mb-2" style={{ color: 'rgba(167, 139, 250, 0.4)' }}>Demo Access</p>
               <div className="flex items-center justify-center gap-4 text-sm">
-                <code className="bg-surface-950 px-2 py-1 rounded text-primary-400">admin@livestock.com</code>
-                <span className="text-surface-600">/</span>
-                <code className="bg-surface-950 px-2 py-1 rounded text-primary-400">admin123</code>
+                <code
+                  className="px-2.5 py-1 rounded-lg"
+                  style={{ background: 'rgba(10, 9, 25, 0.6)', color: '#22d3ee' }}
+                >admin@livestock.com</code>
+                <span style={{ color: 'rgba(139, 92, 246, 0.3)' }}>/</span>
+                <code
+                  className="px-2.5 py-1 rounded-lg"
+                  style={{ background: 'rgba(10, 9, 25, 0.6)', color: '#22d3ee' }}
+                >admin123</code>
               </div>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
