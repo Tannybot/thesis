@@ -123,12 +123,14 @@ export default function AnimalDetailPage() {
         {/* Background Accent */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
-        <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
+        <div style={{ display: 'flex', gap: '20px', position: 'relative', zIndex: 10, width: '100%', flexWrap: 'wrap' }}>
+          {/* Emoji avatar */}
           <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#1a3a2e' }}>
             <span className="text-5xl drop-shadow-lg">{speciesEmojis[animal.species] || '🐾'}</span>
           </div>
           
-          <div className="flex-1 min-w-0 flex flex-col justify-center">
+          {/* Animal info — fills available space */}
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-white break-words">{animal.name || animal.animal_uid.split('-')[1]}</h1>
               <span className={`self-start sm:self-auto px-4 py-1.5 rounded-full text-sm font-bold tracking-wide capitalize ${animal.status === 'active' ? 'bg-[#1EBfae] text-[#06332E]' : 'bg-gray-700 text-gray-200'}`}>
@@ -152,31 +154,31 @@ export default function AnimalDetailPage() {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* QR Code Block */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 shrink-0 relative z-10 mt-6 pt-6 border-t border-white/10">
-          <div className="qr-print-area bg-white p-3 rounded-[14px] border border-white/20 shadow-lg min-w-[104px] min-h-[104px] flex items-center justify-center">
-            {qrBroken || !qrBlobUrl ? (
-              <div className="flex flex-col items-center justify-center text-gray-400">
-                <QrCode size={32} className="opacity-40" />
-              </div>
-            ) : (
-              <img 
-                src={qrBlobUrl} 
-                alt={`QR Code for ${animal.animal_uid}`} 
-                className="w-20 h-20 object-contain" 
-                onError={() => setQrBroken(true)}
-              />
-            )}
-          </div>
-          <div className="flex flex-col gap-[10px] w-full sm:w-40">
-            <button onClick={printQR} className="btn bg-white/10 hover:bg-white/20 text-white border border-white/10 text-[13px] w-full justify-center shadow-none" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
-              <Printer size={16} /> Print
-            </button>
-            <button onClick={handleSave} disabled={!qrBlobUrl} className="btn bg-[#34d399]/20 hover:bg-[#34d399]/30 text-[#6ee7b7] border border-[#34d399]/30 text-[13px] w-full justify-center shadow-none disabled:opacity-50" style={{ padding: '10px 24px', borderRadius: '10px', minHeight: '44px' }}>
-              <Download size={16} /> Save
-            </button>
+          {/* QR Code — right side */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+            <div className="qr-print-area bg-white p-3 rounded-[14px] border border-white/20 shadow-lg" style={{ minWidth: '96px', minHeight: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {qrBroken || !qrBlobUrl ? (
+                <div className="flex flex-col items-center justify-center text-gray-400">
+                  <QrCode size={32} className="opacity-40" />
+                </div>
+              ) : (
+                <img 
+                  src={qrBlobUrl} 
+                  alt={`QR Code for ${animal.animal_uid}`} 
+                  style={{ width: '72px', height: '72px', objectFit: 'contain' }}
+                  onError={() => setQrBroken(true)}
+                />
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={printQR} className="btn bg-white/10 hover:bg-white/20 text-white border border-white/10 text-[13px] justify-center shadow-none" style={{ padding: '8px 14px', borderRadius: '8px', minHeight: '36px' }}>
+                <Printer size={14} /> Print
+              </button>
+              <button onClick={handleSave} disabled={!qrBlobUrl} className="btn bg-[#34d399]/20 hover:bg-[#34d399]/30 text-[#6ee7b7] border border-[#34d399]/30 text-[13px] justify-center shadow-none disabled:opacity-50" style={{ padding: '8px 14px', borderRadius: '8px', minHeight: '36px' }}>
+                <Download size={14} /> Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
