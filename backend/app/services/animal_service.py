@@ -63,7 +63,7 @@ def create_animal(db: Session, data: AnimalCreate, current_user_id: int) -> Anim
 
 
 def update_animal(db: Session, animal_id: int, data: AnimalUpdate, current_user: object) -> Animal:
-    """Update an existing animal record."""
+    """Rename an existing animal record."""
     animal = db.query(Animal).filter(Animal.id == animal_id).first()
     if not animal:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Animal not found")
@@ -72,13 +72,23 @@ def update_animal(db: Session, animal_id: int, data: AnimalUpdate, current_user:
     if current_user.role.name != "admin" and animal.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
 
-    update_data = data.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(animal, field, value)
-
+    animal.name = data.name
     db.commit()
     db.refresh(animal)
     return animal
+
+
+def delete_animal(db: Session, animal_id: int, current_user: object) -> None:
+    """Delete an animal record if the user owns it or is an admin."""
+    animal = db.query(Animal).filter(Animal.id == animal_id).first()
+    if not animal:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Animal not found")
+
+    if current_user.role.name != "admin" and animal.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
+
+    db.delete(animal)
+    db.commit()
 
 
 def get_animals(

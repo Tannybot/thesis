@@ -1,5 +1,5 @@
 """Animal schemas — registration, updates, and responses."""
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from datetime import date, datetime
 from typing import Optional
 
@@ -24,12 +24,18 @@ class AnimalBatchCreate(BaseModel):
 
 
 class AnimalUpdate(BaseModel):
-    name: Optional[str] = None
-    breed: Optional[str] = None
-    weight: Optional[float] = None
-    growth_stage: Optional[str] = None
-    status: Optional[str] = None
-    notes: Optional[str] = None
+    name: str = Field(..., min_length=2, max_length=100)
+
+    @field_validator("name", mode="before")
+    @classmethod
+    def strip_name(cls, value: str) -> str:
+        if isinstance(value, str):
+            return value.strip()
+        return value
+
+
+class AnimalDeleteResponse(BaseModel):
+    message: str
 
 
 class AnimalResponse(AnimalBase):

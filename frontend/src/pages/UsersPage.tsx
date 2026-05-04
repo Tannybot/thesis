@@ -35,8 +35,9 @@ export default function UsersPage() {
   if (!isAdmin) return <Navigate to="/" replace />;
 
   return (
-    <div className="space-y-8">
+    <div className="page-shell">
       <div className="page-header">
+        <span className="page-eyebrow"><Users size={14} /> Access Control</span>
         <h1 className="page-title">User Management</h1>
         <p className="page-subtitle">Manage system users and access control</p>
       </div>

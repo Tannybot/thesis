@@ -1,5 +1,5 @@
 """Auth schemas — login, register, and token responses."""
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, model_validator
 
 
 class LoginRequest(BaseModel):
@@ -8,10 +8,28 @@ class LoginRequest(BaseModel):
 
 
 class RegisterRequest(BaseModel):
-    email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
+    email: EmailStr
     password: str = Field(..., min_length=8)
-    role: str = Field(default="user", description="Role name: 'admin' or 'user'")
+    confirm_password: str = Field(..., min_length=8)
+
+    @model_validator(mode="after")
+    def validate_passwords_match(self):
+        if self.password != self.confirm_password:
+            raise ValueError("Confirm password must match password")
+        return self
+
+
+class RegisterUserInfo(BaseModel):
+    id: int
+    email: EmailStr
+    full_name: str
+    role: str
+
+
+class RegisterResponse(BaseModel):
+    message: str
+    user: RegisterUserInfo
 
 
 class TokenResponse(BaseModel):

@@ -1,11 +1,21 @@
-/* Sidebar navigation component — Futuristic neon design */
-import { NavLink, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, PawPrint, Heart, Pill, Syringe,
-  Truck, Users, QrCode, LogOut, Menu, X,
+  Activity,
+  Heart,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  PawPrint,
+  Pill,
+  QrCode,
+  ShieldCheck,
+  Syringe,
+  Truck,
+  Users,
+  X,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useState } from 'react';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -23,77 +33,55 @@ const adminItems = [
 export default function Sidebar() {
   const { user, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
 
   return (
     <>
-      {/* Mobile toggle */}
       {!mobileOpen && (
         <button
-          className="fixed z-50 p-2 md:hidden rounded-xl transition-all"
-          style={{
-            top: '17px',
-            left: '12px',
-            background: 'rgba(11, 26, 22, 0.85)',
-            border: '1px solid rgba(16, 185, 129, 0.3)',
-            backdropFilter: 'blur(10px)',
-            color: '#6ee7b7'
-          }}
+          className="mobile-sidebar-toggle md:hidden header-action"
           onClick={() => setMobileOpen(true)}
           id="sidebar-toggle"
+          aria-label="Open navigation"
         >
-          <Menu size={26} />
+          <Menu size={22} />
         </button>
       )}
 
-      {/* Overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       <aside className={`app-sidebar ${mobileOpen ? 'open' : ''}`}>
-        {/* Logo Section */}
-        <div className="flex items-center justify-between px-6" style={{ paddingTop: '18px', paddingBottom: '18px', paddingLeft: '28px', borderBottom: '1px solid rgba(16, 185, 129, 0.12)' }}>
-          <div className="flex items-center gap-4">
-            <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center"
-              style={{
-                background: 'linear-gradient(135deg, #10b981, #059669)',
-                boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
-                animation: 'pulse-glow 4s ease-in-out infinite',
-              }}
-            >
-              <QrCode size={22} className="text-white" />
+        <div className="brand-block">
+          <div className="sidebar-brand-main">
+            <div className="brand-mark">
+              <QrCode size={24} />
             </div>
-            <div>
-              <h1 className="text-lg font-black text-white tracking-tight leading-none mb-1">LiveTrack</h1>
-              <p className="text-[11px] font-semibold tracking-wide uppercase" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>QR System</p>
+            <div className="min-w-0">
+              <h1 className="brand-title">LiveTrack</h1>
+              <p className="brand-subtitle">Traceability Suite</p>
             </div>
           </div>
-          <button 
-            className="md:hidden p-2 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-colors" 
+          <button
+            className="sidebar-close md:hidden header-action"
             onClick={() => setMobileOpen(false)}
+            aria-label="Close navigation"
           >
-            <X size={22} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 py-5 overflow-y-auto">
-          <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>
-            Main Menu
-          </p>
+          <p className="nav-section-label">Operations</p>
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === '/'}
-              className={({ isActive }) =>
-                `nav-item ${isActive ? 'active' : ''}`
-              }
+              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
               onClick={() => setMobileOpen(false)}
             >
               <item.icon size={18} />
@@ -103,17 +91,13 @@ export default function Sidebar() {
 
           {isAdmin && (
             <>
-              <div className="mx-6 my-3" style={{ borderTop: '1px solid rgba(16, 185, 129, 0.08)' }} />
-              <p className="px-7 py-2 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>
-                Administration
-              </p>
+              <div className="mx-5 my-4" style={{ borderTop: '1px solid var(--line)' }} />
+              <p className="nav-section-label">Administration</p>
               {adminItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className={({ isActive }) =>
-                    `nav-item ${isActive ? 'active' : ''}`
-                  }
+                  className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                   onClick={() => setMobileOpen(false)}
                 >
                   <item.icon size={18} />
@@ -124,30 +108,16 @@ export default function Sidebar() {
           )}
         </nav>
 
-        {/* User section */}
-        <div className="p-4" style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)' }}>
-          <div className="flex items-center gap-3 mb-3 px-2">
-            <div
-              className="w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm"
-              style={{
-                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.15))',
-                color: '#6ee7b7',
-                border: '1px solid rgba(16, 185, 129, 0.2)',
-              }}
-            >
-              {user?.full_name?.charAt(0).toUpperCase()}
+        <div className="sidebar-user">
+          <div className="flex items-center gap-3 mb-4 min-w-0">
+            <span className="avatar">{user?.full_name?.charAt(0).toUpperCase()}</span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-white truncate">{user?.full_name}</p>
+              <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{user?.role_name}</p>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white/90 truncate">{user?.full_name}</p>
-              <p className="text-xs capitalize" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>{user?.role_name}</p>
-            </div>
+            {isAdmin ? <ShieldCheck size={18} style={{ color: 'var(--amber)' }} /> : <Activity size={18} style={{ color: 'var(--cyan)' }} />}
           </div>
-          <button
-            onClick={logout}
-            className="nav-item w-full hover:!bg-rose-500/10"
-            style={{ color: '#fb7185' }}
-            id="logout-btn"
-          >
+          <button onClick={logout} className="nav-item w-full" style={{ margin: 0, color: 'var(--rose)' }} id="logout-btn">
             <LogOut size={18} />
             <span>Sign Out</span>
           </button>

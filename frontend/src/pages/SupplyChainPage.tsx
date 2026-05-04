@@ -1,6 +1,6 @@
 /* Supply Chain / Movements Page — Futuristic neon theme */
 import { useEffect, useState } from 'react';
-import { Truck, Plus, ArrowRight } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin, Plus, Truck, UserRound } from 'lucide-react';
 import api from '@/lib/api';
 import type { Movement, Animal } from '@/types';
 
@@ -35,9 +35,10 @@ export default function SupplyChainPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div className="page-shell">
       <div className="page-toolbar">
         <div className="page-header">
+          <span className="page-eyebrow"><Truck size={14} /> Movement Ledger</span>
           <h1 className="page-title">Supply Chain</h1>
           <p className="page-subtitle">Farm-to-market traceability and movement tracking</p>
         </div>
@@ -54,36 +55,45 @@ export default function SupplyChainPage() {
           <p className="text-lg font-medium" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>No movements recorded</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div className="movement-list">
           {movements.map((m) => (
-            <div key={m.id} className="glass-card table-wrapper min-w-0">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
+            <div key={m.id} className="glass-card movement-card">
+              <div className="movement-card-main">
+                <div className="movement-card-header">
+                  <div className="flex flex-wrap items-center gap-3 min-w-0">
                     <span className={getTypeBadge(m.movement_type)}>{m.movement_type}</span>
-                    <span className="font-mono text-sm" style={{ color: '#22d3ee' }}>{m.animal_uid}</span>
+                    <span className="movement-uid">{m.animal_uid}</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-3 text-white/75">
-                    <span className="break-words">{m.from_location}</span>
-                    <ArrowRight size={14} style={{ color: 'rgba(16, 185, 129, 0.4)' }} />
-                    <span className="break-words">{m.to_location}</span>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-4 mt-3 text-sm" style={{ color: 'rgba(52, 211, 153, 0.5)' }}>
+                  <div className="movement-date">
+                    <CalendarDays size={15} />
                     <span>{new Date(m.departure_date).toLocaleDateString()}</span>
-                    {m.handler && <span>Handler: {m.handler}</span>}
-                    {m.transport_method && <span className="capitalize">Via: {m.transport_method}</span>}
                   </div>
                 </div>
+
+                <div className="movement-route">
+                  <div className="movement-location">
+                    <MapPin size={16} />
+                    <span>{m.from_location}</span>
+                  </div>
+                  <div className="movement-arrow">
+                    <ArrowRight size={16} />
+                  </div>
+                  <div className="movement-location">
+                    <MapPin size={16} />
+                    <span>{m.to_location}</span>
+                  </div>
+                </div>
+
+                <div className="movement-meta">
+                  {m.handler && <span><UserRound size={14} /> Handler: {m.handler}</span>}
+                  {m.transport_method && <span className="capitalize"><Truck size={14} /> Via: {m.transport_method}</span>}
+                  {m.purpose && <span>Purpose: {m.purpose}</span>}
+                </div>
+
                 {m.buyer_info && (
-                  <div
-                    className="text-sm p-4 rounded-xl w-full sm:w-auto sm:max-w-[280px]"
-                    style={{
-                      background: 'rgba(11, 26, 22, 0.5)',
-                      border: '1px solid rgba(16, 185, 129, 0.08)',
-                    }}
-                  >
-                    <p className="text-xs mb-1" style={{ color: 'rgba(52, 211, 153, 0.4)' }}>Buyer</p>
-                    <p className="text-white/70">{m.buyer_info}</p>
+                  <div className="movement-buyer">
+                    <p>Buyer</p>
+                    <span>{m.buyer_info}</span>
                   </div>
                 )}
               </div>

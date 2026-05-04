@@ -10,7 +10,7 @@ from app.utils.security import hash_password, verify_password, create_access_tok
 
 
 def register_user(db: Session, data: RegisterRequest) -> User:
-    """Register a new user with hashed password."""
+    """Register a new public user with the fixed user role."""
     # Check if email already exists
     existing = db.query(User).filter(User.email == data.email).first()
     if existing:
@@ -19,12 +19,11 @@ def register_user(db: Session, data: RegisterRequest) -> User:
             detail="Email already registered"
         )
 
-    # Get or validate role
-    role = db.query(Role).filter(Role.name == data.role).first()
+    role = db.query(Role).filter(Role.name == "user").first()
     if not role:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid role: {data.role}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Default user role is not configured"
         )
 
     user = User(
@@ -32,6 +31,7 @@ def register_user(db: Session, data: RegisterRequest) -> User:
         full_name=data.full_name,
         hashed_password=hash_password(data.password),
         role_id=role.id,
+        is_active=True,
     )
     db.add(user)
     db.commit()

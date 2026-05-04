@@ -28,9 +28,10 @@ export default function VaccinationsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="page-shell">
       <div className="page-toolbar">
         <div className="page-header">
+          <span className="page-eyebrow"><Syringe size={14} /> Immunization Schedule</span>
           <h1 className="page-title">Vaccinations</h1>
           <p className="page-subtitle">Vaccination records and upcoming schedules</p>
         </div>

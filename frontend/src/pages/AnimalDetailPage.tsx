@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, QrCode, Heart, Pill, Syringe, Truck,
-  Calendar, Weight, Printer, Download, Activity
+  Beef, Calendar, Weight, Printer, Download, Activity
 } from 'lucide-react';
 import api from '@/lib/api';
 import type { AnimalDetail, HealthRecord, Treatment, Vaccination, Movement, TimelineEvent } from '@/types';
@@ -106,7 +106,7 @@ export default function AnimalDetailPage() {
 
   return (
     <>
-    <div className="space-y-8 print:hidden">
+    <div className="page-shell print:hidden">
       {/* Breadcrumb */}
       <Link
         to="/animals"
@@ -124,8 +124,8 @@ export default function AnimalDetailPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
         <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
-          <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#1a3a2e' }}>
-            <span className="text-5xl drop-shadow-lg">{speciesEmojis[animal.species] || '🐾'}</span>
+          <div className="animal-icon w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px]">
+            <Beef size={42} />
           </div>
           
           <div className="flex-1 min-w-0 flex flex-col justify-center">

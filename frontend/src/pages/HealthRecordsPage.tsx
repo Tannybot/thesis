@@ -28,9 +28,10 @@ export default function HealthRecordsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="page-shell">
       <div className="page-toolbar">
         <div className="page-header">
+          <span className="page-eyebrow"><Heart size={14} /> Clinical Records</span>
           <h1 className="page-title">Health Records</h1>
           <p className="page-subtitle">Monitor livestock health status and disease records</p>
         </div>

@@ -28,9 +28,10 @@ export default function TreatmentsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="page-shell">
       <div className="page-toolbar">
         <div className="page-header">
+          <span className="page-eyebrow"><Pill size={14} /> Treatment Logs</span>
           <h1 className="page-title">Treatments</h1>
           <p className="page-subtitle">Track medical treatments and medications</p>
         </div>

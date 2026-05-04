@@ -9,7 +9,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, fullName: string, password: string) => Promise<void>;
+  register: (fullName: string, email: string, password: string, confirmPassword: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -48,12 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fetchUser();
   }
 
-  async function register(email: string, fullName: string, password: string) {
+  async function register(fullName: string, email: string, password: string, confirmPassword: string) {
     await api.post('/auth/register', {
-      email,
       full_name: fullName,
+      email,
       password,
-      role: 'user',
+      confirm_password: confirmPassword,
     });
   }
 

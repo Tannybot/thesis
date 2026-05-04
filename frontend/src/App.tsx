@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/hooks/useAuth';
 import AppLayout from '@/components/layout/AppLayout';
 import LoginPage from '@/pages/LoginPage';
+import Register from '@/pages/Register';
 import DashboardPage from '@/pages/DashboardPage';
 import AnimalsPage from '@/pages/AnimalsPage';
 import AnimalDetailPage from '@/pages/AnimalDetailPage';
@@ -19,6 +20,7 @@ export default function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Protected routes */}
           <Route element={<AppLayout />}>

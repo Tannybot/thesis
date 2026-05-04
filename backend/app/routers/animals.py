@@ -7,9 +7,9 @@ from app.models.animal import Animal
 from app.models.user import User
 from app.schemas.animal import (
     AnimalCreate, AnimalBatchCreate, AnimalUpdate,
-    AnimalResponse, AnimalDetailResponse, AnimalListResponse,
+    AnimalDeleteResponse, AnimalResponse, AnimalDetailResponse, AnimalListResponse,
 )
-from app.services.animal_service import create_animal, update_animal, get_animals
+from app.services.animal_service import create_animal, delete_animal as delete_animal_record, update_animal, get_animals
 from app.middleware.auth import get_current_user, require_user_or_admin
 
 router = APIRouter(prefix="/api/animals", tags=["Animals"])
@@ -171,20 +171,12 @@ def update_animal_endpoint(
     )
 
 
-@router.delete("/{animal_id}")
+@router.delete("/{animal_id}", response_model=AnimalDeleteResponse)
 def delete_animal(
     animal_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Soft-delete an animal (set status to 'removed')."""
-    animal = db.query(Animal).filter(Animal.id == animal_id).first()
-    if not animal:
-        raise HTTPException(status_code=404, detail="Animal not found")
-
-    if current_user.role.name != "admin" and animal.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized")
-
-    animal.status = "removed"
-    db.commit()
-    return {"message": "Animal removed successfully"}
+    """Delete an animal record."""
+    delete_animal_record(db, animal_id, current_user)
+    return {"message": "Animal deleted successfully"}
