@@ -6,7 +6,7 @@ from app.database import get_db
 from app.models.animal import Animal
 from app.models.qr_code import QRCode
 from app.models.user import User
-from app.services.qr_service import generate_qr_code
+from app.services.qr_service import generate_qr_code, resolve_qr_code_path
 from app.middleware.auth import get_current_user
 
 router = APIRouter(prefix="/api/qr-codes", tags=["QR Codes"])
@@ -19,14 +19,37 @@ def get_qr_code(
     current_user: User = Depends(get_current_user),
 ):
     """Get the QR code image for an animal."""
+    animal = db.query(Animal).filter(Animal.id == animal_id).first()
+    if not animal:
+        raise HTTPException(status_code=404, detail="Animal not found")
+
     qr = db.query(QRCode).filter(QRCode.animal_id == animal_id).first()
     if not qr:
-        raise HTTPException(status_code=404, detail="QR code not found")
+        qr_data, qr_path = generate_qr_code(animal.animal_uid)
+        animal.qr_code_path = qr_path
+        qr = QRCode(
+            animal_id=animal.id,
+            qr_data=qr_data,
+            qr_image_path=qr_path,
+        )
+        db.add(qr)
+        db.commit()
+        db.refresh(qr)
+
+    qr_path = resolve_qr_code_path(animal.animal_uid, qr.qr_image_path)
+    if not qr_path:
+        qr_data, qr_path = generate_qr_code(animal.animal_uid)
+        qr.qr_data = qr_data
+
+    if qr.qr_image_path != qr_path or animal.qr_code_path != qr_path:
+        qr.qr_image_path = qr_path
+        animal.qr_code_path = qr_path
+        db.commit()
 
     return FileResponse(
-        qr.qr_image_path,
+        qr_path,
         media_type="image/png",
-        filename=f"qr_{qr.animal.animal_uid}.png",
+        filename=f"qr_{animal.animal_uid}.png",
     )
 
 

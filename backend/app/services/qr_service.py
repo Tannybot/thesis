@@ -39,10 +39,26 @@ def generate_qr_code(animal_uid: str) -> tuple[str, str]:
     return qr_data, filepath
 
 
-def get_qr_code_path(animal_uid: str) -> str | None:
-    """Get the file path for an existing QR code."""
+def get_qr_code_filepath(animal_uid: str) -> str:
+    """Build the canonical QR code file path for an animal UID."""
     filename = f"qr_{animal_uid}.png"
-    filepath = os.path.join(QR_CODE_DIR, filename)
+    return os.path.join(QR_CODE_DIR, filename)
+
+
+def resolve_qr_code_path(animal_uid: str, stored_path: str | None = None) -> str | None:
+    """
+    Resolve a QR image path even if the stored DB path points to a different machine.
+    """
+    if stored_path and os.path.exists(stored_path):
+        return stored_path
+
+    filepath = get_qr_code_filepath(animal_uid)
     if os.path.exists(filepath):
         return filepath
+
     return None
+
+
+def get_qr_code_path(animal_uid: str) -> str | None:
+    """Get the file path for an existing QR code."""
+    return resolve_qr_code_path(animal_uid)
