@@ -1,7 +1,9 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { Bell, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Sidebar from './Sidebar';
+import AIAssistant from './AIAssistant';
+import NotificationCenter from './NotificationCenter';
 
 export default function AppLayout() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -34,10 +36,7 @@ export default function AppLayout() {
             />
           </div>
 
-          <button className="header-action" id="notifications-btn" aria-label="Notifications">
-            <Bell size={18} />
-            <span className="notification-dot" />
-          </button>
+          <NotificationCenter />
 
           <div className="header-user">
             <span className="avatar">{user?.full_name?.charAt(0).toUpperCase()}</span>
@@ -52,6 +51,7 @@ export default function AppLayout() {
           <Outlet />
         </main>
       </div>
+      <AIAssistant />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Heart, Plus } from 'lucide-react';
 import api from '@/lib/api';
 import type { HealthRecord, Animal } from '@/types';
+import CollapsibleText from '@/components/ui/CollapsibleText';
 
 export default function HealthRecordsPage() {
   const [records, setRecords] = useState<HealthRecord[]>([]);
@@ -56,7 +57,7 @@ export default function HealthRecordsPage() {
                   <td className="whitespace-nowrap">{r.record_date}</td>
                   <td className="font-mono text-sm" style={{ color: '#22d3ee' }}>{r.animal_uid}</td>
                   <td className="capitalize">{r.record_type}</td>
-                  <td className="max-w-[250px] truncate">{r.description}</td>
+                  <td className="max-w-[320px]"><CollapsibleText text={r.description} collapsedLength={88} /></td>
                   <td>{r.severity && <span className={`badge badge-${r.severity}`}>{r.severity}</span>}</td>
                   <td>{r.diagnosis || '—'}</td>
                   <td>{r.recorder_name}</td>

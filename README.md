@@ -62,7 +62,29 @@ npm run dev
 
 The web app will be available at `http://localhost:5173`.
 
-### 3. Mobile Setup (Optional)
+### 3. Free Local AI Model Setup
+
+The AI insight feature uses Ollama locally, so no paid API key is required.
+
+```bash
+# Install Ollama from https://ollama.com, then pull the default model
+ollama pull llama3.2:3b
+
+# Ollama runs at http://localhost:11434 by default
+```
+
+Optional backend `.env` overrides:
+
+```bash
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2:3b
+OLLAMA_TIMEOUT_SECONDS=60
+```
+
+Use the lower-right `AI` assistant inside the web app to ask questions about livestock, health, treatment, vaccination, and traceability records.
+
+### 4. Mobile Setup (Optional)
 
 ```bash
 cd mobile

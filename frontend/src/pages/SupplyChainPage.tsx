@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, CalendarDays, MapPin, Plus, Truck, UserRound } from 'lucide-react';
 import api from '@/lib/api';
 import type { Movement, Animal } from '@/types';
+import CollapsibleText from '@/components/ui/CollapsibleText';
 
 export default function SupplyChainPage() {
   const [movements, setMovements] = useState<Movement[]>([]);
@@ -87,13 +88,13 @@ export default function SupplyChainPage() {
                 <div className="movement-meta">
                   {m.handler && <span><UserRound size={14} /> Handler: {m.handler}</span>}
                   {m.transport_method && <span className="capitalize"><Truck size={14} /> Via: {m.transport_method}</span>}
-                  {m.purpose && <span>Purpose: {m.purpose}</span>}
+                  {m.purpose && <span>Purpose: <CollapsibleText text={m.purpose} collapsedLength={90} /></span>}
                 </div>
 
                 {m.buyer_info && (
                   <div className="movement-buyer">
                     <p>Buyer</p>
-                    <span>{m.buyer_info}</span>
+                    <span><CollapsibleText text={m.buyer_info} collapsedLength={120} /></span>
                   </div>
                 )}
               </div>

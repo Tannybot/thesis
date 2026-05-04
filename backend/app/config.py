@@ -3,6 +3,7 @@ Application configuration using Pydantic Settings.
 Loads values from .env file with type validation.
 """
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import Optional
 
 
@@ -26,6 +27,23 @@ class Settings(BaseSettings):
 
     # QR Codes
     QR_CODE_BASE_URL: str = "https://livetrack.com/animals"  # Production domain
+
+    # Local AI text generation
+    AI_PROVIDER: str = "ollama"
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.2:3b"
+    OLLAMA_TIMEOUT_SECONDS: int = 60
+
+    @field_validator("DEBUG", mode="before")
+    @classmethod
+    def parse_debug_flag(cls, value):
+        if isinstance(value, str):
+            normalized = value.strip().lower()
+            if normalized in {"release", "production", "prod"}:
+                return False
+            if normalized in {"debug", "development", "dev"}:
+                return True
+        return value
 
     class Config:
         env_file = ".env"

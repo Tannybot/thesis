@@ -13,7 +13,7 @@ from app.database import engine, Base
 from app.models import *  # noqa: F401, F403 — import all models for table creation
 
 # Import all routers
-from app.routers import auth, users, animals, health_records, treatments, vaccinations, movements, qr_codes, dashboard
+from app.routers import auth, users, animals, health_records, treatments, vaccinations, movements, qr_codes, dashboard, ai
 
 
 @asynccontextmanager
@@ -78,6 +78,7 @@ app.include_router(vaccinations.router)
 app.include_router(movements.router)
 app.include_router(qr_codes.router)
 app.include_router(dashboard.router)
+app.include_router(ai.router)
 
 
 @app.get("/", tags=["Root"])

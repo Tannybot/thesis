@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import type { AnimalDetail, HealthRecord, Treatment, Vaccination, Movement, TimelineEvent } from '@/types';
+import CollapsibleText from '@/components/ui/CollapsibleText';
 
 export default function AnimalDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -100,9 +101,6 @@ export default function AnimalDetailPage() {
     { key: 'timeline', label: 'Timeline', icon: Calendar },
   ];
 
-  const speciesEmojis: Record<string, string> = {
-    cattle: '🐄', goat: '🐐', sheep: '🐑', pig: '🐷', poultry: '🐔',
-  };
 
   return (
     <>
@@ -123,16 +121,9 @@ export default function AnimalDetailPage() {
         {/* Background Accent */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
-<<<<<<< HEAD
         <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
           <div className="animal-icon w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px]">
             <Beef size={42} />
-=======
-        <div style={{ display: 'flex', gap: '20px', position: 'relative', zIndex: 10, width: '100%', flexWrap: 'wrap' }}>
-          {/* Emoji avatar */}
-          <div className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px] shrink-0" style={{ background: '#1a3a2e' }}>
-            <span className="text-5xl drop-shadow-lg">{speciesEmojis[animal.species] || '🐾'}</span>
->>>>>>> ee48a61fb8c27e1370b1a5a80161f2b72ca26c91
           </div>
           
           {/* Animal info — fills available space */}
@@ -219,40 +210,40 @@ export default function AnimalDetailPage() {
           <div className="flex flex-col xl:flex-row gap-6">
             {/* Details Section */}
             <div className="glass-card flex-1">
-              <h3 className="text-xl font-bold text-white tracking-wider mb-8 flex items-center gap-3">
-                <QrCode className="text-[#34d399]" size={24} /> 
-                Identity & Details
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 xl:gap-x-10">
-                {[
-                  ['Unique ID', animal.animal_uid],
-                  ['System Name', animal.name || 'N/A'],
-                  ['Species Category', animal.species],
-                  ['Specific Breed', animal.breed || 'N/A'],
-                  ['Biological Gender', animal.gender],
-                  ['Date of Birth', animal.date_of_birth || 'N/A'],
-                  ['Recorded Weight', animal.weight ? `${animal.weight} kg` : 'N/A'],
-                  ['Growth Stage', animal.growth_stage || 'N/A'],
-                  ['Platform Status', animal.status],
-                  ['Current Owner', animal.owner_name],
-                  ['Date Registered', new Date(animal.created_at).toLocaleDateString()],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex flex-col">
-                    <span className="font-bold text-gray-500 uppercase" style={{ fontSize: '11px', letterSpacing: '0.08em', marginBottom: '6px' }}>{label}</span>
-                    <span className="capitalize tracking-wide text-gray-100" style={{ fontSize: '15px', fontWeight: 500 }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-              
-              {animal.notes && (
-                <div className="mt-8 pt-6 border-t border-white/5">
-                  <span className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase block mb-3">Additional Notes</span>
-                  <p className="text-sm text-gray-300 leading-relaxed bg-white/5 p-5 rounded-xl border border-white/5 tracking-wide">
-                    {animal.notes}
-                  </p>
+                <h3 className="text-xl font-bold text-white tracking-wider mb-8 flex items-center gap-3">
+                  <QrCode className="text-[#34d399]" size={24} /> 
+                  Identity & Details
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 xl:gap-x-10">
+                  {[
+                    ['Unique ID', animal.animal_uid],
+                    ['System Name', animal.name || 'N/A'],
+                    ['Species Category', animal.species],
+                    ['Specific Breed', animal.breed || 'N/A'],
+                    ['Biological Gender', animal.gender],
+                    ['Date of Birth', animal.date_of_birth || 'N/A'],
+                    ['Recorded Weight', animal.weight ? `${animal.weight} kg` : 'N/A'],
+                    ['Growth Stage', animal.growth_stage || 'N/A'],
+                    ['Platform Status', animal.status],
+                    ['Current Owner', animal.owner_name],
+                    ['Date Registered', new Date(animal.created_at).toLocaleDateString()],
+                  ].map(([label, value]) => (
+                    <div key={label} className="flex flex-col">
+                      <span className="font-bold text-gray-500 uppercase" style={{ fontSize: '11px', letterSpacing: '0.08em', marginBottom: '6px' }}>{label}</span>
+                      <span className="capitalize tracking-wide text-gray-100" style={{ fontSize: '15px', fontWeight: 500 }}>{value}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
+                
+                {animal.notes && (
+                  <div className="mt-8 pt-6 border-t border-white/5">
+                    <span className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase block mb-3">Additional Notes</span>
+                    <p className="text-sm text-gray-300 leading-relaxed bg-white/5 p-5 rounded-xl border border-white/5 tracking-wide">
+                      <CollapsibleText text={animal.notes} collapsedLength={180} />
+                    </p>
+                  </div>
+                )}
             </div>
 
             {/* Summary Section */}
@@ -293,7 +284,7 @@ export default function AnimalDetailPage() {
                   <tr key={r.id}>
                     <td className="whitespace-nowrap">{r.record_date}</td>
                     <td className="capitalize">{r.record_type}</td>
-                    <td className="max-w-[300px] truncate">{r.description}</td>
+                    <td className="max-w-[340px]"><CollapsibleText text={r.description} collapsedLength={90} /></td>
                     <td>{r.severity && <span className={`badge badge-${r.severity}`}>{r.severity}</span>}</td>
                     <td>{r.diagnosis || '—'}</td>
                     <td>{r.recorder_name}</td>
@@ -403,7 +394,9 @@ export default function AnimalDetailPage() {
                             {new Date(event.date).toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="text-[15px] font-medium leading-relaxed" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>{event.description}</p>
+                        <p className="text-[15px] font-medium leading-relaxed" style={{ color: 'rgba(52, 211, 153, 0.6)' }}>
+                          <CollapsibleText text={event.description} collapsedLength={140} />
+                        </p>
                       </div>
                     </div>
                   );
