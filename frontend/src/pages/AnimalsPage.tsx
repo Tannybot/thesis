@@ -177,32 +177,31 @@ export default function AnimalsPage() {
                 id={`animal-card-${animal.id}`}
               >
                 <Link to={`/animals/${animal.id}`} className="animal-card-link">
-                  <span className={`${getStatusBadge(animal.status)} absolute top-4 right-4 z-10`}>
-                    {animal.status}
-                  </span>
-
                   <div className="animal-card-top">
                     <div className="animal-icon">
                       <Beef size={28} />
                     </div>
-                    <div className="min-w-0">
+                    <div className="animal-card-title">
                       <h3 className="text-xl font-black text-white truncate">{animalTitle(animal)}</h3>
                       <p className="font-mono text-xs mt-1 truncate" style={{ color: 'var(--cyan)' }}>#{animal.animal_uid}</p>
                       <p className="text-sm capitalize mt-3" style={{ color: 'var(--muted)' }}>{animal.species}</p>
                     </div>
+                    <span className={`${getStatusBadge(animal.status)} animal-status-badge`}>
+                      {animal.status}
+                    </span>
                   </div>
 
                   <div className="animal-meta-grid">
                     <div className="animal-meta">
-                      <span className="animal-meta-label"><Sprout size={13} /> Breed</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><Sprout size={13} /></span> Breed</span>
                       <span className="animal-meta-value">{animal.breed || 'N/A'}</span>
                     </div>
                     <div className="animal-meta">
-                      <span className="animal-meta-label"><Weight size={13} /> Weight</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><Weight size={13} /></span> Weight</span>
                       <span className="animal-meta-value">{animal.weight ? `${animal.weight} kg` : 'N/A'}</span>
                     </div>
                     <div className="animal-meta" style={{ gridColumn: '1 / -1' }}>
-                      <span className="animal-meta-label"><TrendingUp size={13} /> Stage / Gender</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><TrendingUp size={13} /></span> Stage / Gender</span>
                       <span className="animal-meta-value">{animal.growth_stage || 'N/A'} / {animal.gender}</span>
                     </div>
                   </div>

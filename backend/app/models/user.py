@@ -14,6 +14,10 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
+    profile_image_path = Column(String(512), nullable=True)
+    notify_email_alerts = Column(Boolean, default=True, nullable=False)
+    notify_system_alerts = Column(Boolean, default=True, nullable=False)
+    notify_activity_updates = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
                         onupdate=lambda: datetime.now(timezone.utc))

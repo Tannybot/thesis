@@ -7,6 +7,10 @@ export interface User {
   role_id: number;
   role_name: string;
   is_active: boolean;
+  profile_image_path?: string | null;
+  notify_email_alerts?: boolean;
+  notify_system_alerts?: boolean;
+  notify_activity_updates?: boolean;
   created_at: string;
   updated_at: string;
 }
