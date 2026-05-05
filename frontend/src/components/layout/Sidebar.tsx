@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  Activity,
   Heart,
   LayoutDashboard,
-  LogOut,
   Menu,
   PawPrint,
   Pill,
   QrCode,
-  ShieldCheck,
   Syringe,
   Truck,
   Users,
   X,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import UserMenu from './UserMenu';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -31,7 +29,7 @@ const adminItems = [
 ];
 
 export default function Sidebar() {
-  const { user, isAdmin, logout } = useAuth();
+  const { isAdmin } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -60,7 +58,7 @@ export default function Sidebar() {
             <div className="brand-mark">
               <QrCode size={24} />
             </div>
-            <div className="min-w-0">
+            <div className="brand-copy">
               <h1 className="brand-title">LiveTrack</h1>
               <p className="brand-subtitle">Traceability Suite</p>
             </div>
@@ -74,7 +72,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        <nav className="flex-1 py-5 overflow-y-auto">
+        <nav className="sidebar-nav">
           <p className="nav-section-label">Operations</p>
           {navItems.map((item) => (
             <NavLink
@@ -91,7 +89,7 @@ export default function Sidebar() {
 
           {isAdmin && (
             <>
-              <div className="mx-5 my-4" style={{ borderTop: '1px solid var(--line)' }} />
+              <div className="nav-divider" />
               <p className="nav-section-label">Administration</p>
               {adminItems.map((item) => (
                 <NavLink
@@ -108,20 +106,7 @@ export default function Sidebar() {
           )}
         </nav>
 
-        <div className="sidebar-user">
-          <div className="flex items-center gap-3 mb-4 min-w-0">
-            <span className="avatar">{user?.full_name?.charAt(0).toUpperCase()}</span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-white truncate">{user?.full_name}</p>
-              <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{user?.role_name}</p>
-            </div>
-            {isAdmin ? <ShieldCheck size={18} style={{ color: 'var(--amber)' }} /> : <Activity size={18} style={{ color: 'var(--cyan)' }} />}
-          </div>
-          <button onClick={logout} className="nav-item w-full" style={{ margin: 0, color: 'var(--rose)' }} id="logout-btn">
-            <LogOut size={18} />
-            <span>Sign Out</span>
-          </button>
-        </div>
+        <UserMenu variant="sidebar" />
       </aside>
     </>
   );

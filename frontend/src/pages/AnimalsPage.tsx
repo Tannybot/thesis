@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Beef, Filter, Pencil, Plus, QrCode, Search, Sprout, Trash2, TrendingUp, Weight } from 'lucide-react';
 import api from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import type { Animal } from '@/types';
 
 const speciesOptions = ['', 'cattle', 'goat', 'sheep', 'pig', 'poultry'];
@@ -12,6 +13,7 @@ function animalTitle(animal: Animal) {
 }
 
 export default function AnimalsPage() {
+  const { isAdmin } = useAuth();
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -97,10 +99,12 @@ export default function AnimalsPage() {
           <h1 className="page-title">Animals</h1>
           <p className="page-subtitle">{total} registered livestock with QR-linked identity, health, and movement records.</p>
         </div>
-        <button className="btn btn-primary page-toolbar-action" onClick={() => setShowCreateModal(true)} id="register-animal-btn">
-          <Plus size={18} />
-          Register Animal
-        </button>
+        {!isAdmin && (
+          <button className="btn btn-primary page-toolbar-action" onClick={() => setShowCreateModal(true)} id="register-animal-btn">
+            <Plus size={18} />
+            Register Animal
+          </button>
+        )}
       </div>
 
       <div className="glass-card" style={{ padding: 16 }}>
@@ -165,7 +169,9 @@ export default function AnimalsPage() {
         <div className="empty-state glass-card">
           <QrCode size={46} style={{ color: 'var(--emerald)' }} />
           <p className="text-lg font-bold text-white">No animals found</p>
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>Register an animal to begin building its traceability record.</p>
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>
+            {isAdmin ? 'No user-submitted animals match the current filters.' : 'Register an animal to begin building its traceability record.'}
+          </p>
         </div>
       ) : (
         <>
@@ -177,32 +183,31 @@ export default function AnimalsPage() {
                 id={`animal-card-${animal.id}`}
               >
                 <Link to={`/animals/${animal.id}`} className="animal-card-link">
-                  <span className={`${getStatusBadge(animal.status)} absolute top-4 right-4 z-10`}>
-                    {animal.status}
-                  </span>
-
                   <div className="animal-card-top">
                     <div className="animal-icon">
                       <Beef size={28} />
                     </div>
-                    <div className="min-w-0">
+                    <div className="animal-card-title">
                       <h3 className="text-xl font-black text-white truncate">{animalTitle(animal)}</h3>
                       <p className="font-mono text-xs mt-1 truncate" style={{ color: 'var(--cyan)' }}>#{animal.animal_uid}</p>
                       <p className="text-sm capitalize mt-3" style={{ color: 'var(--muted)' }}>{animal.species}</p>
                     </div>
+                    <span className={`${getStatusBadge(animal.status)} animal-status-badge`}>
+                      {animal.status}
+                    </span>
                   </div>
 
                   <div className="animal-meta-grid">
                     <div className="animal-meta">
-                      <span className="animal-meta-label"><Sprout size={13} /> Breed</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><Sprout size={13} /></span> Breed</span>
                       <span className="animal-meta-value">{animal.breed || 'N/A'}</span>
                     </div>
                     <div className="animal-meta">
-                      <span className="animal-meta-label"><Weight size={13} /> Weight</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><Weight size={13} /></span> Weight</span>
                       <span className="animal-meta-value">{animal.weight ? `${animal.weight} kg` : 'N/A'}</span>
                     </div>
                     <div className="animal-meta" style={{ gridColumn: '1 / -1' }}>
-                      <span className="animal-meta-label"><TrendingUp size={13} /> Stage / Gender</span>
+                      <span className="animal-meta-label"><span className="animal-meta-icon"><TrendingUp size={13} /></span> Stage / Gender</span>
                       <span className="animal-meta-value">{animal.growth_stage || 'N/A'} / {animal.gender}</span>
                     </div>
                   </div>
@@ -248,7 +253,7 @@ export default function AnimalsPage() {
         </>
       )}
 
-      {showCreateModal && (
+      {!isAdmin && showCreateModal && (
         <CreateAnimalModal
           onClose={() => setShowCreateModal(false)}
           onCreated={() => { setShowCreateModal(false); loadAnimals(); }}

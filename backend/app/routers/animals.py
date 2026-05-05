@@ -10,7 +10,7 @@ from app.schemas.animal import (
     AnimalDeleteResponse, AnimalResponse, AnimalDetailResponse, AnimalListResponse,
 )
 from app.services.animal_service import create_animal, delete_animal as delete_animal_record, update_animal, get_animals
-from app.middleware.auth import get_current_user, require_user_or_admin
+from app.middleware.auth import get_current_user, require_user
 
 router = APIRouter(prefix="/api/animals", tags=["Animals"])
 
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/api/animals", tags=["Animals"])
 def register_animal(
     data: AnimalCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_user_or_admin),
+    current_user: User = Depends(require_user),
 ):
     """Register a new animal with automatic UID and QR code generation."""
     animal = create_animal(db, data, current_user.id)
@@ -40,7 +40,7 @@ def register_animal(
 def batch_register(
     data: AnimalBatchCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_user_or_admin),
+    current_user: User = Depends(require_user),
 ):
     """Register multiple animals at once."""
     results = []
@@ -131,6 +131,9 @@ def get_animal_by_uid(
     animal = db.query(Animal).filter(Animal.animal_uid == animal_uid).first()
     if not animal:
         raise HTTPException(status_code=404, detail="Animal not found")
+
+    if current_user.role.name != "admin" and animal.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
 
     return AnimalDetailResponse(
         id=animal.id, animal_uid=animal.animal_uid, name=animal.name,

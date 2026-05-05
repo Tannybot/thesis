@@ -8,6 +8,7 @@ import {
 import api from '@/lib/api';
 import type { AnimalDetail, HealthRecord, Treatment, Vaccination, Movement, TimelineEvent } from '@/types';
 import CollapsibleText from '@/components/ui/CollapsibleText';
+import PublicTracePage from './PublicTracePage';
 
 export default function AnimalDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,10 +22,11 @@ export default function AnimalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [qrBroken, setQrBroken] = useState(false);
   const [qrBlobUrl, setQrBlobUrl] = useState<string | null>(null);
+  const isPublicQrToken = !!id && !/^\d+$/.test(id);
 
   useEffect(() => {
-    if (id) loadAnimal();
-  }, [id]);
+    if (id && !isPublicQrToken) loadAnimal();
+  }, [id, isPublicQrToken]);
 
   useEffect(() => {
     return () => {
@@ -82,6 +84,10 @@ export default function AnimalDetailPage() {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+
+  if (isPublicQrToken) {
+    return <PublicTracePage tokenOverride={id} />;
   }
 
   if (loading) {

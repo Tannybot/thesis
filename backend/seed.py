@@ -106,7 +106,7 @@ def seed():
             db.flush()
 
             # Generate QR code
-            qr_data, qr_path = generate_qr_code(uid)
+            qr_data, qr_path = generate_qr_code(uid, animal)
             animal.qr_code_path = qr_path
             qr = QRCode(animal_id=animal.id, qr_data=qr_data, qr_image_path=qr_path)
             db.add(qr)

@@ -47,7 +47,7 @@ def create_animal(db: Session, data: AnimalCreate, current_user_id: int) -> Anim
     db.flush()  # Get the animal.id before committing
 
     # Generate QR code
-    qr_data, qr_path = generate_qr_code(animal_uid)
+    qr_data, qr_path = generate_qr_code(animal_uid, animal)
     animal.qr_code_path = qr_path
 
     qr_record = QRCode(

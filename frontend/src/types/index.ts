@@ -7,6 +7,10 @@ export interface User {
   role_id: number;
   role_name: string;
   is_active: boolean;
+  profile_image_path?: string | null;
+  notify_email_alerts?: boolean;
+  notify_system_alerts?: boolean;
+  notify_activity_updates?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -109,6 +113,53 @@ export interface TimelineEvent {
   description: string;
   date: string;
   details: Record<string, string | null>;
+}
+
+export interface PublicTraceRecord {
+  animal: {
+    animal_uid: string;
+    name: string | null;
+    species: string;
+    breed: string | null;
+    gender: string;
+    weight: number | null;
+    growth_stage: string | null;
+    status: string;
+    owner_name: string;
+    date_of_birth: string | null;
+    created_at: string | null;
+  };
+  health_records: Array<{
+    record_type: string;
+    description: string;
+    severity: string | null;
+    diagnosis: string | null;
+    record_date: string | null;
+  }>;
+  treatments: Array<{
+    treatment_type: string;
+    medication: string | null;
+    dosage: string | null;
+    treatment_date: string | null;
+    next_treatment_date: string | null;
+    administered_by: string | null;
+  }>;
+  vaccinations: Array<{
+    vaccine_name: string;
+    vaccination_date: string | null;
+    next_due_date: string | null;
+    administered_by: string | null;
+  }>;
+  movements: Array<{
+    movement_type: string;
+    from_location: string;
+    to_location: string;
+    departure_date: string | null;
+    arrival_date: string | null;
+    handler: string | null;
+    transport_method: string | null;
+    purpose: string | null;
+  }>;
 }
 
 export interface DashboardStats {

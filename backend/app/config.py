@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
 
     # QR Codes
-    QR_CODE_BASE_URL: str = "https://livetrack.com/animals"  # Production domain
+    QR_CODE_BASE_URL: str = "https://livetrack.com/animals/qr"  # Private production QR scan route
 
     # Local AI text generation
     AI_PROVIDER: str = "ollama"
