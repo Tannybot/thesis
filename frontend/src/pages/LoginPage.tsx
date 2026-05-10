@@ -48,7 +48,6 @@ export default function LoginPage() {
           <div className="brand-mark"><AppLogo /></div>
           <div>
             <h1 className="brand-title">HerdScan</h1>
-            <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
           </div>
         </div>
 
@@ -103,7 +102,7 @@ export default function LoginPage() {
                 id="email-input"
                 type="email"
                 className="input-field"
-                placeholder="admin@livestock.com"
+                placeholder="Enter your Username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

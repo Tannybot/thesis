@@ -62,7 +62,6 @@ export default function Sidebar() {
             </div>
             <div className="min-w-0">
               <h1 className="brand-title">HerdScan</h1>
-              <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
             </div>
           </div>
           <button

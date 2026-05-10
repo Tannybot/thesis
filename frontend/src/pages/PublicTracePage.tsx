@@ -78,7 +78,6 @@ export default function PublicTracePage() {
           <div className="brand-mark"><AppLogo /></div>
           <div>
             <h1 className="brand-title">HerdScan</h1>
-            <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
           </div>
         </div>
       </div>
