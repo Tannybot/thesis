@@ -9,7 +9,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # App
-    APP_NAME: str = "LivestockTracker"
+    APP_NAME: str = "HerdScan"
     APP_VERSION: str = "1.0.0"
     APP_ENV: str = "development"
     APP_URL: Optional[str] = None

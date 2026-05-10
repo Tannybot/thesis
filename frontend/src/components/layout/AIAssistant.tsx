@@ -15,7 +15,7 @@ export default function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      text: 'Ask about animals, health records, treatments, vaccinations, or traceability data in this system.',
+      text: 'Ask concise questions about animals, health records, treatments, vaccinations, or traceability data.',
     },
   ]);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -53,13 +53,13 @@ export default function AIAssistant() {
   return (
     <div className="ai-assistant">
       {open && (
-        <section className="ai-panel" aria-label="LiveTrack AI Assistant">
+        <section className="ai-panel" aria-label="HerdScan AI Assistant">
           <header className="ai-panel-header">
             <div className="flex items-center gap-3 min-w-0">
               <span className="ai-avatar"><Bot size={19} /></span>
               <div className="min-w-0">
-                <h2>LiveTrack Assistant</h2>
-                <p>Local model answers from system records</p>
+                <h2>HerdScan Assistant</h2>
+                <p>Concise answers from allowed records</p>
               </div>
             </div>
             <button type="button" className="header-action ai-close" onClick={() => setOpen(false)} aria-label="Close assistant">

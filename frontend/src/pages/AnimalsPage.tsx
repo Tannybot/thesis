@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Beef, Filter, Pencil, Plus, QrCode, Search, Sprout, Trash2, TrendingUp, Weight } from 'lucide-react';
 import api from '@/lib/api';
 import type { Animal } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
 
 const speciesOptions = ['', 'cattle', 'goat', 'sheep', 'pig', 'poultry'];
 const statusOptions = ['', 'active', 'sold', 'deceased', 'transferred'];
@@ -12,6 +13,7 @@ function animalTitle(animal: Animal) {
 }
 
 export default function AnimalsPage() {
+  const { isAdmin } = useAuth();
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -97,13 +99,15 @@ export default function AnimalsPage() {
           <h1 className="page-title">Animals</h1>
           <p className="page-subtitle">{total} registered livestock with QR-linked identity, health, and movement records.</p>
         </div>
-        <button className="btn btn-primary page-toolbar-action" onClick={() => setShowCreateModal(true)} id="register-animal-btn">
-          <Plus size={18} />
-          Register Animal
-        </button>
+        {!isAdmin && (
+          <button className="btn btn-primary page-toolbar-action" onClick={() => setShowCreateModal(true)} id="register-animal-btn">
+            <Plus size={18} />
+            Register Animal
+          </button>
+        )}
       </div>
 
-      <div className="glass-card" style={{ padding: 16 }}>
+      <div className="glass-card animal-filter-card">
         <form onSubmit={handleSearch} className="filter-bar">
           <div className="filter-bar-search">
             <Search size={16} />
@@ -165,7 +169,9 @@ export default function AnimalsPage() {
         <div className="empty-state glass-card">
           <QrCode size={46} style={{ color: 'var(--emerald)' }} />
           <p className="text-lg font-bold text-white">No animals found</p>
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>Register an animal to begin building its traceability record.</p>
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>
+            {isAdmin ? 'No user-submitted animals are available for monitoring.' : 'Register an animal to begin building its traceability record.'}
+          </p>
         </div>
       ) : (
         <>
@@ -208,26 +214,28 @@ export default function AnimalsPage() {
                   </div>
                 </Link>
 
-                <div className="animal-card-actions">
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => { setNotice(''); setError(''); setAnimalToRename(animal); }}
-                    disabled={deletingId === animal.id}
-                  >
-                    <Pencil size={14} />
-                    Rename
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(animal)}
-                    disabled={deletingId === animal.id}
-                  >
-                    {deletingId === animal.id ? <div className="spinner w-4 h-4 border-2" /> : <Trash2 size={14} />}
-                    Delete
-                  </button>
-                </div>
+                {!isAdmin && (
+                  <div className="animal-card-actions">
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => { setNotice(''); setError(''); setAnimalToRename(animal); }}
+                      disabled={deletingId === animal.id}
+                    >
+                      <Pencil size={14} />
+                      Rename
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDelete(animal)}
+                      disabled={deletingId === animal.id}
+                    >
+                      {deletingId === animal.id ? <div className="spinner w-4 h-4 border-2" /> : <Trash2 size={14} />}
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

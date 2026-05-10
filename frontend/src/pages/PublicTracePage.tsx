@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Beef, HeartPulse, ShieldCheck, Truck } from 'lucide-react';
 import api from '@/lib/api';
+import AppLogo from '@/components/ui/AppLogo';
 
 interface PublicTraceRecord {
   animal: {
@@ -72,6 +73,16 @@ export default function PublicTracePage() {
 
   return (
     <main className="page-shell min-h-screen">
+      <div className="trace-brand-row">
+        <div className="sidebar-brand-main">
+          <div className="brand-mark"><AppLogo /></div>
+          <div>
+            <h1 className="brand-title">HerdScan</h1>
+            <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
+          </div>
+        </div>
+      </div>
+
       <div className="page-toolbar">
         <div className="page-header">
           <span className="page-eyebrow"><ShieldCheck size={14} /> Traceability Record</span>
@@ -98,7 +109,6 @@ export default function PublicTracePage() {
             ['Gender', animal.gender],
             ['Weight', animal.weight ? `${animal.weight} kg` : 'N/A'],
             ['Stage', animal.growth_stage || 'N/A'],
-            ['Owner/User', animal.owner_name || 'N/A'],
             ['Date of Birth', fmt(animal.date_of_birth)],
             ['Registered', fmt(animal.created_at)],
           ].map(([label, value]) => (

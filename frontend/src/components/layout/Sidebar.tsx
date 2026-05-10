@@ -8,7 +8,6 @@ import {
   Menu,
   PawPrint,
   Pill,
-  QrCode,
   ShieldCheck,
   Syringe,
   Truck,
@@ -16,6 +15,7 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import AppLogo from '@/components/ui/AppLogo';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -58,11 +58,11 @@ export default function Sidebar() {
         <div className="brand-block">
           <div className="sidebar-brand-main">
             <div className="brand-mark">
-              <QrCode size={24} />
+              <AppLogo />
             </div>
             <div className="min-w-0">
-              <h1 className="brand-title">LiveTrack</h1>
-              <p className="brand-subtitle">Traceability Suite</p>
+              <h1 className="brand-title">HerdScan</h1>
+              <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
             </div>
           </div>
           <button

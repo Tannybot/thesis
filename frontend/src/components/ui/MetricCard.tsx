@@ -1,16 +1,21 @@
 import { ArrowUpRight } from 'lucide-react';
-import type { ComponentType } from 'react';
+import type { ComponentType, CSSProperties } from 'react';
 
 type MetricCardProps = {
   label: string;
   value: number | string;
   icon: ComponentType<{ size?: number }>;
   tone?: string;
+  visual?: 'livestock' | 'verified' | 'records' | 'activity';
 };
 
-export default function MetricCard({ label, value, icon: Icon, tone = 'var(--emerald)' }: MetricCardProps) {
+export default function MetricCard({ label, value, icon: Icon, tone = 'var(--emerald)', visual = 'activity' }: MetricCardProps) {
   return (
-    <div className="ui-card animate-in">
+    <div
+      className="ui-card animate-in metric-card-shell"
+      data-visual={visual}
+      style={{ '--metric-tone': tone } as CSSProperties}
+    >
       <div className="ui-card-body metric-card">
         <div className="metric-card-header">
           <div className="metric-card-icon" style={{ background: `linear-gradient(135deg, ${tone}, var(--cyan))` }}>

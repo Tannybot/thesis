@@ -117,26 +117,23 @@ export default function AnimalDetailPage() {
       </Link>
 
       {/* Header */}
-      <div className="glass-card relative overflow-hidden min-w-0 p-5 sm:p-7 md:p-8">
-        {/* Background Accent */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-
-        <div className="flex flex-col md:flex-row gap-[20px] xl:items-center relative z-10 w-full">
-          <div className="animal-icon w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[20px]">
-            <Beef size={42} />
+      <div className="glass-card animal-detail-header">
+        <div className="animal-detail-hero">
+          <div className="animal-detail-icon">
+            <Beef size={34} />
           </div>
           
           {/* Animal info — fills available space */}
-          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-white break-words">{animal.name || animal.animal_uid.split('-')[1]}</h1>
-              <span className={`self-start sm:self-auto px-4 py-1.5 rounded-full text-sm font-bold tracking-wide capitalize ${animal.status === 'active' ? 'bg-[#1EBfae] text-[#06332E]' : 'bg-gray-700 text-gray-200'}`}>
+          <div className="animal-detail-copy">
+            <div className="animal-detail-title-row">
+              <h1 className="animal-detail-title">{animal.name || animal.animal_uid.split('-')[1]}</h1>
+              <span className={`animal-detail-status ${animal.status === 'active' ? 'active' : ''}`}>
                 {animal.status}
               </span>
             </div>
-            <p className="font-mono text-base sm:text-lg text-gray-400 mb-4 opacity-80 break-all">#{animal.animal_uid}</p>
+            <p className="animal-detail-uid">#{animal.animal_uid}</p>
             
-            <div className="flex flex-wrap items-center gap-[12px] mt-2">
+            <div className="animal-detail-meta">
               {[
                 { label: 'Species', val: animal.species },
                 { label: 'Breed', val: animal.breed },
@@ -144,17 +141,17 @@ export default function AnimalDetailPage() {
                 { label: 'Weight', val: animal.weight ? `${animal.weight} kg` : null },
                 { label: 'Stage', val: animal.growth_stage },
               ].filter(x => x.val).map((item, i) => (
-                <div key={i} className="px-[14px] py-[6px] bg-[#0f1f1a] border border-white/10 rounded-[20px] flex items-center gap-2.5">
-                  <span className="text-xs font-bold tracking-[0.1em] text-[#34d399] uppercase">{item.label}</span>
-                  <span className="text-[15px] font-semibold text-white capitalize">{item.val}</span>
+                <div key={i} className="animal-detail-chip">
+                  <span>{item.label}</span>
+                  <strong>{item.val}</strong>
                 </div>
               ))}
             </div>
           </div>
 
           {/* QR Code — right side */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-            <div className="qr-print-area bg-white p-3 rounded-[14px] border border-white/20 shadow-lg" style={{ minWidth: '96px', minHeight: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="animal-detail-qr">
+            <div className="qr-print-area animal-detail-qr-box">
               {qrBroken || !qrBlobUrl ? (
                 <div className="flex flex-col items-center justify-center text-gray-400">
                   <QrCode size={32} className="opacity-40" />
@@ -168,11 +165,11 @@ export default function AnimalDetailPage() {
                 />
               )}
             </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button onClick={printQR} className="btn bg-white/10 hover:bg-white/20 text-white border border-white/10 text-[13px] justify-center shadow-none" style={{ padding: '8px 14px', borderRadius: '8px', minHeight: '36px' }}>
+            <div className="animal-detail-qr-actions">
+              <button onClick={printQR} className="btn btn-secondary btn-sm">
                 <Printer size={14} /> Print
               </button>
-              <button onClick={handleSave} disabled={!qrBlobUrl} className="btn bg-[#34d399]/20 hover:bg-[#34d399]/30 text-[#6ee7b7] border border-[#34d399]/30 text-[13px] justify-center shadow-none disabled:opacity-50" style={{ padding: '8px 14px', borderRadius: '8px', minHeight: '36px' }}>
+              <button onClick={handleSave} disabled={!qrBlobUrl} className="btn btn-primary btn-sm">
                 <Download size={14} /> Save
               </button>
             </div>
@@ -181,22 +178,17 @@ export default function AnimalDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap mb-6 mt-6 sm:mt-8 py-3 gap-2">
+      <div className="animal-detail-tabs">
         {tabs.map((tab) => (
           <button
             key={tab.key}
-            className={`flex items-center text-[15px] font-bold transition-all duration-200 ${
-              activeTab === tab.key 
-                ? 'bg-[#065f46] border border-[#10b981] text-white shadow-[0_4px_15px_rgba(16,185,129,0.3)] transform -translate-y-0.5' 
-                : 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-            }`}
-            style={{ padding: '10px 18px', borderRadius: '10px', gap: '8px' }}
+            className={`animal-detail-tab ${activeTab === tab.key ? 'active' : ''}`}
             onClick={() => setActiveTab(tab.key)}
           >
             <tab.icon size={18} />
-            <span className="tracking-wide">{tab.label}</span>
+            <span>{tab.label}</span>
             {tab.count !== undefined && tab.count > 0 && (
-              <span className={`ml-1.5 px-2 py-0.5 rounded-md text-xs font-bold ${activeTab === tab.key ? 'bg-white/20 text-white' : 'bg-white/10 text-gray-300'}`}>
+              <span className="animal-detail-tab-count">
                 {tab.count}
               </span>
             )}
@@ -205,7 +197,7 @@ export default function AnimalDetailPage() {
       </div>
 
       {/* Tab content */}
-      <div className="animate-in mt-4">
+      <div className="animate-in animal-detail-content">
         {activeTab === 'overview' && (
           <div className="flex flex-col xl:flex-row gap-6">
             {/* Details Section */}

@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Activity,
   AlertTriangle,
   HeartPulse,
   PawPrint,
-  Radar,
   ShieldCheck,
   Syringe,
   TrendingUp,
   Users,
+  PlusCircle,
+  ClipboardList,
 } from 'lucide-react';
 import {
   Area,
@@ -33,7 +36,7 @@ import { Card, SectionTitle } from '@/components/ui/Card';
 import MetricCard from '@/components/ui/MetricCard';
 import PageHeader from '@/components/ui/PageHeader';
 
-const COLORS = ['#34d399', '#38bdf8', '#fbbf24', '#fb7185', '#818cf8', '#2dd4bf'];
+const COLORS = ['#22c55e', '#84cc16', '#14b8a6', '#facc15', '#4ade80', '#a3e635'];
 
 const tooltipStyle = {
   background: 'rgba(7, 17, 14, 0.96)',
@@ -78,19 +81,46 @@ export default function DashboardPage() {
 
   if (!stats) return null;
 
-  const statCards = [
-    { label: 'Total Animals', value: stats.total_animals, icon: PawPrint, tone: '#34d399' },
-    { label: 'Active Livestock', value: stats.active_animals, icon: Activity, tone: '#38bdf8' },
-    { label: 'Health Alerts', value: stats.health_alerts, icon: AlertTriangle, tone: '#fbbf24' },
-    { label: 'Due Vaccinations', value: stats.upcoming_vaccinations, icon: Syringe, tone: '#fb7185' },
+  const pendingRecords = stats.health_alerts + stats.upcoming_vaccinations;
+  const activePercent = stats.total_animals > 0 ? Math.round((stats.active_animals / stats.total_animals) * 100) : 0;
+  const statusBalance = [
+    { label: 'Active', value: stats.active_animals, color: 'var(--emerald)' },
+    { label: 'Sold', value: stats.sold_animals, color: 'var(--amber)' },
+    { label: 'Deceased', value: stats.deceased_animals, color: 'var(--rose)' },
+  ].filter((item) => item.value > 0);
+  const footprintPoints = stats.species_breakdown.length > 0 ? stats.species_breakdown : [{ species: 'No data', count: 0 }];
+  const quickActions = isAdmin ? [
+    { label: 'Monitor Animals', to: '/animals', icon: PawPrint },
+    { label: 'Review Health', to: '/health-records', icon: HeartPulse },
+    { label: 'Vaccination Queue', to: '/vaccinations', icon: Syringe },
+    { label: 'Manage Users', to: '/users', icon: Users },
+  ] : [
+    { label: 'Register Animal', to: '/animals', icon: PlusCircle },
+    { label: 'Review Health', to: '/health-records', icon: HeartPulse },
+    { label: 'Vaccination Queue', to: '/vaccinations', icon: Syringe },
+    { label: 'Trace Movements', to: '/supply-chain', icon: ClipboardList },
+  ];
+  const statCards = isAdmin ? [
+    { label: 'Total Animals', value: stats.total_animals, icon: PawPrint, tone: '#22c55e', visual: 'livestock' as const },
+    { label: 'Verified Animals', value: stats.active_animals, icon: ShieldCheck, tone: '#84cc16', visual: 'verified' as const },
+    { label: 'Pending Records', value: pendingRecords, icon: AlertTriangle, tone: '#fbbf24', visual: 'records' as const },
+    { label: 'Recent Activity', value: activities.length, icon: Activity, tone: '#14b8a6', visual: 'activity' as const },
+  ] : [
+    { label: 'My Animals', value: stats.total_animals, icon: PawPrint, tone: '#22c55e', visual: 'livestock' as const },
+    { label: 'Active Livestock', value: stats.active_animals, icon: Activity, tone: '#84cc16', visual: 'verified' as const },
+    { label: 'Health Alerts', value: stats.health_alerts, icon: AlertTriangle, tone: '#fbbf24', visual: 'records' as const },
+    { label: 'Due Vaccinations', value: stats.upcoming_vaccinations, icon: Syringe, tone: '#fb7185', visual: 'activity' as const },
   ];
 
   return (
     <div className="page-shell">
       <PageHeader
-        eyebrow={<span className="page-eyebrow"><Radar size={14} /> Command Overview</span>}
-        title="Dashboard"
-        subtitle={`Welcome back, ${user?.full_name}. Monitor herd activity, health movement, vaccination demand, and registration trends.`}
+        title={isAdmin ? 'Monitoring Dashboard' : 'My Herd Dashboard'}
+        subtitle={
+          isAdmin
+            ? `Welcome back, ${user?.full_name}. Monitor user-submitted animals, record quality, recent activity, and herd-level analytics.`
+            : `Welcome back, ${user?.full_name}. Register animals, track health activity, and review QR-linked traceability records.`
+        }
         action={(
           <Card className="dashboard-summary-card">
             <div className="flex items-center gap-3">
@@ -152,8 +182,8 @@ export default function DashboardPage() {
                 <BarChart data={stats.growth_stage_breakdown} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
                   <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#38bdf8" stopOpacity={1} />
-                      <stop offset="100%" stopColor="#34d399" stopOpacity={0.62} />
+                      <stop offset="0%" stopColor="#a3e635" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#22c55e" stopOpacity={0.62} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.08)" />
@@ -172,35 +202,99 @@ export default function DashboardPage() {
 
       <section className="page-section">
         <SectionTitle
-          title={isAdmin ? 'Operations And Administration' : 'Recent Operations'}
-          subtitle="Quick system summary and latest recorded activity."
+          title={isAdmin ? 'Global System Overview' : 'Herd Operations Overview'}
+          subtitle="Quick system summary, workflow shortcuts, and latest recorded activity."
         />
-        <div className="grid-admin-row">
-          {isAdmin && stats.total_users !== undefined && (
-            <Card>
-              <SectionTitle icon={<Users size={20} style={{ color: 'var(--indigo)' }} />} title="Global System Overview" />
-              <div className="grid-admin-tiles">
+        <div className="dashboard-operations-grid">
+          <Card className="dashboard-command-card">
+            <div className="grid-admin-tiles dashboard-command-tiles">
+              {[
+                { label: isAdmin ? 'Total Users' : 'My Account', value: isAdmin ? stats.total_users ?? 0 : 1, icon: Users, color: 'var(--indigo)' },
+                { label: 'Registered Animals', value: stats.total_animals, icon: PawPrint, color: 'var(--emerald)' },
+                { label: 'Sold / Marketed', value: stats.sold_animals, icon: ShieldCheck, color: 'var(--amber)' },
+                { label: 'Deceased', value: stats.deceased_animals, icon: HeartPulse, color: 'var(--rose)' },
+              ].map((item) => (
+                <div key={item.label} className="dashboard-mini-card command-stat">
+                  <item.icon size={18} style={{ color: item.color }} />
+                  <p className="metric-card-value">{item.value}</p>
+                  <p className="metric-card-label">{item.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="dashboard-command-body">
+              <div className="dashboard-mix-panel">
+                <span className="panel-kicker">Operational Mix</span>
+                <h3>Livestock status balance</h3>
+                <div className="status-ring" style={{ '--ring-value': `${activePercent}%` } as CSSProperties}>
+                  <div>
+                    <strong>{activePercent}%</strong>
+                    <span>active</span>
+                  </div>
+                </div>
+                <div className="status-legend">
+                  {statusBalance.length > 0 ? statusBalance.map((item) => (
+                    <span key={item.label}><i style={{ background: item.color }} /> {item.label}: {item.value}</span>
+                  )) : <span><i /> No status data</span>}
+                </div>
+              </div>
+
+              <div className="dashboard-footprint-panel">
+                <span className="panel-kicker">Tracking Panel</span>
+                <h3>System footprint</h3>
+                <div className="footprint-map">
+                  {footprintPoints.slice(0, 6).map((item, index) => (
+                    <span
+                      key={`${item.species}-${index}`}
+                      className="footprint-point"
+                      style={{
+                        left: `${18 + ((index * 23) % 68)}%`,
+                        top: `${24 + ((index * 31) % 58)}%`,
+                      }}
+                    >
+                      <i />
+                      <b>{item.species}</b>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="dashboard-actions-panel">
+                <span className="panel-kicker">Quick Actions</span>
+                <h3>Common workflows</h3>
+                <div className="workflow-list">
+                  {quickActions.map((action) => (
+                    <Link key={action.label} to={action.to} className="workflow-link">
+                      <action.icon size={17} />
+                      <span>{action.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="dashboard-snapshot-panel">
                 {[
-                  { label: 'Total Users', value: stats.total_users, icon: Users, color: 'var(--indigo)' },
-                  { label: 'Registered Animals', value: stats.total_animals, icon: PawPrint, color: 'var(--emerald)' },
-                  { label: 'Sold / Marketed', value: stats.sold_animals, icon: ShieldCheck, color: 'var(--amber)' },
-                  { label: 'Deceased', value: stats.deceased_animals, icon: HeartPulse, color: 'var(--rose)' },
+                  { label: 'new registrations this month', value: stats.recent_registrations, icon: TrendingUp },
+                  { label: 'health alert load across registered animals', value: `${stats.total_animals ? Math.round((stats.health_alerts / stats.total_animals) * 100) : 0}%`, icon: AlertTriangle },
+                  { label: 'animals remain traceable in active registry', value: stats.active_animals, icon: ShieldCheck },
                 ].map((item) => (
-                  <div key={item.label} className="dashboard-mini-card">
-                    <item.icon size={19} style={{ color: item.color }} />
-                    <p className="metric-card-value mt-4" style={{ fontSize: 28 }}>{item.value}</p>
-                    <p className="metric-card-label">{item.label}</p>
+                  <div key={item.label} className="snapshot-row">
+                    <item.icon size={17} />
+                    <div>
+                      <strong>{item.value}</strong>
+                      <span>{item.label}</span>
+                    </div>
                   </div>
                 ))}
               </div>
-            </Card>
-          )}
+            </div>
+          </Card>
 
-          <Card>
+          <Card className="dashboard-activity-card">
             <SectionTitle icon={<Activity size={20} style={{ color: 'var(--emerald)' }} />} title="Recent Activity" />
-            <div className="activity-list">
+            <div className="activity-list activity-list-tall">
               {activities.length > 0 ? (
-                activities.slice(0, 8).map((activity, i) => (
+                activities.slice(0, 10).map((activity, i) => (
                   <div key={i} className="activity-row">
                     <span
                       className="activity-dot"
@@ -214,7 +308,7 @@ export default function DashboardPage() {
                     <div className="min-w-0">
                       <p className="activity-title">{activity.title}</p>
                       <p className="activity-copy">
-                        <CollapsibleText text={activity.description} collapsedLength={78} />
+                        <CollapsibleText text={activity.description} collapsedLength={92} />
                       </p>
                     </div>
                   </div>
@@ -239,15 +333,15 @@ export default function DashboardPage() {
               <AreaChart data={healthData.monthly_records} margin={{ top: 8, right: 10, left: -22, bottom: 0 }}>
                 <defs>
                   <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.34} />
-                    <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.34} />
+                    <stop offset="95%" stopColor="#14532d" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.08)" />
                 <XAxis dataKey="month" tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
                 <YAxis tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Area type="monotone" dataKey="count" stroke="#38bdf8" fill="url(#healthGradient)" strokeWidth={3} />
+                <Area type="monotone" dataKey="count" stroke="#22c55e" fill="url(#healthGradient)" strokeWidth={3} />
               </AreaChart>
             </ResponsiveContainer>
           ) : (

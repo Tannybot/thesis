@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { Eye, EyeOff, LogIn, QrCode, ShieldCheck, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, LogIn, ShieldCheck, UserPlus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import AppLogo from '@/components/ui/AppLogo';
 
 function getErrorMessage(error: unknown) {
   if (error instanceof AxiosError) {
@@ -57,10 +58,10 @@ export default function Register() {
     <div className="auth-screen">
       <section className="auth-hero">
         <div className="flex items-center gap-3">
-          <div className="brand-mark"><QrCode size={24} /></div>
+          <div className="brand-mark"><AppLogo /></div>
           <div>
-            <h1 className="brand-title">LiveTrack</h1>
-            <p className="brand-subtitle">User Registration</p>
+            <h1 className="brand-title">HerdScan</h1>
+            <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
           </div>
         </div>
 
@@ -78,9 +79,9 @@ export default function Register() {
 
       <section className="auth-panel">
         <div className="auth-card animate-in">
-          <div className="mobile-only text-center mb-8">
-            <div className="brand-mark mx-auto mb-4"><QrCode size={26} /></div>
-            <h1 className="text-3xl font-black text-white">LiveTrack</h1>
+          <div className="mobile-only auth-brand-lockup">
+            <div className="auth-logo-container"><AppLogo size={160} /></div>
+            <h1 className="auth-logo-title">HerdScan</h1>
           </div>
 
           <div className="mb-8">

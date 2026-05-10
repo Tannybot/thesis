@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { Activity, Eye, EyeOff, LogIn, QrCode, ShieldCheck, Target } from 'lucide-react';
+import { Activity, Eye, EyeOff, LogIn, ShieldCheck, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import AppLogo from '@/components/ui/AppLogo';
 
 function getErrorMessage(error: unknown) {
   if (error instanceof AxiosError) {
@@ -44,16 +45,16 @@ export default function LoginPage() {
     <div className="auth-screen">
       <section className="auth-hero">
         <div className="flex items-center gap-3">
-          <div className="brand-mark"><QrCode size={24} /></div>
+          <div className="brand-mark"><AppLogo /></div>
           <div>
-            <h1 className="brand-title">LiveTrack</h1>
-            <p className="brand-subtitle">Livestock Traceability</p>
+            <h1 className="brand-title">HerdScan</h1>
+            <p className="brand-subtitle">Livestock Traceability & Monitoring System</p>
           </div>
         </div>
 
         <div className="max-w-3xl">
           <span className="page-eyebrow"><ShieldCheck size={14} /> QR-based monitoring platform</span>
-          <h2 className="hero-title mt-4">A sharper command center for every animal record.</h2>
+          <h2 className="hero-title mt-4">A clean command center for every animal record.</h2>
           <p className="hero-copy">
             Monitor identity, health, treatments, vaccination schedules, and movement logs with a secure
             dashboard built for academic and field operations.
@@ -72,14 +73,14 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-sm" style={{ color: 'rgba(244, 251, 247, 0.55)' }}>LiveTrack Global 2026</p>
+        <p className="text-sm" style={{ color: 'rgba(244, 251, 247, 0.55)' }}>HerdScan 2026</p>
       </section>
 
       <section className="auth-panel">
         <div className="auth-card animate-in">
-          <div className="mobile-only text-center mb-8">
-            <div className="brand-mark mx-auto mb-4"><QrCode size={26} /></div>
-            <h1 className="text-3xl font-black text-white">LiveTrack</h1>
+          <div className="mobile-only auth-brand-lockup">
+            <div className="auth-logo-container"><AppLogo size={160} /></div>
+            <h1 className="auth-logo-title">HerdScan</h1>
           </div>
 
           <div className="mb-8">
