@@ -44,7 +44,7 @@ class LivestockApp extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: const Color(0xFF1E293B),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
