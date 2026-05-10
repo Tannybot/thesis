@@ -1,4 +1,6 @@
 """Dashboard router — statistics and analytics endpoints."""
+import logging
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -7,6 +9,12 @@ from app.services.dashboard_service import get_dashboard_stats, get_health_overv
 from app.middleware.auth import get_current_user
 
 router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
+logger = logging.getLogger(__name__)
+HEALTH_OVERVIEW_FALLBACK = {
+    "monthly_records": [],
+    "severity_breakdown": [],
+    "type_breakdown": [],
+}
 
 
 @router.get("/stats")
@@ -24,7 +32,14 @@ def health_overview(
     current_user: User = Depends(get_current_user),
 ):
     """Get health analytics data for charts."""
-    return get_health_overview(db, current_user)
+    try:
+        return get_health_overview(db, current_user)
+    except Exception:
+        logger.exception(
+            "Failed to load dashboard health overview for user_id=%s",
+            current_user.id,
+        )
+        return HEALTH_OVERVIEW_FALLBACK
 
 
 @router.get("/recent-activity")

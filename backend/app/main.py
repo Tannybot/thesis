@@ -3,8 +3,11 @@ FastAPI Application Entry Point
 Livestock Monitoring and Traceability System
 """
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+import logging
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 import os
 
@@ -14,6 +17,9 @@ from app.models import *  # noqa: F401, F403 — import all models for table cre
 
 # Import all routers
 from app.routers import auth, users, animals, health_records, treatments, vaccinations, movements, qr_codes, dashboard, ai
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -88,6 +94,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    """Log unexpected backend errors without exposing internals to clients."""
+    logger.exception("Unhandled error on %s %s", request.method, request.url.path)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"},
+    )
 
 # Mount static files for QR code images
 qr_codes_dir = os.path.join(os.path.dirname(__file__), "..", "qr_codes")

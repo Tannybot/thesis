@@ -1,12 +1,16 @@
 """
 Auth service — handles user registration, login, and token generation.
 """
+import logging
+
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.models.user import User
 from app.models.role import Role
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 from app.utils.security import hash_password, verify_password, create_access_token, create_refresh_token
+
+logger = logging.getLogger(__name__)
 
 
 def register_user(db: Session, data: RegisterRequest) -> User:
@@ -43,12 +47,14 @@ def authenticate_user(db: Session, data: LoginRequest) -> TokenResponse:
     """Authenticate user and return JWT tokens."""
     user = db.query(User).filter(User.email == data.email).first()
     if not user or not verify_password(data.password, user.hashed_password):
+        logger.warning("Login failed for %s: invalid credentials", data.email)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
 
     if not user.is_active:
+        logger.warning("Login blocked for %s: inactive account", data.email)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account is deactivated"

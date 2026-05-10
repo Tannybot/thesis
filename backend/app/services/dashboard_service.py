@@ -2,6 +2,7 @@
 Dashboard service — aggregates statistics and analytics data.
 """
 from datetime import datetime, timedelta, timezone
+from collections import Counter
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.models.animal import Animal
@@ -106,20 +107,21 @@ def get_health_overview(db: Session, current_user: object) -> dict:
     if not animal_ids:
         return {"monthly_records": [], "severity_breakdown": [], "type_breakdown": []}
 
-    # Monthly health records (last 6 months)
+    # Monthly health records (last 6 months). Group in Python so this stays
+    # portable across SQLite locally and PostgreSQL in production.
     six_months_ago = datetime.now(timezone.utc) - timedelta(days=180)
-    monthly = (
-        db.query(
-            func.strftime("%Y-%m", HealthRecord.record_date).label("month"),
-            func.count(HealthRecord.id)
-        )
+    monthly_records = (
+        db.query(HealthRecord.record_date)
         .filter(
             HealthRecord.animal_id.in_(animal_ids),
             HealthRecord.created_at >= six_months_ago,
         )
-        .group_by("month")
-        .order_by("month")
         .all()
+    )
+    monthly_counts = Counter(
+        record_date.strftime("%Y-%m")
+        for (record_date,) in monthly_records
+        if record_date
     )
 
     # Severity breakdown
@@ -139,7 +141,10 @@ def get_health_overview(db: Session, current_user: object) -> dict:
     )
 
     return {
-        "monthly_records": [{"month": m, "count": c} for m, c in monthly],
+        "monthly_records": [
+            {"month": month, "count": monthly_counts[month]}
+            for month in sorted(monthly_counts)
+        ],
         "severity_breakdown": [{"severity": s or "none", "count": c} for s, c in severity],
         "type_breakdown": [{"type": t, "count": c} for t, c in types],
     }

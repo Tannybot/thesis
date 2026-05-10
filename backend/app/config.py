@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     RESET_DEFAULT_ADMIN_PASSWORD: bool = True
 
     # CORS
-    FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
+    FRONTEND_URL: str = "https://thesis-eight-bice.vercel.app"  # Production frontend domain
     CORS_ORIGINS: Optional[str] = None
     CORS_ORIGIN_REGEX: Optional[str] = r"https://.*\.vercel\.app"
 
@@ -66,11 +66,14 @@ class Settings(BaseSettings):
 
     @property
     def allowed_origins(self) -> list[str]:
-        origins = {self.FRONTEND_URL.rstrip("/")}
+        origins = {
+            "http://localhost:5173",
+            "http://localhost:3000",
+            "https://thesis-eight-bice.vercel.app",
+            self.FRONTEND_URL.rstrip("/"),
+        }
         if self.CORS_ORIGINS:
             origins.update(origin.strip().rstrip("/") for origin in self.CORS_ORIGINS.split(",") if origin.strip())
-        if self.APP_ENV != "production":
-            origins.update({"http://localhost:5173", "http://localhost:3000"})
         return sorted(origins)
 
     class Config:
