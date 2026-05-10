@@ -26,16 +26,39 @@ async def lifespan(app: FastAPI):
     qr_dir = os.path.join(os.path.dirname(__file__), "..", "qr_codes")
     os.makedirs(qr_dir, exist_ok=True)
 
-    # Seed default roles if they don't exist
+    # Seed required roles and default admin account for fresh deployments.
     from app.database import SessionLocal
     from app.models.role import Role
+    from app.models.user import User
+    from app.utils.security import hash_password
     db = SessionLocal()
     try:
-        if not db.query(Role).first():
-            db.add_all([
-                Role(name="admin", description="Full system access"),
-                Role(name="user", description="Standard user / farmer / staff"),
-            ])
+        admin_role = db.query(Role).filter(Role.name == "admin").first()
+        user_role = db.query(Role).filter(Role.name == "user").first()
+
+        if not admin_role:
+            admin_role = Role(name="admin", description="Full system access")
+            db.add(admin_role)
+        if not user_role:
+            user_role = Role(name="user", description="Standard user / farmer / staff")
+            db.add(user_role)
+        db.flush()
+
+        admin = db.query(User).filter(User.email == settings.DEFAULT_ADMIN_EMAIL).first()
+        if not admin:
+            admin = User(
+                email=settings.DEFAULT_ADMIN_EMAIL,
+                full_name=settings.DEFAULT_ADMIN_NAME,
+                hashed_password=hash_password(settings.DEFAULT_ADMIN_PASSWORD),
+                role_id=admin_role.id,
+                is_active=True,
+            )
+            db.add(admin)
+        else:
+            admin.role_id = admin_role.id
+            admin.is_active = True
+
+        if db.new or db.dirty:
             db.commit()
     finally:
         db.close()

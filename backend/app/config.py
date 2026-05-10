@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
+    # Initial admin account
+    DEFAULT_ADMIN_EMAIL: str = "admin@livestock.com"
+    DEFAULT_ADMIN_PASSWORD: str = "admin123"
+    DEFAULT_ADMIN_NAME: str = "System Administrator"
+
     # CORS
     FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
     CORS_ORIGINS: Optional[str] = None
