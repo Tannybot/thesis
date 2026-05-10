@@ -7,8 +7,6 @@ import Register from '@/pages/Register';
 import DashboardPage from '@/pages/DashboardPage';
 import AnimalsPage from '@/pages/AnimalsPage';
 import AnimalDetailPage from '@/pages/AnimalDetailPage';
-import PublicTracePage from '@/pages/PublicTracePage';
-import QrAnimalRedirectPage from '@/pages/QrAnimalRedirectPage';
 import HealthRecordsPage from '@/pages/HealthRecordsPage';
 import TreatmentsPage from '@/pages/TreatmentsPage';
 import VaccinationsPage from '@/pages/VaccinationsPage';
@@ -23,14 +21,11 @@ export default function App() {
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/trace/:token" element={<PublicTracePage />} />
-          <Route path="/animals/trace/:token" element={<PublicTracePage />} />
 
           {/* Protected routes */}
           <Route element={<AppLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/animals" element={<AnimalsPage />} />
-            <Route path="/animals/qr/:token" element={<QrAnimalRedirectPage />} />
             <Route path="/animals/:id" element={<AnimalDetailPage />} />
             <Route path="/health-records" element={<HealthRecordsPage />} />
             <Route path="/treatments" element={<TreatmentsPage />} />

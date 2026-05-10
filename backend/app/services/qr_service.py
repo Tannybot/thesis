@@ -1,9 +1,8 @@
 """
-QR Code service — generates QR codes with embedded private animal URLs.
+QR Code service — generates QR codes with embedded animal URLs.
 Uses the 'qrcode' library to create PNG images.
 """
 import os
-from urllib.parse import urlparse
 import qrcode
 from app.config import settings
 
@@ -12,40 +11,17 @@ QR_CODE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__fil
 os.makedirs(QR_CODE_DIR, exist_ok=True)
 
 
-def _is_local_url(url: str) -> bool:
-    parsed = urlparse(url)
-    hostname = parsed.hostname or ""
-    return hostname in {"localhost", "127.0.0.1", "0.0.0.0"} or hostname.endswith(".local")
-
-
-def get_private_qr_base_url() -> str:
-    """Return the deployed protected animal QR route."""
-    configured = settings.QR_CODE_BASE_URL.rstrip("/")
-    if configured and not _is_local_url(configured):
-        return configured
-
-    frontend = settings.FRONTEND_URL.rstrip("/")
-    if frontend and not _is_local_url(frontend):
-        return f"{frontend}/animals/qr"
-
-    return "https://livetrack.com/animals/qr"
-
-
-def build_private_animal_qr_url(animal_uid: str) -> str:
-    """Build the private app URL encoded inside the QR image."""
-    return f"{get_private_qr_base_url()}/{animal_uid}"
-
-
-def generate_qr_code(animal_uid: str, animal=None) -> tuple[str, str]:
+def generate_qr_code(animal_uid: str) -> tuple[str, str]:
     """
     Generate a QR code image for an animal.
-    Returns (private_animal_url, file_path).
+    Returns (qr_data_url, file_path).
     """
-    qr_data = build_private_animal_qr_url(animal_uid)
+    # The QR code encodes a URL to the animal's profile
+    qr_data = f"{settings.QR_CODE_BASE_URL}/{animal_uid}"
 
     # Create QR code image
     qr = qrcode.QRCode(
-        version=None,
+        version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
         box_size=10,
         border=4,
