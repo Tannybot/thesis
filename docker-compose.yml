@@ -24,7 +24,7 @@ services:
       - SECRET_KEY=${SECRET_KEY:-your-secure-secret-key-here}
       - DEBUG=false
       - FRONTEND_URL=https://livetrack.com
-      - QR_CODE_BASE_URL=https://livetrack.com/animals
+      - QR_CODE_BASE_URL=https://livetrack.com/trace
     volumes:
       - qr_codes:/app/qr_codes
     depends_on:
@@ -37,6 +37,8 @@ services:
   frontend:
     build: ./frontend
     container_name: livestock-web
+    environment:
+      - BACKEND_URL=http://backend:8000
     ports:
       - "80:80"
       - "443:443"

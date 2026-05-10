@@ -7,6 +7,7 @@ import Register from '@/pages/Register';
 import DashboardPage from '@/pages/DashboardPage';
 import AnimalsPage from '@/pages/AnimalsPage';
 import AnimalDetailPage from '@/pages/AnimalDetailPage';
+import PublicTracePage from '@/pages/PublicTracePage';
 import HealthRecordsPage from '@/pages/HealthRecordsPage';
 import TreatmentsPage from '@/pages/TreatmentsPage';
 import VaccinationsPage from '@/pages/VaccinationsPage';
@@ -21,6 +22,7 @@ export default function App() {
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/trace/:token" element={<PublicTracePage />} />
 
           {/* Protected routes */}
           <Route element={<AppLayout />}>

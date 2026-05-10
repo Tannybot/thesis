@@ -1,9 +1,9 @@
 /// API Configuration for the Livestock Tracker mobile app.
 class ApiConfig {
-  // Change this to your backend server URL
-  static const String baseUrl = 'http://10.0.2.2:8000/api'; // Android emulator
-  // static const String baseUrl = 'http://localhost:8000/api'; // iOS simulator
-  // static const String baseUrl = 'https://your-production-api.com/api'; // Production
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://10.0.2.2:8000/api',
+  );
 
   static const Duration timeout = Duration(seconds: 30);
 

@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+livestock.db
+qr_codes/
+profile_images/
+logs/

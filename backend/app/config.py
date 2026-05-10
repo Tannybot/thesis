@@ -3,7 +3,7 @@ Application configuration using Pydantic Settings.
 Loads values from .env file with type validation.
 """
 from pydantic_settings import BaseSettings
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from typing import Optional
 
 
@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     # App
     APP_NAME: str = "LivestockTracker"
     APP_VERSION: str = "1.0.0"
+    APP_ENV: str = "development"
+    APP_URL: Optional[str] = None
     DEBUG: bool = False
 
     # Database
@@ -24,9 +26,11 @@ class Settings(BaseSettings):
 
     # CORS
     FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
+    CORS_ORIGINS: Optional[str] = None
 
     # QR Codes
-    QR_CODE_BASE_URL: str = "https://livetrack.com/animals"  # Production domain
+    QR_BASE_URL: Optional[str] = None
+    QR_CODE_BASE_URL: str = "https://livetrack.com/trace"  # Production QR scan route
 
     # Local AI text generation
     AI_PROVIDER: str = "ollama"
@@ -44,6 +48,23 @@ class Settings(BaseSettings):
             if normalized in {"debug", "development", "dev"}:
                 return True
         return value
+
+    @model_validator(mode="after")
+    def apply_production_url_aliases(self):
+        if self.APP_URL:
+            self.FRONTEND_URL = self.APP_URL.rstrip("/")
+        if self.QR_BASE_URL:
+            self.QR_CODE_BASE_URL = f"{self.QR_BASE_URL.rstrip('/')}/trace"
+        return self
+
+    @property
+    def allowed_origins(self) -> list[str]:
+        origins = {self.FRONTEND_URL.rstrip("/")}
+        if self.CORS_ORIGINS:
+            origins.update(origin.strip().rstrip("/") for origin in self.CORS_ORIGINS.split(",") if origin.strip())
+        if self.APP_ENV != "production":
+            origins.update({"http://localhost:5173", "http://localhost:3000"})
+        return sorted(origins)
 
     class Config:
         env_file = ".env"

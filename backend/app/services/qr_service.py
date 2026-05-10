@@ -3,6 +3,7 @@ QR Code service — generates QR codes with embedded animal URLs.
 Uses the 'qrcode' library to create PNG images.
 """
 import os
+from urllib.parse import urlparse
 import qrcode
 from app.config import settings
 
@@ -11,13 +12,37 @@ QR_CODE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__fil
 os.makedirs(QR_CODE_DIR, exist_ok=True)
 
 
-def generate_qr_code(animal_uid: str) -> tuple[str, str]:
+def _is_local_url(url: str) -> bool:
+    parsed = urlparse(url)
+    hostname = parsed.hostname or ""
+    return hostname in {"localhost", "127.0.0.1", "0.0.0.0"} or hostname.endswith(".local")
+
+
+def get_qr_base_url() -> str:
+    """Return a production-safe QR base URL."""
+    configured = settings.QR_CODE_BASE_URL.rstrip("/")
+    if configured and not _is_local_url(configured):
+        return configured
+
+    frontend = settings.FRONTEND_URL.rstrip("/")
+    if frontend and not _is_local_url(frontend):
+        return f"{frontend}/trace"
+
+    return "https://livetrack.com/trace"
+
+
+def build_qr_data(animal_uid: str) -> str:
+    """Build the deployed URL encoded inside the QR image."""
+    return f"{get_qr_base_url()}/{animal_uid}"
+
+
+def generate_qr_code(animal_uid: str, animal=None) -> tuple[str, str]:
     """
     Generate a QR code image for an animal.
     Returns (qr_data_url, file_path).
     """
-    # The QR code encodes a URL to the animal's profile
-    qr_data = f"{settings.QR_CODE_BASE_URL}/{animal_uid}"
+    # The QR code encodes a deployed traceability URL, never localhost.
+    qr_data = build_qr_data(animal_uid)
 
     # Create QR code image
     qr = qrcode.QRCode(

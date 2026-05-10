@@ -57,7 +57,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"],
+    allow_origins=settings.allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -77,6 +77,7 @@ app.include_router(treatments.router)
 app.include_router(vaccinations.router)
 app.include_router(movements.router)
 app.include_router(qr_codes.router)
+app.include_router(qr_codes.trace_router)
 app.include_router(dashboard.router)
 app.include_router(ai.router)
 

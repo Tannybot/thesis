@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: livetrack-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app -k uvicorn.workers.UvicornWorker -w ${WEB_CONCURRENCY:-2} --bind 0.0.0.0:${PORT}
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: false
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: APP_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: QR_BASE_URL
+        sync: false
+      - key: QR_CODE_BASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: AI_PROVIDER
+        value: ollama
+      - key: OLLAMA_BASE_URL
+        sync: false
+      - key: OLLAMA_MODEL
+        value: llama3.2:3b
+      - key: OLLAMA_TIMEOUT_SECONDS
+        value: 60
