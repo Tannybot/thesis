@@ -1,7 +1,18 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { Activity, Eye, EyeOff, LogIn, QrCode, ShieldCheck, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+
+function getErrorMessage(error: unknown) {
+  if (error instanceof AxiosError) {
+    const detail = error.response?.data?.detail;
+    if (Array.isArray(detail)) return detail.map((item) => item.msg).join(' ');
+    if (typeof detail === 'string') return detail;
+    if (!error.response) return 'Cannot reach the backend API. Check VITE_API_BASE_URL and CORS settings.';
+  }
+  return 'Login failed. Please try again.';
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -22,8 +33,8 @@ export default function LoginPage() {
       await login(email, password);
       const from = location.state?.from || '/';
       navigate(from);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed. Please try again.');
+    } catch (err) {
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }

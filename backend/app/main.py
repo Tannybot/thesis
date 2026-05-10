@@ -57,6 +57,8 @@ async def lifespan(app: FastAPI):
         else:
             admin.role_id = admin_role.id
             admin.is_active = True
+            if settings.RESET_DEFAULT_ADMIN_PASSWORD:
+                admin.hashed_password = hash_password(settings.DEFAULT_ADMIN_PASSWORD)
 
         if db.new or db.dirty:
             db.commit()
@@ -81,6 +83,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
+    allow_origin_regex=settings.CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -28,10 +28,12 @@ class Settings(BaseSettings):
     DEFAULT_ADMIN_EMAIL: str = "admin@livestock.com"
     DEFAULT_ADMIN_PASSWORD: str = "admin123"
     DEFAULT_ADMIN_NAME: str = "System Administrator"
+    RESET_DEFAULT_ADMIN_PASSWORD: bool = True
 
     # CORS
     FRONTEND_URL: str = "https://livetrack.com"  # Production frontend domain
     CORS_ORIGINS: Optional[str] = None
+    CORS_ORIGIN_REGEX: Optional[str] = r"https://.*\.vercel\.app"
 
     # QR Codes
     QR_BASE_URL: Optional[str] = None
