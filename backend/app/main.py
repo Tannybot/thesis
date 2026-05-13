@@ -10,9 +10,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 import os
+from sqlalchemy import inspect, text
 
 from app.config import settings
 from app.database import engine, Base
+from app.middleware.security import SecurityMiddleware
 from app.models import *  # noqa: F401, F403 — import all models for table creation
 
 # Import all routers
@@ -22,11 +24,43 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def ensure_security_columns() -> None:
+    """Add lockout columns for deployments created before this security update."""
+    inspector = inspect(engine)
+    try:
+        columns = {column["name"] for column in inspector.get_columns("users")}
+    except Exception:
+        logger.exception("Unable to inspect users table for security columns")
+        return
+
+    statements = []
+    dialect = engine.dialect.name
+    if "failed_login_attempts" not in columns:
+        if dialect == "postgresql":
+            statements.append("ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_login_attempts INTEGER NOT NULL DEFAULT 0")
+        else:
+            statements.append("ALTER TABLE users ADD COLUMN failed_login_attempts INTEGER NOT NULL DEFAULT 0")
+    if "locked_until" not in columns:
+        if dialect == "postgresql":
+            statements.append("ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMP WITH TIME ZONE")
+        else:
+            statements.append("ALTER TABLE users ADD COLUMN locked_until DATETIME")
+
+    if not statements:
+        return
+
+    with engine.begin() as connection:
+        for statement in statements:
+            connection.execute(text(statement))
+    logger.info("Security account-lockout columns verified")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     # Create all database tables on startup
     Base.metadata.create_all(bind=engine)
+    ensure_security_columns()
 
     # Ensure QR codes directory exists
     qr_dir = os.path.join(os.path.dirname(__file__), "..", "qr_codes")
@@ -85,7 +119,9 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS middleware
+# Security and CORS middleware
+app.add_middleware(SecurityMiddleware)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,

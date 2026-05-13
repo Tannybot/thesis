@@ -83,6 +83,8 @@ body {
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text);
   background:
+    repeating-linear-gradient(90deg, rgba(198, 255, 227, 0.035) 0 1px, transparent 1px 86px),
+    repeating-linear-gradient(0deg, rgba(198, 255, 227, 0.028) 0 1px, transparent 1px 86px),
     radial-gradient(circle at 18% 8%, rgba(34, 197, 94, 0.16), transparent 28%),
     radial-gradient(circle at 82% 0%, rgba(163, 230, 53, 0.09), transparent 24%),
     linear-gradient(145deg, #010604 0%, #03140b 48%, #020b07 100%);
@@ -93,7 +95,10 @@ body {
 }
 
 :root[data-theme='light'] body {
-  background: linear-gradient(145deg, #f6f8f3 0%, #e8efe9 100%);
+  background:
+    repeating-linear-gradient(90deg, rgba(25, 128, 76, 0.07) 0 1px, transparent 1px 86px),
+    repeating-linear-gradient(0deg, rgba(25, 128, 76, 0.055) 0 1px, transparent 1px 86px),
+    linear-gradient(145deg, #f6f8f3 0%, #e8efe9 100%);
 }
 
 button,
@@ -160,10 +165,36 @@ button:disabled {
 }
 
 .app-main {
+  position: relative;
   flex: 1;
   min-width: 0;
   min-height: 100vh;
   margin-left: 304px;
+  overflow: hidden;
+}
+
+.app-main::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 0 304px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 8, 6, 0.72), rgba(2, 8, 6, 0.32)),
+    repeating-linear-gradient(90deg, rgba(198, 255, 227, 0.052) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, rgba(198, 255, 227, 0.042) 0 1px, transparent 1px 88px),
+    radial-gradient(circle at 20% 14%, rgba(34, 197, 94, 0.13), transparent 24%),
+    radial-gradient(circle at 88% 20%, rgba(163, 230, 53, 0.09), transparent 28%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5));
+}
+
+:root[data-theme='light'] .app-main::before {
+  background:
+    linear-gradient(90deg, rgba(246, 248, 243, 0.84), rgba(246, 248, 243, 0.46)),
+    repeating-linear-gradient(90deg, rgba(25, 128, 76, 0.07) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, rgba(25, 128, 76, 0.052) 0 1px, transparent 1px 88px),
+    radial-gradient(circle at 20% 14%, rgba(25, 128, 76, 0.08), transparent 24%),
+    radial-gradient(circle at 88% 20%, rgba(132, 204, 22, 0.1), transparent 28%);
 }
 
 .app-header {
@@ -171,9 +202,9 @@ button:disabled {
   top: 0;
   z-index: 30;
   min-height: 76px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(240px, 720px) minmax(0, 1fr) auto auto;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   padding: 14px clamp(22px, 3vw, 44px);
   background: color-mix(in srgb, #04180f 86%, transparent);
@@ -182,6 +213,8 @@ button:disabled {
 }
 
 .app-content {
+  position: relative;
+  z-index: 1;
   width: min(100%, 1640px);
   min-height: calc(100vh - 76px);
   margin: 0 auto;
@@ -190,9 +223,8 @@ button:disabled {
 
 .top-search {
   position: relative;
-  flex: 1 1 380px;
+  grid-column: 1;
   min-width: 0;
-  max-width: 720px;
 }
 
 .top-search svg {
@@ -243,6 +275,7 @@ button:disabled {
 
 .notification-center {
   position: relative;
+  grid-column: 3;
   flex: 0 0 auto;
 }
 
@@ -378,6 +411,7 @@ button:disabled {
 
 .profile-menu {
   position: relative;
+  grid-column: 4;
   flex: 0 0 auto;
 }
 
@@ -2291,6 +2325,15 @@ textarea.input-field {
     url('./assets/hero.png') center/cover no-repeat;
 }
 
+.login-screen {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 17% 18%, rgba(48, 211, 117, 0.26), transparent 28%),
+    radial-gradient(circle at 52% 78%, rgba(143, 234, 42, 0.22), transparent 32%),
+    linear-gradient(135deg, rgba(2, 9, 6, 0.96), rgba(3, 17, 13, 0.92)),
+    url('./assets/hero.png') center/cover no-repeat;
+}
+
 .auth-hero {
   position: relative;
   display: flex;
@@ -2298,6 +2341,10 @@ textarea.input-field {
   flex-direction: column;
   justify-content: space-between;
   padding: clamp(36px, 5vw, 72px);
+}
+
+.login-screen .auth-hero {
+  isolation: isolate;
 }
 
 .auth-hero::before {
@@ -2308,9 +2355,16 @@ textarea.input-field {
   pointer-events: none;
 }
 
+.login-screen .auth-hero::before {
+  background:
+    linear-gradient(115deg, rgba(2, 9, 6, 0.92) 0%, rgba(2, 13, 10, 0.68) 42%, rgba(2, 8, 7, 0.34) 100%),
+    repeating-linear-gradient(90deg, rgba(198, 255, 227, 0.05) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, rgba(198, 255, 227, 0.04) 0 1px, transparent 1px 88px);
+}
+
 .auth-hero > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .auth-panel {
@@ -2324,8 +2378,156 @@ textarea.input-field {
   backdrop-filter: blur(24px);
 }
 
+.login-screen .auth-panel {
+  position: relative;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(143, 234, 42, 0.13), transparent 26%),
+    linear-gradient(180deg, rgba(2, 12, 9, 0.94), rgba(1, 8, 6, 0.98));
+  box-shadow: inset 1px 0 0 rgba(198, 255, 227, 0.08);
+}
+
+.login-screen .auth-panel::before {
+  content: '';
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgba(198, 255, 227, 0.07);
+  border-radius: 28px;
+  pointer-events: none;
+}
+
 .auth-card {
   width: min(100%, 460px);
+}
+
+.login-screen .auth-card {
+  position: relative;
+  padding: clamp(28px, 4vw, 42px);
+  border: 1px solid rgba(198, 255, 227, 0.11);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(7, 24, 18, 0.76), rgba(3, 12, 9, 0.7));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.login-form-intro {
+  margin-bottom: 30px;
+}
+
+.login-field-map {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.field-line,
+.field-node {
+  position: absolute;
+  display: block;
+}
+
+.field-line {
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(143, 234, 42, 0.58), rgba(48, 211, 117, 0.18), transparent);
+  filter: drop-shadow(0 0 16px rgba(143, 234, 42, 0.28));
+  opacity: 0.74;
+  transform-origin: left center;
+}
+
+.field-line-a {
+  left: 7%;
+  top: 26%;
+  width: 78%;
+  transform: rotate(31deg);
+}
+
+.field-line-b {
+  left: 12%;
+  top: 75%;
+  width: 58%;
+  transform: rotate(-28deg);
+}
+
+.field-line-c {
+  left: 48%;
+  top: 18%;
+  width: 44%;
+  transform: rotate(77deg);
+}
+
+.field-node {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(143, 234, 42, 0.82);
+  border-radius: 50%;
+  background: rgba(2, 9, 6, 0.9);
+  box-shadow: 0 0 0 8px rgba(143, 234, 42, 0.08), 0 0 28px rgba(143, 234, 42, 0.32);
+}
+
+.field-node-a {
+  left: 19%;
+  top: 39%;
+}
+
+.field-node-b {
+  left: 58%;
+  top: 61%;
+}
+
+.field-node-c {
+  right: 14%;
+  top: 31%;
+}
+
+.login-signal-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 210px;
+  padding: 14px 16px;
+  border: 1px solid rgba(198, 255, 227, 0.13);
+  border-radius: 16px;
+  background: rgba(3, 15, 11, 0.76);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.login-signal-card svg {
+  color: var(--cyan);
+  flex: 0 0 auto;
+}
+
+.login-signal-card span,
+.login-signal-card strong {
+  display: block;
+}
+
+.login-signal-card span {
+  color: rgba(204, 228, 220, 0.68);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.login-signal-card strong {
+  margin-top: 2px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.login-signal-card-primary {
+  right: clamp(28px, 8vw, 128px);
+  top: 18%;
+}
+
+.login-signal-card-secondary {
+  right: clamp(52px, 14vw, 220px);
+  bottom: 19%;
 }
 
 .auth-feature-grid {
@@ -2439,6 +2641,14 @@ textarea.input-field {
       url('./assets/hero.png') center/cover no-repeat;
   }
 
+  .login-screen {
+    background:
+      radial-gradient(circle at 28% 18%, rgba(48, 211, 117, 0.28), transparent 30%),
+      radial-gradient(circle at 78% 84%, rgba(143, 234, 42, 0.2), transparent 34%),
+      linear-gradient(135deg, rgba(4, 18, 13, 0.94), rgba(1, 8, 6, 0.96)),
+      url('./assets/hero.png') center/cover no-repeat;
+  }
+
   .auth-hero {
     display: none;
   }
@@ -2454,6 +2664,15 @@ textarea.input-field {
 
   .auth-brand-lockup {
     display: flex;
+  }
+
+  .login-screen .auth-card {
+    padding: 26px;
+  }
+
+  .login-screen .auth-panel::before {
+    inset: 12px;
+    border-radius: 22px;
   }
 }
 
@@ -2471,9 +2690,26 @@ textarea.input-field {
     margin-left: 0;
   }
 
+  .app-main::before {
+    inset: 0;
+  }
+
   .app-header {
+    grid-template-columns: minmax(0, 1fr) auto auto;
     min-height: 66px;
     padding: 10px 12px 10px 58px;
+  }
+
+  .top-search {
+    grid-column: 1;
+  }
+
+  .notification-center {
+    grid-column: 2;
+  }
+
+  .profile-menu {
+    grid-column: 3;
   }
 
   .notification-panel {

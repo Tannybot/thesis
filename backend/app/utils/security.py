@@ -4,7 +4,7 @@ Uses bcrypt for passwords and python-jose for JWT.
 """
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from app.config import settings
 
 # Bcrypt password context
@@ -39,10 +39,12 @@ def create_refresh_token(data: dict) -> str:
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def decode_token(token: str) -> dict | None:
+def decode_token(token: str, expected_type: str = "access") -> dict | None:
     """Decode and validate a JWT token. Returns payload or None if invalid."""
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != expected_type:
+            return None
         return payload
-    except JWTError:
+    except (ExpiredSignatureError, JWTError):
         return None

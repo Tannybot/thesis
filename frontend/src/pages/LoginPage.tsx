@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { Activity, Eye, EyeOff, LogIn, ShieldCheck, Target } from 'lucide-react';
+import { Activity, CheckCircle2, Eye, EyeOff, LogIn, QrCode, ShieldCheck, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import AppLogo from '@/components/ui/AppLogo';
 
 function getErrorMessage(error: unknown) {
   if (error instanceof AxiosError) {
-    const detail = error.response?.data?.detail;
-    if (Array.isArray(detail)) return detail.map((item) => item.msg).join(' ');
-    if (typeof detail === 'string') return detail;
+    if (error.response?.status === 429) return 'Too many attempts. Please try again later.';
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return 'Invalid credentials or temporarily locked account.';
+    }
     if (!error.response) return 'Cannot reach the backend API. Check VITE_API_BASE_URL and CORS settings.';
   }
   return 'Login failed. Please try again.';
@@ -42,8 +43,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-screen">
+    <div className="auth-screen login-screen">
       <section className="auth-hero">
+        <div className="login-field-map" aria-hidden="true">
+          <span className="field-line field-line-a" />
+          <span className="field-line field-line-b" />
+          <span className="field-line field-line-c" />
+          <span className="field-node field-node-a" />
+          <span className="field-node field-node-b" />
+          <span className="field-node field-node-c" />
+        </div>
+
         <div className="flex items-center gap-3">
           <div className="brand-mark"><AppLogo /></div>
           <div>
@@ -72,6 +82,21 @@ export default function LoginPage() {
           </div>
         </div>
 
+        <div className="login-signal-card login-signal-card-primary" aria-hidden="true">
+          <QrCode size={22} />
+          <div>
+            <span>Scan verified</span>
+            <strong>LV-CATTL-2026</strong>
+          </div>
+        </div>
+        <div className="login-signal-card login-signal-card-secondary" aria-hidden="true">
+          <CheckCircle2 size={20} />
+          <div>
+            <span>Record status</span>
+            <strong>Traceable</strong>
+          </div>
+        </div>
+
         <p className="text-sm" style={{ color: 'rgba(244, 251, 247, 0.55)' }}>HerdScan 2026</p>
       </section>
 
@@ -82,10 +107,9 @@ export default function LoginPage() {
             <h1 className="auth-logo-title">HerdScan</h1>
           </div>
 
-          <div className="mb-8">
+          <div className="login-form-intro">
             <span className="page-eyebrow">Secure access</span>
-            <h2 className="text-4xl font-black text-white tracking-tight mt-3">Welcome back</h2>
-            <p className="mt-2" style={{ color: 'var(--muted)' }}>Sign in to manage livestock records and traceability workflows.</p>
+            <p className="mt-3" style={{ color: 'var(--muted)' }}>Sign in to manage livestock records and traceability workflows.</p>
           </div>
 
           {error && (

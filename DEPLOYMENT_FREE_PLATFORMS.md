@@ -89,6 +89,17 @@ FRONTEND_URL=https://your-frontend.vercel.app
 CORS_ORIGINS=https://your-frontend.vercel.app
 QR_BASE_URL=https://your-frontend.vercel.app
 QR_CODE_BASE_URL=https://your-frontend.vercel.app/trace
+RATE_LIMIT_ENABLED=true
+GLOBAL_RATE_LIMIT_PER_MINUTE=100
+LOGIN_RATE_LIMIT_PER_MINUTE=5
+LOGIN_RATE_LIMIT_PER_HOUR=20
+AUTH_RATE_LIMIT_PER_MINUTE=10
+EXPENSIVE_RATE_LIMIT_PER_MINUTE=30
+SAME_ENDPOINT_RATE_LIMIT_PER_MINUTE=45
+MAX_REQUEST_BODY_BYTES=1048576
+REQUEST_TIMEOUT_SECONDS=30
+ACCOUNT_LOCKOUT_ATTEMPTS=5
+ACCOUNT_LOCKOUT_MINUTES=15
 WEB_CONCURRENCY=2
 AI_PROVIDER=ollama
 OLLAMA_BASE_URL=
@@ -178,6 +189,7 @@ flutter build ios --release --dart-define=API_BASE_URL=https://your-backend.onre
 - Keep `SECRET_KEY` private.
 - Use Supabase connection strings with `sslmode=require`.
 - Restrict CORS to the Vercel domain.
+- Keep backend rate limits enabled, and use Cloudflare or platform-level DDoS protection in front of production traffic when possible.
 - Keep admin/user role permissions unchanged:
   - Admin monitors and reviews records.
   - Users register animals.

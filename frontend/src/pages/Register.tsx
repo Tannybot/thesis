@@ -7,9 +7,7 @@ import AppLogo from '@/components/ui/AppLogo';
 
 function getErrorMessage(error: unknown) {
   if (error instanceof AxiosError) {
-    const detail = error.response?.data?.detail;
-    if (Array.isArray(detail)) return detail.map((item) => item.msg).join(' ');
-    if (typeof detail === 'string') return detail;
+    if (error.response?.status === 429) return 'Too many attempts. Please try again later.';
   }
   return 'Registration failed. Please review your details and try again.';
 }

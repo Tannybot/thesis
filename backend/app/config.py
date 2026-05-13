@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql://user:password@localhost:5432/livetrack"
 
     # JWT
-    SECRET_KEY: str = "your-secure-secret-key-here"  # Generate a cryptographically secure 256-bit string
+    SECRET_KEY: str = "change-me-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -33,7 +33,20 @@ class Settings(BaseSettings):
     # CORS
     FRONTEND_URL: str = "https://thesis-eight-bice.vercel.app"  # Production frontend domain
     CORS_ORIGINS: Optional[str] = None
-    CORS_ORIGIN_REGEX: Optional[str] = r"https://.*\.vercel\.app"
+    CORS_ORIGIN_REGEX: Optional[str] = None
+
+    # API abuse protection
+    RATE_LIMIT_ENABLED: bool = True
+    GLOBAL_RATE_LIMIT_PER_MINUTE: int = 100
+    LOGIN_RATE_LIMIT_PER_MINUTE: int = 5
+    LOGIN_RATE_LIMIT_PER_HOUR: int = 20
+    AUTH_RATE_LIMIT_PER_MINUTE: int = 10
+    EXPENSIVE_RATE_LIMIT_PER_MINUTE: int = 30
+    SAME_ENDPOINT_RATE_LIMIT_PER_MINUTE: int = 45
+    MAX_REQUEST_BODY_BYTES: int = 1_048_576
+    REQUEST_TIMEOUT_SECONDS: int = 30
+    ACCOUNT_LOCKOUT_ATTEMPTS: int = 5
+    ACCOUNT_LOCKOUT_MINUTES: int = 15
 
     # QR Codes
     QR_BASE_URL: Optional[str] = None
@@ -62,13 +75,14 @@ class Settings(BaseSettings):
             self.FRONTEND_URL = self.APP_URL.rstrip("/")
         if self.QR_BASE_URL:
             self.QR_CODE_BASE_URL = f"{self.QR_BASE_URL.rstrip('/')}/trace"
+        if self.APP_ENV.lower() in {"production", "prod"} and self.SECRET_KEY == "change-me-in-production":
+            raise ValueError("SECRET_KEY must be set from environment variables in production")
         return self
 
     @property
     def allowed_origins(self) -> list[str]:
         origins = {
             "http://localhost:5173",
-            "http://localhost:3000",
             "https://thesis-eight-bice.vercel.app",
             self.FRONTEND_URL.rstrip("/"),
         }
