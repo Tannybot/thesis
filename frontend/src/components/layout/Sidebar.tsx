@@ -38,7 +38,7 @@ export default function Sidebar() {
     <>
       {!mobileOpen && (
         <button
-          className="mobile-sidebar-toggle md:hidden header-action"
+          className="mobile-sidebar-toggle lg:hidden header-action"
           onClick={() => setMobileOpen(true)}
           id="sidebar-toggle"
           aria-label="Open navigation"
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -65,7 +65,7 @@ export default function Sidebar() {
             </div>
           </div>
           <button
-            className="sidebar-close md:hidden header-action"
+            className="sidebar-close lg:hidden header-action"
             onClick={() => setMobileOpen(false)}
             aria-label="Close navigation"
           >

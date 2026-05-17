@@ -40,11 +40,11 @@ const COLORS = ['#22c55e', '#84cc16', '#14b8a6', '#facc15', '#4ade80', '#a3e635'
 
 const tooltipStyle = {
   background: 'rgba(7, 17, 14, 0.96)',
-  border: '1px solid rgba(198, 255, 227, 0.16)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
   borderRadius: '14px',
   color: '#f4fbf7',
   padding: '12px 14px',
-  boxShadow: '0 18px 60px rgba(0, 0, 0, 0.45)',
+  boxShadow: '0 14px 38px rgba(0, 0, 0, 0.24)',
 };
 
 export default function DashboardPage() {
@@ -148,7 +148,7 @@ export default function DashboardPage() {
           <Card>
             <SectionTitle icon={<PawPrint size={20} style={{ color: 'var(--emerald)' }} />} title="Species Distribution" />
             {stats.species_breakdown.length > 0 ? (
-              <ResponsiveContainer width="100%" height={310}>
+              <ResponsiveContainer width="100%" height={340}>
                 <PieChart>
                   <Pie
                     data={stats.species_breakdown}
@@ -159,6 +159,9 @@ export default function DashboardPage() {
                     outerRadius={100}
                     innerRadius={58}
                     paddingAngle={5}
+                    isAnimationActive
+                    animationDuration={850}
+                    animationEasing="ease-out"
                     label={(props: any) => `${props.name} (${props.value})`}
                     labelLine={false}
                     stroke="rgba(7, 17, 14, 0.72)"
@@ -167,7 +170,7 @@ export default function DashboardPage() {
                     {stats.species_breakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 16 }} />
+                  <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 22, fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
@@ -178,7 +181,7 @@ export default function DashboardPage() {
           <Card>
             <SectionTitle icon={<Activity size={20} style={{ color: 'var(--cyan)' }} />} title="Growth Stages" />
             {stats.growth_stage_breakdown.length > 0 ? (
-              <ResponsiveContainer width="100%" height={310}>
+              <ResponsiveContainer width="100%" height={340}>
                 <BarChart data={stats.growth_stage_breakdown} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
                   <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
@@ -186,11 +189,11 @@ export default function DashboardPage() {
                       <stop offset="100%" stopColor="#22c55e" stopOpacity={0.62} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.08)" />
-                  <XAxis dataKey="stage" tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.055)" />
+                  <XAxis dataKey="stage" tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={{ stroke: 'rgba(198, 255, 227, 0.08)' }} tickLine={false} tickMargin={12} />
                   <YAxis tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
                   <Tooltip cursor={{ fill: 'rgba(52, 211, 153, 0.06)' }} contentStyle={tooltipStyle} />
-                  <Bar dataKey="count" fill="url(#barGradient)" radius={[10, 10, 0, 0]} maxBarSize={54} />
+                  <Bar dataKey="count" fill="url(#barGradient)" radius={[10, 10, 0, 0]} maxBarSize={64} isAnimationActive animationDuration={850} animationEasing="ease-out" />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -329,7 +332,7 @@ export default function DashboardPage() {
             subtitle="Monthly trend for health-related livestock records."
           />
           {healthData?.monthly_records?.length > 0 ? (
-            <ResponsiveContainer width="100%" height={320}>
+            <ResponsiveContainer width="100%" height={340}>
               <AreaChart data={healthData.monthly_records} margin={{ top: 8, right: 10, left: -22, bottom: 0 }}>
                 <defs>
                   <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
@@ -337,11 +340,11 @@ export default function DashboardPage() {
                     <stop offset="95%" stopColor="#14532d" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.08)" />
-                <XAxis dataKey="month" tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(198, 255, 227, 0.055)" />
+                <XAxis dataKey="month" tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={{ stroke: 'rgba(198, 255, 227, 0.08)' }} tickLine={false} tickMargin={12} />
                 <YAxis tick={{ fill: '#9ab7ad', fontSize: 12 }} axisLine={false} tickLine={false} tickMargin={12} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Area type="monotone" dataKey="count" stroke="#22c55e" fill="url(#healthGradient)" strokeWidth={3} />
+                <Area type="monotone" dataKey="count" stroke="#22c55e" fill="url(#healthGradient)" strokeWidth={3} isAnimationActive animationDuration={900} animationEasing="ease-out" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (

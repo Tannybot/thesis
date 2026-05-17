@@ -1,10 +1,10 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Sidebar from './Sidebar';
 import AIAssistant from './AIAssistant';
 import NotificationCenter from './NotificationCenter';
 import ProfileMenu from './ProfileMenu';
+import SearchCommand from './SearchCommand';
 
 export default function AppLayout() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -27,15 +27,7 @@ export default function AppLayout() {
       <Sidebar />
       <div className="app-main">
         <header className="app-header">
-          <div className="top-search">
-            <Search size={17} />
-            <input
-              type="text"
-              placeholder="Search animals, records..."
-              className="input-field"
-              id="global-search"
-            />
-          </div>
+          <SearchCommand />
 
           <NotificationCenter />
 

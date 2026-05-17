@@ -191,10 +191,10 @@ export default function AnimalsPage() {
                     <div className="animal-icon">
                       <Beef size={28} />
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="text-xl font-black text-white truncate">{animalTitle(animal)}</h3>
-                      <p className="font-mono text-xs mt-1 truncate" style={{ color: 'var(--cyan)' }}>#{animal.animal_uid}</p>
-                      <p className="text-sm capitalize mt-3" style={{ color: 'var(--muted)' }}>{animal.species}</p>
+                    <div className="animal-card-identity">
+                      <h3 className="animal-card-title">{animalTitle(animal)}</h3>
+                      <p className="animal-card-uid">#{animal.animal_uid}</p>
+                      <p className="animal-card-species">{animal.species}</p>
                     </div>
                   </div>
 
