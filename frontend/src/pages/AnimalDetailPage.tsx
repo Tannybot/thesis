@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, QrCode, Heart, Pill, Syringe, Truck,
-  Beef, Calendar, Weight, Printer, Download, Activity
+  Beef, Calendar, Weight, Printer, Download, Activity, X
 } from 'lucide-react';
 import api from '@/lib/api';
 import type { AnimalDetail, HealthRecord, Treatment, Vaccination, Movement, TimelineEvent } from '@/types';
@@ -21,6 +21,7 @@ export default function AnimalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [qrBroken, setQrBroken] = useState(false);
   const [qrBlobUrl, setQrBlobUrl] = useState<string | null>(null);
+  const [qrFullscreen, setQrFullscreen] = useState(false);
 
   useEffect(() => {
     if (id) loadAnimal();
@@ -33,6 +34,25 @@ export default function AnimalDetailPage() {
       }
     };
   }, [qrBlobUrl]);
+
+  useEffect(() => {
+    if (!qrFullscreen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setQrFullscreen(false);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [qrFullscreen]);
 
   async function loadAnimal() {
     try {
@@ -151,7 +171,16 @@ export default function AnimalDetailPage() {
 
           {/* QR Code — right side */}
           <div className="animal-detail-qr">
-            <div className="qr-print-area animal-detail-qr-box">
+            <button
+              type="button"
+              className="qr-print-area animal-detail-qr-box animal-detail-qr-trigger"
+              onClick={() => {
+                if (qrBlobUrl && !qrBroken) setQrFullscreen(true);
+              }}
+              disabled={qrBroken || !qrBlobUrl}
+              aria-label={`Open full-screen QR code for ${animal.animal_uid}`}
+              title="Open full-screen QR code"
+            >
               {qrBroken || !qrBlobUrl ? (
                 <div className="flex flex-col items-center justify-center text-gray-400">
                   <QrCode size={32} className="opacity-40" />
@@ -164,7 +193,7 @@ export default function AnimalDetailPage() {
                   onError={() => setQrBroken(true)}
                 />
               )}
-            </div>
+            </button>
             <div className="animal-detail-qr-actions">
               <button onClick={printQR} className="btn btn-secondary btn-sm">
                 <Printer size={14} /> Print
@@ -399,6 +428,49 @@ export default function AnimalDetailPage() {
         )}
       </div>
     </div>
+
+    {qrFullscreen && qrBlobUrl && (
+      <div
+        className="qr-fullscreen-overlay print:hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Full-screen QR code for ${animal.animal_uid}`}
+        onClick={() => setQrFullscreen(false)}
+      >
+        <div className="qr-fullscreen-panel" onClick={(event) => event.stopPropagation()}>
+          <button
+            type="button"
+            className="qr-fullscreen-close"
+            onClick={() => setQrFullscreen(false)}
+            aria-label="Close full-screen QR code"
+          >
+            <X size={22} />
+          </button>
+
+          <div className="qr-fullscreen-code">
+            <img src={qrBlobUrl} alt={`QR Code for ${animal.animal_uid}`} />
+          </div>
+
+          <div className="qr-fullscreen-copy">
+            <span>Scan QR Code</span>
+            <strong>{animal.animal_uid}</strong>
+            <p>{animal.name || 'Livestock traceability record'}</p>
+          </div>
+
+          <div className="qr-fullscreen-actions">
+            <button type="button" onClick={printQR} className="btn btn-secondary">
+              <Printer size={16} /> Print
+            </button>
+            <button type="button" onClick={handleSave} className="btn btn-secondary">
+              <Download size={16} /> Save
+            </button>
+            <button type="button" onClick={() => setQrFullscreen(false)} className="btn btn-primary">
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     
     {/* Dedicated QR Code Print Layout */}
     <div className="hidden print:flex flex-col items-center justify-center w-full min-h-screen bg-white">
